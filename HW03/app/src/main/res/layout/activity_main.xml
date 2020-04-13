@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_marginRight="20px"
+    android:layout_marginLeft="20px"
+    tools:context=".MainActivity">
+    <TableLayout
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1">
+        <TableRow>
+            <TextView
+                android:text="Username"/>
+            <EditText android:id="@+id/edit_username"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Password"/>
+            <EditText android:id="@+id/edit_password" android:inputType="textPassword" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Retype"/>
+            <EditText  android:id="@+id/edit_retypepassword" android:inputType="textPassword"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Birthday"/>
+            <EditText android:id="@+id/edit_bd"/>
+
+        </TableRow>
+    </TableLayout>
+    <TextView
+        android:id="@+id/txtview_gender"
+        android:layout_below="@id/table_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        android:layout_marginTop="20dp"/>
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/txtview_gender"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <RadioButton
+            android:id="@+id/radioButton_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/radioButton_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+    </RadioGroup>
+    <TextView
+        android:id="@+id/textview_hobbies"
+        android:layout_below="@id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hobbies"
+        />
+    <LinearLayout
+        android:id="@+id/checkboxgroup"
+        android:layout_below="@id/textview_hobbies"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox android:id="@+id/checkbox_tenis"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Tenis" />
+        <CheckBox android:id="@+id/checkbox_futbal"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Futbal" />
+        <CheckBox android:id="@+id/checkbox_others"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Others" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:layout_below="@id/checkboxgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            />
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign-up"
+            />
+    </LinearLayout>
+</RelativeLayout>
