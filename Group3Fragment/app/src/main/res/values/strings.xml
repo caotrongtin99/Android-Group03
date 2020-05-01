@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Group3-Fragment</string>
+    <string name="txtCurrentChose">Mã số</string>
+    <string name="txtFullName">Ho Ten</string>
+    <string name="txtClass">Lớp</string>
+    <string name="txtPointAgv">Điểm Trung bình</string>
+    <string name="txtCode">Mã học sinh</string>
+</resources>
