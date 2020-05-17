@@ -10,8 +10,16 @@ public class Track {
     private int id;
     private int songId;
     private String folder;
+    private boolean isFavorite;
     private int albumId;
     private boolean isChecked;
+
+    public  Track(String imageName,String title, String artist){
+        this.imageName=imageName;
+        this.title=title;
+        this.artist = artist;
+    }
+
     public String getPath() {
         return path;
     }
