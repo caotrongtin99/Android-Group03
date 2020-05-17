@@ -1,11 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    There's a new attribute called colorPrimary which you can define in your Theme. This will give you ActionBar or Toolbar a solid color.
+
+    Following a little example:
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/bgColor</item>
+    </style>
+    <style name="MyNoActionBarShadowTheme" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
     </style>
     <style name="MyToolbarTheme"
         parent="@style/ThemeOverlay.AppCompat.Dark">
