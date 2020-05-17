@@ -21,10 +21,9 @@ public class TrackFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_track, container, false);
         List<Track> tracks = getListData();
         final ListView listView = (ListView)rootView.findViewById(R.id.listview_track);
-
-        listView.setAdapter(new ListTracksAdapter(getActivity(),tracks));
+        listTracksAdapter = new ListTracksAdapter(getActivity(),tracks);
+        listView.setAdapter(listTracksAdapter);
         return rootView;
-
     }
 
     private  List<Track> getListData() {
