@@ -26,17 +26,17 @@ public class ListTracksAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 0;
+        return tracks.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return tracks.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override

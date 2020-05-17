@@ -28,11 +28,11 @@ public class TrackFragment extends Fragment {
 
     private  List<Track> getListData() {
         List<Track> list = new ArrayList<Track>();
-        Track hello = new Track("hello", "Hello", "Adele");
-        Track lalala = new Track("hello", "Hello", "Adele");
-        Track layMeDown = new Track("hello", "Hello", "Adele");
-        Track maps = new Track("hello", "Hello", "Adele");
-        Track oneCallWay= new Track("hello", "Hello", "Adele");
+        Track hello = new Track("helloo", "Hello", "Adele");
+        Track lalala = new Track("lalala", "Lalala", "Naughty Boy");
+        Track layMeDown = new Track("laymedown", "Lay Me Down", "Sam Smith");
+        Track maps = new Track("maps", "Maps", "Maroon 5");
+        Track oneCallWay= new Track("onecallway", "One Call Way", "Charlie Puth");
 
 
         list.add(hello);
