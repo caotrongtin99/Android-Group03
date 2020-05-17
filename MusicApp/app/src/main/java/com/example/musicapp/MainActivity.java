@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.musicapp.artists.ArtistFragment;
 import com.example.musicapp.tracks.TrackFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FavoriteFragment(), "Favorites");
         adapter.addFragment(new TrackFragment(), "Tracks");
         adapter.addFragment(new AlbumFragment(), "Albums");
-        adapter.addFragment(new TrackFragment(), "Artists");
+        adapter.addFragment(new ArtistFragment(), "Artists");
         adapter.addFragment(new AlbumFragment(), "Playlists");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
