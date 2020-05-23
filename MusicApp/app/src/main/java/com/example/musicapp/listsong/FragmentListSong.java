@@ -21,11 +21,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
+import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.play.PlayService;
+
+import com.example.musicapp.callbacks.FragmentCallback;
 
 import java.util.ArrayList;
 
-public class FragmentListSong extends Fragment implements  MultiClickAdapterListener {
+public class FragmentListSong extends Fragment implements FragmentCallback, MultiClickAdapterListener {
     private MainActivity _mainActivity;
     private Context _context;
     private ArrayList<SongModel> _listSong;
@@ -59,10 +62,7 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
 
     public static FragmentListSong newInstance() {
         FragmentListSong fragmentListSong = new FragmentListSong();
-//        Bundle args = new Bundle();
-//        args.putString("Key1", "OK");
-//        fragmentListSong.setArguments(args);
-        //mPlayService = PlayService.newInstance();
+        mPlayService = PlayService.newInstance();
 
         return fragmentListSong;
     }
@@ -93,7 +93,7 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
         _txtSizeOfListSong = view.findViewById(R.id.txtSizeOfListSong);
         _listViewSong = view.findViewById(R.id.lsvSongs);
         mSwpListSong = view.findViewById(R.id.swpListSong);
-        new Handler().post(new Runnable() {
+     /*   new Handler().post(new Runnable() {
             @Override
             public void run() {
                 _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
@@ -102,8 +102,12 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
                 _listViewSong.setAdapter(_listSongAdapter);
                 _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
             }
-        });
-
+        });*/
+        _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+        _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
+        _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
+        _listViewSong.setAdapter(_listSongAdapter);
+        _txtSizeOfListSong.setText("123456789");
         _listViewSong.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -120,7 +124,7 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
                 }
 
                 if (!mIsLoading && linearLayoutManager != null && linearLayoutManager.getItemCount() - 1 == linearLayoutManager.findLastVisibleItemPosition()) {
-                    loadMore();
+                    //loadMore();
                     mIsLoading = true;
                 }
 
@@ -142,14 +146,13 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
         return view;
 
     }
-    /*
+
     @Override
     public void updateSizeOfListSong() {
         _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
     }
 
-     */
-
+    /*
     private void loadMore() {
 //        _skeletonScreen = Skeleton.bind(_listViewSong).adapter(_listSongAdapter).load(R.layout.layout_item_song).show();
 //        _listSong.add(null);
@@ -172,27 +175,7 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
 
     }
 
-    @Override
-    public void optionMenuClick(View v, int position) {
 
-    }
-
-    @Override
-    public void checkboxClick(View v, int position) {
-
-    }
-
-    @Override
-    public void layoutItemClick(View v, int position) {
-
-    }
-
-    @Override
-    public void layoutItemLongClick(View v, int position) {
-
-    }
-
-    /*
     private void playSong(SongModel songPlay) {
         mPlayService.play(songPlay);
 
@@ -216,11 +199,11 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
         bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
-
+    */
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        showBottomSheetOptionSong(songChose);
+        //showBottomSheetOptionSong(songChose);
     }
 
     @Override
@@ -231,16 +214,16 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
     @Override
     public void layoutItemClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        playSong(songChose);
+        //playSong(songChose);
 
     }
 
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        showBottomSheetOptionSong(songChose);
+        //showBottomSheetOptionSong(songChose);
     }
-    /*
+
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {
 
         @Override
@@ -281,8 +264,6 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
 
     }
 
-
-
     public void UpdateSearch(String s){
         if(s == searchValue) return;
         searchValue = s;
@@ -294,7 +275,4 @@ public class FragmentListSong extends Fragment implements  MultiClickAdapterList
         _listSongAdapter.notifyDataSetChanged();
         mIsLoading = false;
     }
-    */
-
 }
-

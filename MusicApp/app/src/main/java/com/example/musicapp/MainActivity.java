@@ -41,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0);
 
-        ArrayList<SongModel> temp = new ArrayList<>();
-        temp = SongModel.getAllAudioFromDevice(this);
+
+
         mMainActivity = MainActivity.this;
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
         adapter = new TabAdapter(getSupportFragmentManager(), this);
         adapter.addFragment(new FavoriteFragment(), "Favorites");
         adapter.addFragment(new FragmentListSong(), "Tracks");

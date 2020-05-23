@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class SongModel implements Serializable {
     public static final String TABLE_NAME = "songs";
-
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SONG_ID = "song_id";
     public static final String COLUMN_TITLE = "title";
@@ -143,7 +142,6 @@ public class SongModel implements Serializable {
                 MediaStore.Audio.AudioColumns.ALBUM_ID,
 
         };
-//        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
         Cursor c = context.getContentResolver().query(uri, projection, selection, null, null);//select .. from audio
         int debugLoop = 40;
@@ -412,8 +410,6 @@ public class SongModel implements Serializable {
         String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_TITLE,skip,count);
         Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
 
-//        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC  LIMIT " + skip + "," + count;
-//        Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
                 SongModel songModel = new SongModel();

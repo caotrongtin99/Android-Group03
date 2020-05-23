@@ -13,26 +13,7 @@ import com.example.musicapp.R;
 import java.util.ArrayList;
 
 public class ListSongAdapter extends BaseAdapter {
-    @Override
-    public int getCount() {
-        return 0;
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-    /*
     private ArrayList<SongModel> _listSong;
     private Context _context;
 
@@ -119,6 +100,6 @@ public class ListSongAdapter extends BaseAdapter {
             this.duration=duration;
 
         }
-    }*/
+    }
 }
 
