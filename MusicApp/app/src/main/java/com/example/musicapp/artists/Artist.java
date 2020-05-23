@@ -1,6 +1,5 @@
 package com.example.musicapp.artists;
 
-import com.example.musicapp.tracks.Track;
 
 import java.util.List;
 

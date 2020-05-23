@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.musicapp.tracks.Track;
+import com.example.musicapp.listsong.SongModel;
+
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -22,7 +23,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 11;
 
     // Database Name
-    public static final String DATABASE_NAME = "music_app.db";
+    public static final String DATABASE_NAME = "music_app_db.db";
     //singleton
     public static DatabaseManager newInstance(Context context) {
         if (mDatabaseInstance == null) {
@@ -40,39 +41,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(Track.SCRIPT_CREATE_TABLE);
-        /*
-        db.execSQL(PlayModel.SCRIPT_CREATE_TABLE);
-        db.execSQL(PlaylistModel.SCRIPT_CREATE_TABLE);
-        db.execSQL(PlaylistSongModel.SCRIPT_CREATE_TABLE);
-        db.execSQL(RecentModel.SCRIPT_CREATE_TABLE); */
+        db.execSQL(SongModel.SCRIPT_CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + Track.TABLE_NAME);
-        /*
-        db.execSQL("DROP TABLE IF EXISTS " + PlayModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistSongModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + RecentModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
         onCreate(db);
-
-         */
     }
 
     public void resetDB() {
-        /*
         SQLiteDatabase db = getReadableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlayModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PlaylistSongModel.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + RecentModel.TABLE_NAME);
-        onCreate(db);
 
-         */
+        onCreate(db);
     }
 }

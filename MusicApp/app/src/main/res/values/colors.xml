@@ -7,5 +7,15 @@
     <color name="black">#000000</color>
     <color name="mainColor">#3DB6AE</color>
     <color name="bgColor">#E5E5E5</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteLight">#F5F5F5</color>
+    <color name="colorBlackGlassLight">#26000000</color>
+    <color name="colorBlackGlassDark">#4D000000</color>
+
     <color name="colorTranparent">#00FFFFFF</color>
+    <color name="colorTitlePrimary">#212121</color>
+    <color name="colorTitleSecondary">#616161</color>
+
+    <color name="colorTitleWhitePrimary">#fafafa</color>
+    <color name="colorTitleWhiteSecondary">#e0e0e0</color>
 </resources>
