@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <!--android:clickable="true"-->
-    <!--android:foreground="?android:attr/selectableItemBackground"-->
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/layoutItemSong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +28,7 @@
 
             <TableRow>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/image_card_item"
                     android:layout_height="@dimen/image_card_item"
                     android:layout_marginLeft="@dimen/margin_size_small"
@@ -51,7 +49,7 @@
                         android:scaleType="centerCrop"
                         tools:srcCompat="@mipmap/music_128" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +79,7 @@
                             android:layout_gravity="bottom|left"
                             android:gravity="left"
                             android:text="Tiêu đề bài hát"
-                            android:textColor="@color/colorTitleWhitePrimary"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -93,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:text="Ca sĩ"
-                        android:textColor="@color/colorTitleWhiteSecondary"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_small"
 
                         />
@@ -113,7 +111,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/margin_size_small"
                         android:text="Thời gian"
-                        android:textColor="@color/colorTitleWhiteSecondary"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_small" />
 
                     <ImageButton
@@ -136,7 +134,7 @@
 
         </TableLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </LinearLayout>

@@ -16,7 +16,7 @@ import com.example.musicapp.R;
 
 public class HolderSongRecyclerView extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.drawable.ic_queue_music_black_24dp);
+    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
     private MultiClickAdapterListener mListener;
     private TextView titleSong;
     private TextView artist;
