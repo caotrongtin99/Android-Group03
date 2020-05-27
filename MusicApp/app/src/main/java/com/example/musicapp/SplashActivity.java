@@ -44,21 +44,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Utility.setTransparentStatusBar(this);
-//        boolean canWrite = Settings.System.canWrite(getApplicationContext());
-//        Log.d(TAG, "onCreate: CAN WRITE " + canWrite);
 
         if (checkAndRequestPermission()) {
             initApp();
         }
-//        } else {
-//            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.fromParts("package", getPackageName(), null));
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//            finish();
-//        }
-
-//        initApp();
-
     }
 
     public void initApp() {
@@ -69,6 +58,8 @@ public class SplashActivity extends AppCompatActivity {
                 Log.d(TAG, "doInBackground: SIZE AUDIOS " + SongModel.getRowsSong(mDatabaseManager));
                 ArrayList<SongModel> tempAudioList = SongModel.getAllAudioFromDevice(getApplicationContext());
                 Log.d(TAG, "doInBackground: AUDIO " + tempAudioList.size());
+                Integer a = tempAudioList.size();
+                Long b = SongModel.getRowsSong(mDatabaseManager);
                 if (SongModel.getRowsSong(mDatabaseManager) != tempAudioList.size()) {
                     for (SongModel song : tempAudioList) {
                         long id = SongModel.insertSong(mDatabaseManager, song);
@@ -81,7 +72,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-//                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainIntent);
                 finish();
             }

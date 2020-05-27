@@ -159,23 +159,8 @@ public class SongModel implements Serializable {
                 Long duration = c.getLong(4);//c.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION)
                 int songId = c.getInt(5);
                 int albumId = c.getInt(c.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM_ID));
-//                Log.d(TAG, "getAllAudioFromDevice: ALBUM ID" + albumId);
                 String parentPath = new File(path).getParent();
                 String folder = parentPath.substring(parentPath.lastIndexOf('/') + 1);
-//                Log.d(TAG, "getAllAudioFromDevice: TITLE FROM DEVICE " + name + "_" + c.getString(1));
-//                MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-//                mediaMetadataRetriever.setDataSource(path);
-//                InputStream inputStream;
-//                Bitmap bitmap;
-//
-//
-//                if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-//                    inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
-//                    mediaMetadataRetriever.release();
-//                    bitmap = BitmapFactory.decodeStream(inputStream);
-//                } else {
-//                    bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.musical_note_light_64);
-//                }
                 songModel.setTitle(name);
                 songModel.setAlbum(album);
                 songModel.setArtist(artist);
@@ -185,8 +170,6 @@ public class SongModel implements Serializable {
                 songModel.setSongId(songId);
                 songModel.setFolder(folder);
                 songModel.setAlbumId(albumId);
-//                Log.e("Name :" + name, " Album :" + album);
-//                Log.e("Path :" + path, " artist :" + artist);
 
                 tempAudioList.add(songModel);
             }

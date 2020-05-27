@@ -20,10 +20,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     // Database Version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    public static final String DATABASE_NAME = "music_app_db.db";
+    public static final String DATABASE_NAME = "music_db.db";
     //singleton
     public static DatabaseManager newInstance(Context context) {
         if (mDatabaseInstance == null) {
@@ -52,7 +52,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public void resetDB() {
         SQLiteDatabase db = getReadableDatabase();
-
+        db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
         onCreate(db);
     }
 }
