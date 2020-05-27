@@ -15,11 +15,13 @@ import java.util.ArrayList;
 public class ListSongAdapter extends BaseAdapter {
 
     private ArrayList<SongModel> _listSong;
+    private LayoutInflater layoutInflater;
     private Context _context;
 
     public ListSongAdapter(Context context, ArrayList<SongModel> listSong) {
         this._context = context;
         this._listSong = listSong;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
