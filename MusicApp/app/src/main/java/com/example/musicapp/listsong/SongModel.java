@@ -390,8 +390,10 @@ public class SongModel implements Serializable {
         };
         String whereClause =  "? = '' OR " + SongModel.COLUMN_TITLE +" LIKE ?";
         String[] whereArgs = new String[]{value ,"%" + value + "%"};
-        String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_TITLE,skip,count);
-        Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
+        //String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_TITLE,skip,count);
+        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC  ";
+        //Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
+        Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
