@@ -373,6 +373,35 @@ public class SongModel implements Serializable {
         return songModelList;
     }
 
+    public static ArrayList<SongModel> getSongsByArtist(DatabaseManager databaseManager, String name){
+        ArrayList<SongModel> songModelList = new ArrayList<>();
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
+        String artist = "'" + name + "'";
+
+        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " WHERE " + SongModel.COLUMN_ARTIST + " = " + artist;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                SongModel songModel = new SongModel();
+                songModel.setId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ID)));
+                songModel.setSongId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_SONG_ID)));
+                songModel.setTitle(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_TITLE)));
+                songModel.setAlbum(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ALBUM)));
+                songModel.setArtist(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ARTIST)));
+                songModel.setFolder(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_FOLDER)));
+                songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
+                songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
+                songModel.setAlbumId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ALBUM_ID)));
+                //Log.d(TAG, "getSongsWithThreshold: HOLD ALBUMID" + songModel.getAlbumId());
+                songModelList.add(songModel);
+            } while (cursor.moveToNext());
+
+        }
+        //databaseManager.closeDatabase();
+        return songModelList;
+    }
+
     public static ArrayList<SongModel> getSongsWithThreshold(DatabaseManager databaseManager,String value , int skip, int count) {
         ArrayList<SongModel> songModelList = new ArrayList<>();
         SQLiteDatabase db = databaseManager.getReadableDatabase();
