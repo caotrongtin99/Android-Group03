@@ -29,7 +29,7 @@ import com.example.musicapp.play.PlayService;
 import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment implements FragmentCallback, MultiClickAdapterListener {
-    private final String[] STATE = {"No track", " track", " tracks"};
+    private final String[] STATE = {"No track", "1 track", " tracks"};
 
 
     private MainActivity _mainActivity;
@@ -37,7 +37,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
     private ArrayList<SongModel> _listSong;
     private RecyclerView _listViewSong;
     private TextView _txtSizeOfListSong;
-    private int sizeOfListSong;
+    private int _sizeOfListSong;
     private ListSongRecyclerAdaper _listSongAdapter;
     //private SwipeRefreshLayout mSwpListSong;
 
@@ -78,7 +78,19 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-
+                _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+                _sizeOfListSong = _listSong.size();
+                switch (_sizeOfListSong) {
+                    case 0:
+                        _txtSizeOfListSong.setText(STATE[0]);
+                        break;
+                    case 1:
+                        _txtSizeOfListSong.setText(STATE[2]);
+                        break;
+                    default:
+                        _txtSizeOfListSong.setText(String.valueOf(_sizeOfListSong) + STATE[2]);
+                        break;
+                }
             }
         });
     }
@@ -107,13 +119,25 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
                 _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
             }
         });*/
-        _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+        _listSong = SongModel.getFavoriteSongs(MainActivity.mDatabaseManager);
+        _sizeOfListSong = _listSong.size();
+        switch (_sizeOfListSong) {
+            case 0:
+                _txtSizeOfListSong.setText(STATE[0]);
+                break;
+            case 1:
+                _txtSizeOfListSong.setText(STATE[2]);
+                break;
+            default:
+                _txtSizeOfListSong.setText(String.valueOf(_sizeOfListSong) + STATE[2]);
+                break;
+        }
         //_listSong = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, "Drake");
 //        _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
 //        _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
 //        _listViewSong.setAdapter(_listSongAdapter);
 //        _txtSizeOfListSong.setText("123456789");
-        final ListView listView = (ListView)view.findViewById(R.id.trackList);
+        final ListView listView = (ListView) view.findViewById(R.id.fav_list);
 
         listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
         return view;
