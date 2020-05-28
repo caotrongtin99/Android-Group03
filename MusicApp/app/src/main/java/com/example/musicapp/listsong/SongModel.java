@@ -40,7 +40,7 @@ public class SongModel implements Serializable {
             .append(COLUMN_DURATION).append(" INTEGER,")
             .append(COLUMN_FOLDER).append(" TEXT ,")
             .append(COLUMN_PATH).append(" TEXT ,")
-            .append(COLUMN_ALBUM_ID).append(" INTEGER ")
+            .append(COLUMN_ALBUM_ID).append(" INTEGER, ")
             .append(COlUMN_IS_FAVORITE).append(" INTEGER ")
             .append(" )")
             .toString();
@@ -173,7 +173,7 @@ public class SongModel implements Serializable {
                 songModel.setSongId(songId);
                 songModel.setFolder(folder);
                 songModel.setAlbumId(albumId);
-                songModel.setFavorite(1);
+                songModel.setFavorite(0);
                 tempAudioList.add(songModel);
             }
 
@@ -229,6 +229,8 @@ public class SongModel implements Serializable {
             contentValues.put(SongModel.COLUMN_FOLDER, songModel.getFolder());
             contentValues.put(SongModel.COLUMN_PATH, songModel.getPath());
             contentValues.put(SongModel.COLUMN_ALBUM_ID, songModel.getSongId());
+            contentValues.put(SongModel.COlUMN_IS_FAVORITE, songModel.isFavorite());
+            ContentValues a = contentValues;
             long id = database.insert(SongModel.TABLE_NAME, null, contentValues);
 //            database.close();
             return id;
@@ -439,6 +441,7 @@ public class SongModel implements Serializable {
                 songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
                 songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
                 songModel.setAlbumId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ALBUM_ID)));
+                songModel.setFavorite(cursor.getInt(cursor.getColumnIndex(SongModel.COlUMN_IS_FAVORITE)));
                 Log.d(TAG, "getSongsWithThreshold: HOLD ALBUMID" + songModel.getAlbumId());
                 songModelList.add(songModel);
             } while (cursor.moveToNext());
@@ -452,19 +455,20 @@ public class SongModel implements Serializable {
         ArrayList<SongModel> songModelList = new ArrayList<>();
         SQLiteDatabase db = databaseManager.getReadableDatabase();
 
-        String[] tableColumns = new String[] {
-                SongModel.COLUMN_ID,
-                SongModel.COLUMN_SONG_ID,
-                SongModel.COLUMN_TITLE,
-                SongModel.COLUMN_ALBUM,
-                SongModel.COLUMN_ARTIST,
-                SongModel.COLUMN_FOLDER,
-                SongModel.COLUMN_DURATION,
-                SongModel.COLUMN_PATH,
-                SongModel.COLUMN_ALBUM_ID,
-                SongModel.COlUMN_IS_FAVORITE,
-        };
-        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " WHERE " + SongModel.COlUMN_IS_FAVORITE + " != 0 " +  " ORDER BY " + SongModel.COLUMN_TITLE + " ASC  ";
+//        String[] tableColumns = new String[] {
+//                SongModel.COLUMN_ID,
+//                SongModel.COLUMN_SONG_ID,
+//                SongModel.COLUMN_TITLE,
+//                SongModel.COLUMN_ALBUM,
+//                SongModel.COLUMN_ARTIST,
+//                SongModel.COLUMN_FOLDER,
+//                SongModel.COLUMN_DURATION,
+//                SongModel.COLUMN_PATH,
+//                SongModel.COLUMN_ALBUM_ID,
+//                SongModel.COlUMN_IS_FAVORITE,
+//        };
+
+        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " WHERE " + SongModel.COlUMN_IS_FAVORITE + "!=0" + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {

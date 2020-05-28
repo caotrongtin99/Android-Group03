@@ -78,14 +78,14 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+                _listSong = SongModel.getFavoriteSongs(MainActivity.mDatabaseManager);
                 _sizeOfListSong = _listSong.size();
                 switch (_sizeOfListSong) {
                     case 0:
                         _txtSizeOfListSong.setText(STATE[0]);
                         break;
                     case 1:
-                        _txtSizeOfListSong.setText(STATE[2]);
+                        _txtSizeOfListSong.setText(STATE[1]);
                         break;
                     default:
                         _txtSizeOfListSong.setText(String.valueOf(_sizeOfListSong) + STATE[2]);
@@ -126,7 +126,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
                 _txtSizeOfListSong.setText(STATE[0]);
                 break;
             case 1:
-                _txtSizeOfListSong.setText(STATE[2]);
+                _txtSizeOfListSong.setText(STATE[1]);
                 break;
             default:
                 _txtSizeOfListSong.setText(String.valueOf(_sizeOfListSong) + STATE[2]);
