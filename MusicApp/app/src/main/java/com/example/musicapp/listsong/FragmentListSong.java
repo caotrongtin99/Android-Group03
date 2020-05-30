@@ -105,6 +105,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
             }
         });*/
         _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+        //_listSong = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, "Drake");
 //        _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
 //        _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
 //        _listViewSong.setAdapter(_listSongAdapter);

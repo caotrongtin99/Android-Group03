@@ -51,7 +51,12 @@ public class ArtistAdapter extends BaseAdapter {
 
         Artist artists = this.listData.get(position);
         holder.txtArtistName.setText(artists.getName());
-        holder.txtTracks.setText(artists.getTracks() + " track(s)");
+        if(artists.getTracks() > 1){
+            holder.txtTracks.setText(artists.getTracks() + " track(s)");
+        }
+        else{
+            holder.txtTracks.setText(artists.getTracks() + " track");
+        }
 
         //int imageId = this.getMipmapResIdByName(artists.getFlagName());
 
