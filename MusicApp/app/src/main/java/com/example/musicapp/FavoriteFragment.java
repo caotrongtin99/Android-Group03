@@ -25,6 +25,9 @@ import com.example.musicapp.listsong.ListSongRecyclerAdaper;
 import com.example.musicapp.listsong.MultiClickAdapterListener;
 import com.example.musicapp.listsong.SongModel;
 import com.example.musicapp.play.PlayService;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -51,13 +54,43 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
     private MultiClickAdapterListener myAdapterListener;
     private static Thread mThreadInitListPlaying;
     static String searchValue = "";
+    @Subscribe
+    public void onEvent(SongModel songModel) {
+        final ListView listView = (ListView) getActivity().findViewById(R.id.fav_list);
+        String size;
+
+        if (songModel.isFavorite()==0){
+            _listSong.add(songModel);
+            size = Integer.toString(_listSong.size());
+
+        }
+        else {
+            _listSong.remove(songModel);
+            size = Integer.toString(_listSong.size());
+        }
+
+        _txtSizeOfListSong.setText(size + " bài hát được yêu thích");
+        listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             _context = getActivity();
-            _mainActivity = (MainActivity) getActivity();
+                _mainActivity = (MainActivity) getActivity();
         } catch (IllegalStateException e) {
 
         }
@@ -107,18 +140,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
         Log.i(TAG, "onCreateView: STARTED CREATE VIEW");
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         _txtSizeOfListSong = view.findViewById(R.id.txtSizeOfListSong);
-//        _listViewSong = view.findViewById(R.id.lsvSongs);
-//        mSwpListSong = view.findViewById(R.id.swpListSong);
-     /*   new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
-                _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
-                _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
-                _listViewSong.setAdapter(_listSongAdapter);
-                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
-            }
-        });*/
+
         _listSong = SongModel.getFavoriteSongs(MainActivity.mDatabaseManager);
         _sizeOfListSong = _listSong.size();
         switch (_sizeOfListSong) {
@@ -132,50 +154,11 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
                 _txtSizeOfListSong.setText(String.valueOf(_sizeOfListSong) + STATE[2]);
                 break;
         }
-        //_listSong = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, "Drake");
-//        _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
-//        _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
-//        _listViewSong.setAdapter(_listSongAdapter);
-//        _txtSizeOfListSong.setText("123456789");
+
         final ListView listView = (ListView) view.findViewById(R.id.fav_list);
 
         listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
         return view;
-//        _listViewSong.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                if (linearLayoutManager != null) {
-//                    Log.d(TAG, "onScrolled: " + dx + "_" + dy + "___" + linearLayoutManager.getItemCount() + "_" + linearLayoutManager.findLastVisibleItemPosition());
-//                }
-//
-//                if (!mIsLoading && linearLayoutManager != null && linearLayoutManager.getItemCount() - 1 == linearLayoutManager.findLastVisibleItemPosition()) {
-//                    //loadMore();
-//                    mIsLoading = true;
-//                }
-//
-//
-//            }
-//        });
-//        mSwpListSong.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                ArrayList<SongModel> tempSongs = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, mThreshHold);
-//                _listSong.clear();
-//                _listSongAdapter.notifyDataSetChanged();
-//                _listSong.addAll(tempSongs);
-//                _listSongAdapter.notifyDataSetChanged();
-//                mSwpListSong.setRefreshing(false);
-//            }
-//        });
-
 
     }
 
@@ -184,54 +167,6 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
         _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
     }
 
-    /*
-    private void loadMore() {
-//        _skeletonScreen = Skeleton.bind(_listViewSong).adapter(_listSongAdapter).load(R.layout.layout_item_song).show();
-//        _listSong.add(null);
-//        _listSongAdapter.notifyItemInserted(_listSong.size());
-//        Handler handler = new Handler();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, _listSong.size(), mThreshHold);
-//                _listSong.remove(_listSong.size() - 1);
-//                _listSongAdapter.notifyItemRemoved(_listSong.size());
-                _listSong.addAll(tempAudioList);
-                _listSongAdapter.notifyDataSetChanged();
-//                _listSongAdapter.notifyItemInserted(_listSong.size());
-//                _listSongAdapter.notifyDataSetChanged();
-                mIsLoading = false;
-            }
-        }, 1000);
-
-    }
-
-
-    private void playSong(SongModel songPlay) {
-        mPlayService.play(songPlay);
-
-        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
-            mThreadInitListPlaying.interrupt();
-        }
-
-        mThreadInitListPlaying = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mPlayService.initListPlaying(SongModel.getAllSongs(DatabaseManager.getInstance()));
-            }
-        });
-        mThreadInitListPlaying.start();
-        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
-    }
-
-    private void showBottomSheetOptionSong(SongModel song) {
-
-        BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
-        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
-    }
-
-    */
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
