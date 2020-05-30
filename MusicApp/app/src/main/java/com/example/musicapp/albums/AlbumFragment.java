@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.musicapp.MainActivity;
 
@@ -34,6 +35,7 @@ public class AlbumFragment extends Fragment {
     static boolean mIsLoading;
     static int take = 10;
     static String searchValue = "";
+    TextView albumSizeTxtView;
 
     @Nullable
     @Override
@@ -46,7 +48,8 @@ public class AlbumFragment extends Fragment {
 
         //get list artist from db
         arrAlbum = AlbumProvider.getAlbumModelPaging(context, searchValue, 0, 20);
-
+        albumSizeTxtView = (TextView) view.findViewById(R.id.albumSize);
+        
         //get RecyclerView Album by id
         RCalbum = (RecyclerView) view.findViewById(R.id.rvAlbumList);
 

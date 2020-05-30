@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new TabAdapter(getSupportFragmentManager(), this);
         adapter.addFragment(new FavoriteFragment(), "Favorites");
         adapter.addFragment(new FragmentListSong(), "Tracks");
-        adapter.addFragment(new AlbumFragment(), "Albums");
+        adapter.addFragment(new com.example.musicapp.albums.AlbumFragment(), "Albums");
         adapter.addFragment(new ArtistFragment(), "Artists");
-        adapter.addFragment(new AlbumFragment(), "Playlists");
+        adapter.addFragment(new com.example.musicapp.albums.AlbumFragment(), "Playlists");
         viewPager.setAdapter(adapter);
 
         mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
