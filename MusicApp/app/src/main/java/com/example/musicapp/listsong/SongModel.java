@@ -455,18 +455,6 @@ public class SongModel implements Serializable {
         ArrayList<SongModel> songModelList = new ArrayList<>();
         SQLiteDatabase db = databaseManager.getReadableDatabase();
 
-//        String[] tableColumns = new String[] {
-//                SongModel.COLUMN_ID,
-//                SongModel.COLUMN_SONG_ID,
-//                SongModel.COLUMN_TITLE,
-//                SongModel.COLUMN_ALBUM,
-//                SongModel.COLUMN_ARTIST,
-//                SongModel.COLUMN_FOLDER,
-//                SongModel.COLUMN_DURATION,
-//                SongModel.COLUMN_PATH,
-//                SongModel.COLUMN_ALBUM_ID,
-//                SongModel.COlUMN_IS_FAVORITE,
-//        };
 
         String query = "SELECT * FROM " + SongModel.TABLE_NAME + " WHERE " + SongModel.COlUMN_IS_FAVORITE + "!=0" + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC";
         Cursor cursor = db.rawQuery(query, null);

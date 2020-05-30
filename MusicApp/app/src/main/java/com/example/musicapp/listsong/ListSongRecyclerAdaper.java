@@ -61,13 +61,6 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
     private void showSongItem(HolderSongRecyclerView viewHolder, int position) {
         SongModel songModel = mListSong.get(position);
         viewHolder.bindContent(songModel);
-//        viewHolder.btnOptionSong.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "onClick: OPTION MENU CLICK " + v.getId());
-////                Toast.makeText(MainActivity.getMainActivity(),"CLICK OPTION MENU",Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void showLoading(LoadingViewHolder viewHolder, int position) {

@@ -92,62 +92,14 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         Log.i(TAG, "onCreateView: STARTED CREATE VIEW");
         View view = inflater.inflate(R.layout.fragment_list_song, container, false);
         _txtSizeOfListSong = view.findViewById(R.id.txtSizeOfListSong);
-//        _listViewSong = view.findViewById(R.id.lsvSongs);
-//        mSwpListSong = view.findViewById(R.id.swpListSong);
-     /*   new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
-                _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
-                _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
-                _listViewSong.setAdapter(_listSongAdapter);
-                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
-            }
-        });*/
+
         _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
-        //_listSong = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, "Drake");
-//        _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
-//        _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
-//        _listViewSong.setAdapter(_listSongAdapter);
-//        _txtSizeOfListSong.setText("123456789");
+
         final ListView listView = (ListView)view.findViewById(R.id.trackList);
 
         listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
         return view;
-//        _listViewSong.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                if (linearLayoutManager != null) {
-//                    Log.d(TAG, "onScrolled: " + dx + "_" + dy + "___" + linearLayoutManager.getItemCount() + "_" + linearLayoutManager.findLastVisibleItemPosition());
-//                }
-//
-//                if (!mIsLoading && linearLayoutManager != null && linearLayoutManager.getItemCount() - 1 == linearLayoutManager.findLastVisibleItemPosition()) {
-//                    //loadMore();
-//                    mIsLoading = true;
-//                }
-//
-//
-//            }
-//        });
-//        mSwpListSong.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                ArrayList<SongModel> tempSongs = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, mThreshHold);
-//                _listSong.clear();
-//                _listSongAdapter.notifyDataSetChanged();
-//                _listSong.addAll(tempSongs);
-//                _listSongAdapter.notifyDataSetChanged();
-//                mSwpListSong.setRefreshing(false);
-//            }
-//        });
+
 
 
     }
