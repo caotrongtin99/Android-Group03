@@ -1,5 +1,14 @@
 package com.example.musicapp.artists;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.ArrayAdapter;
+
+import com.example.musicapp.db.DatabaseManager;
+import com.example.musicapp.listsong.SongModel;
+
+import java.util.ArrayList;
+
 public class ArtistsSongModel {
     private int songID;
     private String songName;
@@ -43,5 +52,32 @@ public class ArtistsSongModel {
 
     public String getDuration(){
         return duration;
+    }
+
+    public static ArrayList<SongModel> getSongsByArtist(DatabaseManager databaseManager, String name){
+        ArrayList<SongModel> songs = new ArrayList<>();
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
+        String art = "'" + name + "'";
+        String query = "SELECT * FROM " + Artist.TABLE_NAME + " WHERE " + Artist.COLUMN_ARTIST + " = " + art;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                SongModel songModel = new SongModel();
+                songModel.setId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ID)));
+                songModel.setSongId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_SONG_ID)));
+                songModel.setTitle(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_TITLE)));
+                songModel.setAlbum(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ALBUM)));
+                songModel.setArtist(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ARTIST)));
+                songModel.setFolder(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_FOLDER)));
+                songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
+                songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
+                songModel.setAlbumId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ALBUM_ID)));
+                //Log.d(TAG, "getSongsWithThreshold: HOLD ALBUMID" + songModel.getAlbumId());
+                songs.add(songModel);
+            }
+            while(cursor.moveToNext());
+        }
+        return songs;
     }
 }
