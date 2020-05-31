@@ -65,7 +65,13 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
 
         }
         else {
-            _listSong.remove(songModel);
+            int index = 0;
+            for (int i =0 ; i < _listSong.size();i++){
+                if (_listSong.get(i).getId()==songModel.getId()){
+                    index = i;
+                }
+            }
+            _listSong.remove(index);
             size = Integer.toString(_listSong.size());
         }
 
@@ -175,6 +181,11 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
 
     @Override
     public void checkboxClick(View v, int position) {
+
+    }
+
+    @Override
+    public void iconOnClick(View v, int position) {
 
     }
 

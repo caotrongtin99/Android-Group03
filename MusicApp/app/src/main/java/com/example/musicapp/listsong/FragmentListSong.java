@@ -2,6 +2,8 @@ package com.example.musicapp.listsong;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +30,8 @@ import com.example.musicapp.play.PlayService;
 
 import com.example.musicapp.callbacks.FragmentCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 public class FragmentListSong extends Fragment implements FragmentCallback, MultiClickAdapterListener {
@@ -36,11 +41,11 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     private RecyclerView _listViewSong;
     private TextView _txtSizeOfListSong;
     private ListSongRecyclerAdaper _listSongAdapter;
-    //private SwipeRefreshLayout mSwpListSong;
+    private ListView listView;
+    private SwipeRefreshLayout mSwpListSong;
 
 
-    //    SkeletonScreen _skeletonScreen;
-    private static final String TAG = "FRAGMENT_LIST_SONG";
+
     public static final String SENDER = "FRAGMENT_LIST_SONG";
     private static final int mThreshHold = 10;
     private static boolean mIsLoading;
@@ -59,6 +64,11 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
 
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public static FragmentListSong newInstance() {
@@ -89,15 +99,23 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView: STARTED CREATE VIEW");
         View view = inflater.inflate(R.layout.fragment_list_song, container, false);
         _txtSizeOfListSong = view.findViewById(R.id.txtSizeOfListSong);
-
         _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+        _listViewSong = view.findViewById(R.id.lsvSongs);
+        mSwpListSong = view.findViewById(R.id.swpListSong);
 
-        final ListView listView = (ListView)view.findViewById(R.id.trackList);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                _listSong = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, 20);
+                _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
+                _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
+                _listViewSong.setAdapter(_listSongAdapter);
+                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
+            }
+        });
 
-        listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
         return view;
 
 
@@ -169,6 +187,29 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     }
 
     @Override
+    public void iconOnClick(View v, int position) {
+        final SongModel songChose = _listSong.get(position);
+        EventBus.getDefault().post(songChose);
+        ImageButton iconLike = v.findViewById(R.id.icon_like);
+        if(songChose.isFavorite()==0){
+
+            iconLike.setImageResource(R.drawable.ic_favorite_black_24dp);
+            _listSong.get(position).setFavorite(1);
+
+            String strSQL = "UPDATE songs SET is_fav = 1 WHERE song_id = "+ songChose.getSongId();
+            SQLiteDatabase db = MainActivity.mDatabaseManager.getReadableDatabase();
+            db.execSQL(strSQL);
+
+        }else {
+            iconLike.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            _listSong.get(position).setFavorite(0);
+            String strSQL = "UPDATE songs SET is_fav = 0 WHERE song_id = "+ songChose.getSongId();
+            SQLiteDatabase db = MainActivity.mDatabaseManager.getReadableDatabase();
+            db.execSQL(strSQL);
+        }
+    }
+
+    @Override
     public void layoutItemClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
         //playSong(songChose);
@@ -189,7 +230,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
             _listSong.remove(_listSong.size() - 1);
             final int positionStart = _listSong.size() + 1;
             _listSong.addAll(songModels);
-            Log.i(TAG, "onPostExecute: SONGS--> " + _listSong.size());
+
             _listViewSong.post(new Runnable() {
                 @Override
                 public void run() {
@@ -200,7 +241,8 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
                     _listSongAdapter.notifyItemInserted(positionStart);
                 }
             });
-            Log.i(TAG, "onPostExecute: FINISHED");
+
+
             mIsLoading = false;
         }
 
@@ -212,6 +254,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         @Override
         public ArrayList<SongModel> doInBackground(Void... voids) {
             _listSong.add(null);
+
             _listSongAdapter.notifyItemInserted(_listSong.size());
             ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, _listSong.size(), mThreshHold);
 
@@ -222,14 +265,16 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     }
 
     public void UpdateSearch(String s){
+
         if(s == searchValue) return;
         searchValue = s;
         mIsLoading = true;
         ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, mThreshHold);
         _listSong.clear();
-        _listSongAdapter.notifyDataSetChanged();
+        //_listSongAdapter.notifyDataSetChanged();
         _listSong.addAll(tempAudioList);
         _listSongAdapter.notifyDataSetChanged();
+       // _listSong = tempAudioList;
         mIsLoading = false;
     }
 }

@@ -79,15 +79,15 @@ public class ListSongAdapter extends BaseAdapter {
         if(songModel.getBitmap() !=null){
             imageView.setImageBitmap(songModel.getBitmap());
         }else{
-            imageView.setImageResource(getResourceIdFromName("musical_note_light_64"));
+            imageView.setImageResource(R.drawable.ic_queue_music_black_24dp);
         }
-
+/*
         if(songModel.isFavorite()==1){
             iconLike.setImageResource(R.drawable.ic_favorite_black_24dp);
         }else {
             iconLike.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
-
+*/
         iconLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

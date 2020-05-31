@@ -7,15 +7,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.musicapp.albums.AlbumFragment;
 import com.example.musicapp.artists.ArtistFragment;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
 import com.google.android.material.tabs.TabLayout;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private TabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private String mSearchValue = "";
     private static MainActivity mMainActivity;
-
+    private int mCurrentFragmentActive;
     public static MainActivity getMainActivity() {
         return mMainActivity;
     }
@@ -63,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 highLightCurrentTab(position);
+                mCurrentFragmentActive = position;
+                SearchByFragment(position);
             }
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -74,6 +79,29 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.head_menu, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search_main).getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mSearchValue = s;
+                SearchByFragment(mCurrentFragmentActive);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mSearchValue = s;
+                SearchByFragment(mCurrentFragmentActive);
+                return false;
+            }
+
+            String a = mSearchValue;
+            Integer b = 1;
+        });
+
         return true;
     }
 
@@ -92,5 +120,40 @@ public class MainActivity extends AppCompatActivity {
         tab.setCustomView(adapter.getSelectedTabView(position));
     }
 
-
+    public void SearchByFragment(int fragmentIndex) {
+        switch (fragmentIndex) {
+            case 0:
+                FavoriteFragment fragmentFavorites = (FavoriteFragment) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentFavorites != null) {
+                    fragmentFavorites.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 1:
+                FragmentListSong fragmentListSong = (FragmentListSong) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentListSong != null) {
+                    fragmentListSong.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 2:
+                AlbumFragment fragmentAlbums = (AlbumFragment) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentAlbums != null) {
+                    fragmentAlbums.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 3:
+                ArtistFragment fragmentArtist = (ArtistFragment) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentArtist != null) {
+                    //fragmentArtist.UpdateSearch(mSearchValue);
+                }
+                break;
+            case 4:
+                //fragmentFolder = (FragmentFolder) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
+                //if (fragmentFolder != null) {
+                //    fragmentFolder.UpdateSearch(mSearchValue);
+                //}
+                break;
+            default:
+                break;
+        }
+    }
 }
