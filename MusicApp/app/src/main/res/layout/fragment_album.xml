@@ -1,361 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.myapplication.MainActivity">
-
-
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="horizontal">
 
-        android:useDefaultMargins="true"
-        >
-
-
-        <GridLayout
-            android:id="@+id/mainGrid"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"
-            android:alignmentMode="alignBounds"
-            android:paddingLeft="30dp"
-            android:columnCount="2"
-            android:layout_gravity="center"
-            android:rowCount="2">
-
-            <!-- Row 1 -->
-
-            <!-- Column 1 -->
-
-
-            <LinearLayout
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="0dp"
-                android:orientation="vertical">
+                app:srcCompat="@drawable/ic_queue_music_black_24dp"
+                android:layout_marginRight="20dp"
+                />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/hello" />
+            <TextView
+                android:id="@+id/albumSize"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="1 Albums" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello - Adele"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right">
 
-            </LinearLayout>
-
-
-            <!-- Column 2 -->
-
-
-            <LinearLayout
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/moonlight" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Moonlight"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-
-            <!-- Row 2 -->
-
-            <!-- Column 1 -->
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/mosaic" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mosaic"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-
-            <!-- Column 2 -->
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/taylor" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Taylor Swift"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center_horizontal" />
-
-            </LinearLayout>
-
-
-            <!-- Row 2 -->
-
-            <!-- Column 1 -->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/friends" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Friends"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            &lt;!&ndash; Column 2 &ndash;&gt;-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center_horizontal|center_vertical"-->
-            <!--                android:layout_margin="16dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <ImageView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_gravity="center_horizontal"-->
-            <!--                    android:src="@mipmap/calendar" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Calendars"-->
-            <!--                    android:textAlignment="center"-->
-            <!--                    android:textColor="@android:color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    android:textStyle="bold" />-->
-
-            <!--            </LinearLayout>-->
-
-
-        </GridLayout>
+                app:srcCompat="@drawable/ic_play_circle_outline_black_24dp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swpListAlbum"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAlbumList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

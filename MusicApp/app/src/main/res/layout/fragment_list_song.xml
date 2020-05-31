@@ -15,18 +15,19 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_normal" />
 
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:id="@+id/swpListSong"-->
-<!--        android:layout_width="match_parent"-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swpListSong"
+        android:layout_width="match_parent"
 
-<!--        android:layout_height="match_parent">-->
+        android:layout_height="match_parent">
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/lsvSongs"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lsvSongs"
+            android:layout_width="match_parent"
+           android:layout_height="match_parent" />
 
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <!--
     <ListView
         android:id="@+id/trackList"
         android:paddingLeft="20dp"
@@ -34,5 +35,6 @@
         android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        -->
 
 </LinearLayout>
