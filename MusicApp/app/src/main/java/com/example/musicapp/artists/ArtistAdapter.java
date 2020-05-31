@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class ArtistAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item_artist, null);
             holder = new ViewHolder();
             //holder.flagView = (ImageView) convertView.findViewById(R.id.imageView_flag);
+            holder.imgArtist = (ImageView) convertView.findViewById(R.id.imgSong);
             holder.txtArtistName = (TextView) convertView.findViewById(R.id.txt_ArtistName);
             holder.txtTracks = (TextView) convertView.findViewById(R.id.txt_Tracks);
             convertView.setTag(holder);
@@ -52,7 +54,7 @@ public class ArtistAdapter extends BaseAdapter {
         Artist artists = this.listData.get(position);
         holder.txtArtistName.setText(artists.getName());
         if(artists.getTracks() > 1){
-            holder.txtTracks.setText(artists.getTracks() + " track(s)");
+            holder.txtTracks.setText(artists.getTracks() + " tracks");
         }
         else{
             holder.txtTracks.setText(artists.getTracks() + " track");
@@ -64,6 +66,7 @@ public class ArtistAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
+        ImageView imgArtist;
         TextView txtArtistName;
         TextView txtTracks;
     }
