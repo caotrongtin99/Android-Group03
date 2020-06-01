@@ -1,18 +1,25 @@
 package com.example.musicapp.artists;
 
+import com.example.musicapp.ImageCacheHelper;
 import com.example.musicapp.R;
+import com.example.musicapp.listsong.SongModel;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 
 public class ArtistAdapter extends BaseAdapter {
+    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
     private List<Artist> listData;
     private LayoutInflater layoutInflater;
     private Context context;
+    private int albumId = -1;
 
     public ArtistAdapter(Context context, List<Artist> artists){
         this.context = context;
@@ -42,6 +49,7 @@ public class ArtistAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item_artist, null);
             holder = new ViewHolder();
             //holder.flagView = (ImageView) convertView.findViewById(R.id.imageView_flag);
+            holder.imgArtist = (ImageView) convertView.findViewById(R.id.imgSong);
             holder.txtArtistName = (TextView) convertView.findViewById(R.id.txt_ArtistName);
             holder.txtTracks = (TextView) convertView.findViewById(R.id.txt_Tracks);
             convertView.setTag(holder);
@@ -51,14 +59,19 @@ public class ArtistAdapter extends BaseAdapter {
 
         Artist artists = this.listData.get(position);
         holder.txtArtistName.setText(artists.getName());
-        holder.txtTracks.setText(artists.getTracks() + " track(s)");
-
-        //int imageId = this.getMipmapResIdByName(artists.getFlagName());
+        if(artists.getTracks() > 1){
+            holder.txtTracks.setText(artists.getTracks() + " tracks");
+        }
+        else{
+            holder.txtTracks.setText(artists.getTracks() + " track");
+        }
+        holder.imgArtist.setImageResource(R.drawable.ic_music_note_black_24dp);
 
         return convertView;
     }
 
     static class ViewHolder{
+        ImageView imgArtist;
         TextView txtArtistName;
         TextView txtTracks;
     }
