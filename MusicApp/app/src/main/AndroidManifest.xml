@@ -28,6 +28,8 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
+        <activity android:name=".albums.AlbumSongsActivity">
+        </activity>
     </application>
 
 </manifest>

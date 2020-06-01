@@ -1,5 +1,6 @@
 package com.example.musicapp.listsong;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -242,8 +243,8 @@ public class SongModel implements Serializable {
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3} ",
-                new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
-        Cursor cursor = db.rawQuery(query, null);
+                (Object) new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             result = true;
         }
