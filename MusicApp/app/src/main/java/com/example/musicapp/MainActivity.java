@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FavoriteFragment(), "Favorites");
         adapter.addFragment(new FragmentListSong(), "Tracks");
         adapter.addFragment(new com.example.musicapp.albums.AlbumFragment(), "Albums");
-        adapter.addFragment(new ArtistFragment(), "Artists");
+        adapter.addFragment(new com.example.musicapp.artists.ArtistFragment(), "Artists");
         adapter.addFragment(new com.example.musicapp.albums.AlbumFragment(), "Playlists");
         viewPager.setAdapter(adapter);
 
