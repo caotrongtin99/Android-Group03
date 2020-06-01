@@ -2,6 +2,7 @@ package com.example.musicapp.artists;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.musicapp.ImageCacheHelper;
 import com.example.musicapp.R;
 import com.example.musicapp.listsong.SongModel;
 
@@ -17,7 +19,8 @@ import java.util.List;
 public class ArtistSongsAdapter extends BaseAdapter {
     private List<SongModel> listData;
     private Context context;
-
+    private int albumId = -1;
+    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
     public ArtistSongsAdapter(Context cont, List<SongModel> songs){
         context = cont;
         listData = songs;
@@ -70,11 +73,11 @@ public class ArtistSongsAdapter extends BaseAdapter {
 //        album.setText(songModel.getAlbum());
         artist.setText(songModel.getArtist());
         duration.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
-//        imageView.setImageBitmap(songModel.getBitmap());
-        if(songModel.getBitmap() !=null){
-            imageView.setImageBitmap(songModel.getBitmap());
-        }else{
-            imageView.setImageResource(getResourceIdFromName("musical_note_light_64"));
+        final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
+        if (bitmap != null && albumId == songModel.getAlbumId()) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            mImageCacheHelper.loadAlbumArt(imageView, songModel);
         }
 
         return convertView;

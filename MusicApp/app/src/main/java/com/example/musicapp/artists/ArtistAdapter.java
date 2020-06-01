@@ -1,7 +1,11 @@
 package com.example.musicapp.artists;
 
+import com.example.musicapp.ImageCacheHelper;
 import com.example.musicapp.R;
+import com.example.musicapp.listsong.SongModel;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +15,11 @@ import android.widget.TextView;
 import java.util.List;
 
 public class ArtistAdapter extends BaseAdapter {
+    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
     private List<Artist> listData;
     private LayoutInflater layoutInflater;
     private Context context;
+    private int albumId = -1;
 
     public ArtistAdapter(Context context, List<Artist> artists){
         this.context = context;
@@ -59,8 +65,7 @@ public class ArtistAdapter extends BaseAdapter {
         else{
             holder.txtTracks.setText(artists.getTracks() + " track");
         }
-
-        //int imageId = this.getMipmapResIdByName(artists.getFlagName());
+        holder.imgArtist.setImageResource(R.drawable.ic_music_note_black_24dp);
 
         return convertView;
     }
