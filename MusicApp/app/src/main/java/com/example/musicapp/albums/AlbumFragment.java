@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.musicapp.MainActivity;
 
@@ -49,7 +50,7 @@ public class AlbumFragment extends Fragment {
         //get list artist from db
         arrAlbum = AlbumProvider.getAlbumModelPaging(context, searchValue, 0, 20);
         albumSizeTxtView = (TextView) view.findViewById(R.id.albumSize);
-        
+
         //get RecyclerView Album by id
         RCalbum = (RecyclerView) view.findViewById(R.id.rvAlbumList);
 
@@ -62,10 +63,10 @@ public class AlbumFragment extends Fragment {
         RCalbum.addOnItemTouchListener(new RecyclerItemClickListener(context, RCalbum, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                Intent intent = new Intent(context, AlbumSongsActivity.class);
-//                AlbumModel albumModel = (AlbumModel) arrAlbum.get(position).getAlbumModel();
-//                intent.putExtra("infoAlbum", albumModel);
-//                startActivity(intent);
+                Intent intent = new Intent(context, AlbumSongsActivity.class);
+                AlbumModel albumModel = (AlbumModel) arrAlbum.get(position).getAlbumModel();
+                intent.putExtra("infoAlbum", albumModel);
+                startActivity(intent);
             }
 
             @Override

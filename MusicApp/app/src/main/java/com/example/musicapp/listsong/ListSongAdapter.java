@@ -3,6 +3,7 @@ package com.example.musicapp.listsong;
 import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.musicapp.ImageCacheHelper;
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
 import java.util.ArrayList;
 import org.greenrobot.eventbus.EventBus;
 public class ListSongAdapter extends BaseAdapter {
-
+    private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
     private ArrayList<SongModel> _listSong;
     private LayoutInflater layoutInflater;
     private Context _context;
     private MainActivity _mainActivity;
+    private int albumId = -1;
     public ListSongAdapter(Context context, ArrayList<SongModel> listSong) {
         this._context = context;
         this._listSong = listSong;
@@ -79,7 +82,14 @@ public class ListSongAdapter extends BaseAdapter {
         if(songModel.getBitmap() !=null){
             imageView.setImageBitmap(songModel.getBitmap());
         }else{
-            imageView.setImageResource(R.drawable.ic_queue_music_black_24dp);
+            imageView.setImageBitmap(songModel.getBitmap());
+        }
+
+        final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
+        if (bitmap != null && albumId == songModel.getAlbumId()) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            mImageCacheHelper.loadAlbumArt(imageView, songModel);
         }
 /*
         if(songModel.isFavorite()==1){

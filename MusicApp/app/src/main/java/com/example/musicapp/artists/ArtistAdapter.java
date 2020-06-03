@@ -5,7 +5,6 @@ import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
 import com.example.musicapp.albums.AlbumListAdapter;
 import com.example.musicapp.listsong.SongModel;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,7 +28,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
     private  ArtistClickListener artistClickListener;
-
 
     public ArtistAdapter(Context context, List<ArtistViewModel> artists, ArtistClickListener artistClickListener){
         this.context = context;
@@ -60,7 +58,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
     public int getItemCount() {
         return listData.size();
     }
-
 }
 
 class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

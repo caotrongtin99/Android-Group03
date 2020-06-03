@@ -1,5 +1,6 @@
 package com.example.musicapp.play;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -180,8 +181,8 @@ public class PlayModel {
         SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
         boolean result = false;
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3}",
-                new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
-        Cursor cursor = db.rawQuery(query, null);
+                (Object) new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             result = true;
         }
