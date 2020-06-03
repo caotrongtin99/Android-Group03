@@ -27,20 +27,18 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
     private List<ArtistViewModel> listData;
     private LayoutInflater layoutInflater;
     private Context context;
-    private  ArtistClickListener artistClickListener;
 
-    public ArtistAdapter(Context context, List<ArtistViewModel> artists, ArtistClickListener artistClickListener){
+    public ArtistAdapter(Context context, List<ArtistViewModel> artists){
         this.context = context;
         this.listData = artists;
         this.layoutInflater = LayoutInflater.from(context);
-        this.artistClickListener = artistClickListener;
     }
 
     @NonNull
     @Override
     public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_artist, parent, false);
-        ArtistViewHolder ar = new ArtistViewHolder(view, artistClickListener);
+        ArtistViewHolder ar = new ArtistViewHolder(view);
         return ar;
     }
 
@@ -60,12 +58,11 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
     }
 }
 
-class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+class ArtistViewHolder extends RecyclerView.ViewHolder{
     TextView TVartist;
     TextView TVcount;
     ImageView img;
     private ImageCacheHelper mImageCacheHelper;
-    private ArtistClickListener artistClickListener;
 
 //    public void setItemClickListener(ArtistClickListener itemClickListener)
 //    {
@@ -73,14 +70,12 @@ class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 //    }
 
 
-    public ArtistViewHolder(@NonNull View itemView, ArtistClickListener artistClickListener) {
+    public ArtistViewHolder(@NonNull View itemView) {
         super(itemView);
         mImageCacheHelper=new ImageCacheHelper(R.mipmap.album_128);
         TVartist = (TextView)itemView.findViewById(R.id.txt_ArtistName);
         TVcount = (TextView)itemView.findViewById(R.id.txt_Tracks);
         img = (ImageView)itemView.findViewById(R.id.imgArtist);
-        this.artistClickListener = artistClickListener;
-        itemView.setOnClickListener(this);
     }
 
     public void BindData(List<ArtistViewModel> list, int pos) {
@@ -107,10 +102,5 @@ class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         else {
             mImageCacheHelper.loadAlbumArt(img, song);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        artistClickListener.onClick(getAdapterPosition());
     }
 }

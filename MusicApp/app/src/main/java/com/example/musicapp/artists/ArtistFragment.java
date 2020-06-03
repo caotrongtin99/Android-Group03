@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArtistFragment extends Fragment implements ArtistClickListener {
+public class ArtistFragment extends Fragment{
     View view;
     ArrayList<ArtistViewModel> artists;
     RecyclerView RVartist;
@@ -39,6 +40,7 @@ public class ArtistFragment extends Fragment implements ArtistClickListener {
     static boolean mIsLoading;
     SwipeRefreshLayout SRL;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = (MainActivity) getActivity();
@@ -47,14 +49,17 @@ public class ArtistFragment extends Fragment implements ArtistClickListener {
         RVartist = (RecyclerView) view.findViewById(R.id.artistList);
         SRL = view.findViewById(R.id.swpArtist);
 
-        adapter = new ArtistAdapter(context, artists, this);
+        adapter = new ArtistAdapter(context, artists);
         RVartist.setLayoutManager(new LinearLayoutManager(context));
         RVartist.setAdapter(adapter);
 
         RVartist.addOnItemTouchListener(new RecyclerItemClickListener(context, RVartist, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                Intent intent = new Intent(context, ArtistSongsActivity.class);
+                String artist = artists.get(position).getName();
+                intent.putExtra("artist", artist);
+                startActivity(intent);
             }
 
             @Override
@@ -112,13 +117,5 @@ public class ArtistFragment extends Fragment implements ArtistClickListener {
                 mIsLoading = false;
             }
         });
-    }
-
-    @Override
-    public void onClick(int position) {
-        String artist = artists.get(position).getName();
-        Intent intent = new Intent(MainActivity.getMainActivity(), ArtistSongsActivity.class);
-        intent.putExtra("artist", artist);
-        startActivity(intent);
     }
 }
