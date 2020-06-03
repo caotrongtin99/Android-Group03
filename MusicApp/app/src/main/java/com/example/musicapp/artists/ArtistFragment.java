@@ -24,6 +24,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
+import com.example.musicapp.albums.AlbumProvider;
+import com.example.musicapp.albums.AlbumViewModel;
 import com.example.musicapp.listsong.RecyclerItemClickListener;
 
 import java.lang.reflect.Array;
@@ -39,6 +41,7 @@ public class ArtistFragment extends Fragment{
     ArtistAdapter adapter;
     static boolean mIsLoading;
     SwipeRefreshLayout SRL;
+    static String searchValue = "";
 
     @Nullable
     @Override
@@ -117,5 +120,16 @@ public class ArtistFragment extends Fragment{
                 mIsLoading = false;
             }
         });
+    }
+
+    public void UpdateSearch(String s) {
+        if (s == searchValue) return;
+        searchValue = s;
+        mIsLoading = true;
+        ArrayList<ArtistViewModel> temp = ArtistProvider.getArtistModelPaging(context, searchValue, 0, 20);
+        artists.clear();
+        artists.addAll(temp);
+        adapter.notifyDataSetChanged();
+        mIsLoading = false;
     }
 }
