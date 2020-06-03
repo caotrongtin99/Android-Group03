@@ -176,7 +176,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        //showBottomSheetOptionSong(songChose);
+        showBottomSheetOptionSong(songChose);
     }
 
     @Override
@@ -199,7 +199,12 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        //showBottomSheetOptionSong(songChose);
+        showBottomSheetOptionSong(songChose);
+    }
+
+    private void showBottomSheetOptionSong(SongModel songChose) {
+        BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(songChose);
+        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {

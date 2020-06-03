@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.musicapp.BottomSheetOptionSong;
+import com.example.musicapp.BottomSheetShowSongInfo;
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
 import com.example.musicapp.db.DatabaseManager;
@@ -167,18 +169,18 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         mThreadInitListPlaying.start();
         _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
     }
-
+    */
     private void showBottomSheetOptionSong(SongModel song) {
 
         BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
         bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
-    */
+
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        //showBottomSheetOptionSong(songChose);
+        showBottomSheetOptionSong(songChose);
     }
 
     @Override
@@ -219,7 +221,12 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        //showBottomSheetOptionSong(songChose);
+        showDetailSong(songChose);
+    }
+
+    public void showDetailSong(SongModel songChose) {
+        BottomSheetShowSongInfo bottomSheetDialogFragment = new BottomSheetShowSongInfo(songChose);
+        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {
