@@ -42,13 +42,14 @@ public class ArtistFragment extends Fragment{
     static boolean mIsLoading;
     SwipeRefreshLayout SRL;
     static String searchValue = "";
+    int take = 10;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = (MainActivity) getActivity();
         view =  inflater.inflate(R.layout.fragment_artists, container, false);
-        artists = ArtistProvider.getArtists(MainActivity.mDatabaseManager);
+        artists = ArtistProvider.getArtistModelPaging(context, searchValue, 0, 20);
         RVartist = (RecyclerView) view.findViewById(R.id.artistList);
         SRL = view.findViewById(R.id.swpArtist);
 
@@ -99,13 +100,19 @@ public class ArtistFragment extends Fragment{
 //                startActivity(intent);
 //            }
 //        });
+        SRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshListArtist();
+            }
+        });
         return view;
     }
 
     private void refreshListArtist(){
         artists.clear();
         adapter.notifyDataSetChanged();
-        artists.addAll(ArtistProvider.getArtists(MainActivity.mDatabaseManager));
+        artists.addAll(ArtistProvider.getArtistModelPaging(context, searchValue, 0, 20));
         adapter.notifyDataSetChanged();
         SRL.setRefreshing(false);
     }
@@ -114,7 +121,7 @@ public class ArtistFragment extends Fragment{
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                ArrayList<ArtistViewModel> tmp = ArtistProvider.getArtists(MainActivity.mDatabaseManager);
+                ArrayList<ArtistViewModel> tmp = ArtistProvider.getArtistModelPaging(context, searchValue, artists.size(), take);
                 artists.addAll(tmp);
                 adapter.notifyDataSetChanged();
                 mIsLoading = false;
