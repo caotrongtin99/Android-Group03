@@ -75,7 +75,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
             size = Integer.toString(_listSong.size());
         }
 
-        _txtSizeOfListSong.setText(size + " bài hát được yêu thích");
+        _txtSizeOfListSong.setText(size + " favorite songs");
         listView.setAdapter(new ListSongAdapter(this.getContext(), _listSong));
     }
 
@@ -243,8 +243,6 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
 
             return tempAudioList;
         }
-
-
     }
 
     public void UpdateSearch(String s){
@@ -253,9 +251,9 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
         mIsLoading = true;
         ArrayList<SongModel> tempAudioList = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, mThreshHold);
         _listSong.clear();
-        _listSongAdapter.notifyDataSetChanged();
-        _listSong.addAll(tempAudioList);
-        _listSongAdapter.notifyDataSetChanged();
+        //_listSongAdapter.notifyDataSetChanged();
+        //_listSong.addAll(tempAudioList);
+        //_listSongAdapter.notifyDataSetChanged();
         mIsLoading = false;
     }
 

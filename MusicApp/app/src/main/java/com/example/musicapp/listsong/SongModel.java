@@ -152,7 +152,7 @@ public class SongModel implements Serializable {
         if (c != null) {
             int count = 0;
 
-            while (c.moveToNext()) {// && count++<debugLoop
+            while (c.moveToNext()) {
                 count++;
 //                Log.d(TAG, "getAllAudioFromDevice: " + count);
                 SongModel songModel = new SongModel();
@@ -249,7 +249,10 @@ public class SongModel implements Serializable {
         boolean result = false;
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3} ",
                 (Object) new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
+        String strSQL = "SELECT "+ SongModel.COLUMN_TITLE+ " FROM "+ SongModel.TABLE_NAME + " WHERE "+SongModel.COLUMN_SONG_ID+" = "+ song.getSongId();
+        //SQLiteDatabase db = MainActivity.mDatabaseManager.getReadableDatabase();
+
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(strSQL,null);;
         if (cursor.moveToFirst()) {
             result = true;
         }

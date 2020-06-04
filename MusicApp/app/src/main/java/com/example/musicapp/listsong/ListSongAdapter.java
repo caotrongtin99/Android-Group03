@@ -105,7 +105,7 @@ public class ListSongAdapter extends BaseAdapter {
                 if(songModel.isFavorite()==0){
                     iconLike.setImageResource(R.drawable.ic_favorite_black_24dp);
                     _listSong.get(position).setFavorite(1);
-
+                    Toast.makeText(_context, "You liked " + songModel.getTitle(), Toast.LENGTH_SHORT).show();
                     String strSQL = "UPDATE songs SET is_fav = 1 WHERE song_id = "+ songModel.getSongId();
                     SQLiteDatabase db = MainActivity.mDatabaseManager.getReadableDatabase();
                     db.execSQL(strSQL);

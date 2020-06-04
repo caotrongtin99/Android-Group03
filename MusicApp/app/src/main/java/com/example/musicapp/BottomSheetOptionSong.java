@@ -80,6 +80,40 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                 BottomSheetShowSongInfo bottomSheetDialogFragment = new BottomSheetShowSongInfo(mCurrentSong);
                 bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
                 break;
+            case R.id.btnMakeRingTone:
+                //check permission write ringtone
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    boolean canWrite = Settings.System.canWrite(getActivity().getApplicationContext());
+                    if (!canWrite){
+                        Toast.makeText(getActivity(), "Xin cấp quyền ghi hệ thống để thực hiện thao tác này", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.fromParts("package", getActivity().getPackageName(), null));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+                try {
+                    Uri uri = MediaStore.Audio.Media.getContentUriForPath(mCurrentSong.getPath());
+                    getContext().getContentResolver().delete(uri, MediaStore.MediaColumns.DATA + "=\"" + mCurrentSong.getPath() + "\"", null);
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.MediaColumns.DATA, mCurrentSong.getPath());
+                    values.put(MediaStore.MediaColumns.TITLE, mCurrentSong.getTitle());
+                    values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/*");
+                    values.put(MediaStore.Audio.Media.ARTIST, mCurrentSong.getArtist());
+                    values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
+                    values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
+                    values.put(MediaStore.Audio.Media.IS_ALARM, false);
+                    values.put(MediaStore.Audio.Media.IS_MUSIC, false);
+                    Uri newUri = getContext().getContentResolver().insert(uri, values);
+                    RingtoneManager.setActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_RINGTONE, newUri);
+                    Toast.makeText(getContext(),"Đặt làm nhạc chuông thành công!",Toast.LENGTH_LONG).show();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    Log.e(TAG, "onClick: "+ex.getMessage());
+                    Toast.makeText(getContext(),"Đặt làm nhạc chuông thất bại!",Toast.LENGTH_LONG).show();
+                }
+
+
+                break;
         }
     }
 }

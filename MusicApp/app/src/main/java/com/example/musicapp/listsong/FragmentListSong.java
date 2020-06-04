@@ -87,7 +87,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
+                _txtSizeOfListSong.setText("Found " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " tracks");
             }
         });
     }
