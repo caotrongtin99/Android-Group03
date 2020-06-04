@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTranparent"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/layoutDeleteSong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="@dimen/margin_size_snormal"
+        android:orientation="horizontal"
+
+        android:paddingVertical="@dimen/margin_size_small"
+        >
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/selectedAllSongPlaying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/margin_size_snormal"
+
+            android:checked="false"
+            android:gravity="center"
+            android:padding="@dimen/margin_size_small"
+            android:text="Chọn tất cả"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorTitleWhitePrimary"
+            android:textSize="@dimen/text_size_normal"
+
+            tools:ignore="RtlCompat" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lsvPlaying"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutDeleteSong"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <Button
+        android:id="@+id/btnDeleteAllSongPlaying"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorBlackGlassDark"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:padding="@dimen/margin_size_snormal"
+        android:text="Xóa"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTitleWhitePrimary"
+        android:textSize="@dimen/text_size_large"
+        android:visibility="gone" />
+</RelativeLayout>

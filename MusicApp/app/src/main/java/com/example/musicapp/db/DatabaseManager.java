@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.musicapp.listsong.SongModel;
 
-
 public class DatabaseManager extends SQLiteOpenHelper {
 
     private static DatabaseManager mDatabaseInstance = null;
