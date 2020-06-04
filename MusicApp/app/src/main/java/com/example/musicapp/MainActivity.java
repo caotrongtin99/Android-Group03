@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             case 3:
                 ArtistFragment fragmentArtist = (ArtistFragment) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
                 if (fragmentArtist != null) {
-                    //fragmentArtist.UpdateSearch(mSearchValue);
+                    fragmentArtist.UpdateSearch(mSearchValue);
                 }
                 break;
             case 4:

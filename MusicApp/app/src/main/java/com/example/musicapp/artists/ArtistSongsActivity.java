@@ -1,9 +1,12 @@
 package com.example.musicapp.artists;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,8 +19,7 @@ import java.util.List;
 
 public class ArtistSongsActivity extends AppCompatActivity {
     private String artistName;
-    private ArrayList<SongModel> songs;
-    private String songsSize;
+    private RecyclerView RVartist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +30,22 @@ public class ArtistSongsActivity extends AppCompatActivity {
         TextView txt = findViewById(R.id.artistSongNameArtist);
         txt.setText(artistName);
 
-        songs = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, artistName);
+        final ArrayList<SongModel> songs = SongModel.getSongsByArtist(MainActivity.mDatabaseManager, artistName);
+        ArtistSongsAdapter ASA = new ArtistSongsAdapter(this, songs);
+        RVartist = findViewById(R.id.trackList);
+        RVartist.setLayoutManager(new LinearLayoutManager(this));
+        RVartist.setHasFixedSize(true);
+        RVartist.setAdapter(ASA);
 
         TextView txt_size = findViewById(R.id.sizeOfSongs);
         if(songs.size() > 1){
-            txt_size.setText(songs.size() + "tracks");
+            txt_size.setText(songs.size() + " tracks");
         }
         else{
-            txt_size.setText(songs.size() + "track");
+            txt_size.setText(songs.size() + " track");
         }
 
-        final ListView listSong = (ListView) findViewById(R.id.trackList);
-        listSong.setAdapter(new ArtistSongsAdapter(this, songs));
+//        final ListView listSong = (ListView) findViewById(R.id.trackList);
+//        listSong.setAdapter(new ArtistSongsAdapter(this, songs));
     }
 }
