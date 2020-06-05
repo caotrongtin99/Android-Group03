@@ -71,6 +71,7 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
                     ? albumViewModel.getTitle().substring(0,35) + "..."
                     : albumViewModel.getTitle();
 
+
             TVAlbumName.setText(title);
             TVAlbumCount.setText(albumViewModel.getNumberOfSongs() + " Bài hát");
             TVAlbumArtist.setText(albumViewModel.getArtist());
