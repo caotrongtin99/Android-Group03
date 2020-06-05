@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".playlist.PlaylistSongActivity"></activity>
         <activity android:name=".artists.ArtistSongsActivity"></activity>
         <activity android:name=".SplashActivity">
             <intent-filter>

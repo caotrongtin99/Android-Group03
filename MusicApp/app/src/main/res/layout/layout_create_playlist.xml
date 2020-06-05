@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin_size_normal"
+    android:paddingVertical="@dimen/margin_size_snormal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/text_size_normal"
+        android:text="Enter name of new playlist"
+        android:textSize="@dimen/text_size_large" />
+
+    <EditText
+        android:id="@+id/txtTilePlaylistCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTint="@color/colorPrimary"
+        android:foregroundTint="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancelCreatePlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size_small"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/margin_size_small"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/btnSubmitCreatePlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size_small"
+            android:background="@color/colorTranparent"
+            android:padding="@dimen/margin_size_small"
+            android:text="OK" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
