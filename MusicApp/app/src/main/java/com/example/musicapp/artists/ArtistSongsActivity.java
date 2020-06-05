@@ -44,8 +44,5 @@ public class ArtistSongsActivity extends AppCompatActivity {
         else{
             txt_size.setText(songs.size() + " track");
         }
-
-//        final ListView listSong = (ListView) findViewById(R.id.trackList);
-//        listSong.setAdapter(new ArtistSongsAdapter(this, songs));
     }
 }
