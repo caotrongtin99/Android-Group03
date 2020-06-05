@@ -1,5 +1,6 @@
 package com.example.musicapp.listsong;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -151,7 +152,7 @@ public class SongModel implements Serializable {
         if (c != null) {
             int count = 0;
 
-            while (c.moveToNext()) {// && count++<debugLoop
+            while (c.moveToNext()) {
                 count++;
 //                Log.d(TAG, "getAllAudioFromDevice: " + count);
                 SongModel songModel = new SongModel();
@@ -247,8 +248,11 @@ public class SongModel implements Serializable {
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3} ",
-                new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
-        Cursor cursor = db.rawQuery(query, null);
+                (Object) new String[]{SongModel.COLUMN_ID, SongModel.TABLE_NAME, SongModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+        String strSQL = "SELECT "+ SongModel.COLUMN_TITLE+ " FROM "+ SongModel.TABLE_NAME + " WHERE "+SongModel.COLUMN_SONG_ID+" = "+ song.getSongId();
+        //SQLiteDatabase db = MainActivity.mDatabaseManager.getReadableDatabase();
+
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(strSQL,null);;
         if (cursor.moveToFirst()) {
             result = true;
         }
@@ -378,6 +382,12 @@ public class SongModel implements Serializable {
         return songModelList;
     }
 
+    public SongModel findById(int id){
+        if (this.getId()==id){
+            return this;
+        }
+        return null;
+    }
     public static ArrayList<SongModel> getSongsByArtist(DatabaseManager databaseManager, String name){
         ArrayList<SongModel> songModelList = new ArrayList<>();
         SQLiteDatabase db = databaseManager.getReadableDatabase();
@@ -421,13 +431,12 @@ public class SongModel implements Serializable {
                 SongModel.COLUMN_DURATION,
                 SongModel.COLUMN_PATH,
                 SongModel.COLUMN_ALBUM_ID,
+                SongModel.COlUMN_IS_FAVORITE
         };
         String whereClause =  "? = '' OR " + SongModel.COLUMN_TITLE +" LIKE ?";
         String[] whereArgs = new String[]{value ,"%" + value + "%"};
-        //String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_TITLE,skip,count);
-        String query = "SELECT * FROM " + SongModel.TABLE_NAME + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC  ";
-        //Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
-        Cursor cursor = db.rawQuery(query, null);
+        String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_TITLE,skip,count);
+        Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -455,18 +464,6 @@ public class SongModel implements Serializable {
         ArrayList<SongModel> songModelList = new ArrayList<>();
         SQLiteDatabase db = databaseManager.getReadableDatabase();
 
-//        String[] tableColumns = new String[] {
-//                SongModel.COLUMN_ID,
-//                SongModel.COLUMN_SONG_ID,
-//                SongModel.COLUMN_TITLE,
-//                SongModel.COLUMN_ALBUM,
-//                SongModel.COLUMN_ARTIST,
-//                SongModel.COLUMN_FOLDER,
-//                SongModel.COLUMN_DURATION,
-//                SongModel.COLUMN_PATH,
-//                SongModel.COLUMN_ALBUM_ID,
-//                SongModel.COlUMN_IS_FAVORITE,
-//        };
 
         String query = "SELECT * FROM " + SongModel.TABLE_NAME + " WHERE " + SongModel.COlUMN_IS_FAVORITE + "!=0" + " ORDER BY " + SongModel.COLUMN_TITLE + " ASC";
         Cursor cursor = db.rawQuery(query, null);

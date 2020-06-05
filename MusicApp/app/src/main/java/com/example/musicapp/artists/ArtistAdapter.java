@@ -1,33 +1,50 @@
 package com.example.musicapp.artists;
 
+import com.example.musicapp.ImageCacheHelper;
+import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
+import com.example.musicapp.albums.AlbumListAdapter;
+import com.example.musicapp.listsong.SongModel;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
-public class ArtistAdapter extends BaseAdapter {
-    private List<Artist> listData;
+public class ArtistAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
+    private List<ArtistViewModel> listData;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public ArtistAdapter(Context context, List<Artist> artists){
+    public ArtistAdapter(Context context, List<ArtistViewModel> artists){
         this.context = context;
         this.listData = artists;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return listData.size();
+    public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_artist, parent, false);
+        ArtistViewHolder ar = new ArtistViewHolder(view);
+        return ar;
     }
 
     @Override
-    public Object getItem(int position) {
-        return listData.get(position);
+    public void onBindViewHolder(@NonNull ArtistViewHolder holder, int position) {
+        holder.BindData(listData, position);
     }
 
     @Override
@@ -36,35 +53,54 @@ public class ArtistAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_artist, null);
-            holder = new ViewHolder();
-            //holder.flagView = (ImageView) convertView.findViewById(R.id.imageView_flag);
-            holder.txtArtistName = (TextView) convertView.findViewById(R.id.txt_ArtistName);
-            holder.txtTracks = (TextView) convertView.findViewById(R.id.txt_Tracks);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    public int getItemCount() {
+        return listData.size();
+    }
+}
 
-        Artist artists = this.listData.get(position);
-        holder.txtArtistName.setText(artists.getName());
-        if(artists.getTracks() > 1){
-            holder.txtTracks.setText(artists.getTracks() + " track(s)");
-        }
-        else{
-            holder.txtTracks.setText(artists.getTracks() + " track");
-        }
+class ArtistViewHolder extends RecyclerView.ViewHolder{
+    TextView TVartist;
+    TextView TVcount;
+    ImageView img;
+    private ImageCacheHelper mImageCacheHelper;
 
-        //int imageId = this.getMipmapResIdByName(artists.getFlagName());
+//    public void setItemClickListener(ArtistClickListener itemClickListener)
+//    {
+//        this.artistClickListener = itemClickListener;
+//    }
 
-        return convertView;
+
+    public ArtistViewHolder(@NonNull View itemView) {
+        super(itemView);
+        mImageCacheHelper=new ImageCacheHelper(R.mipmap.album_128);
+        TVartist = (TextView)itemView.findViewById(R.id.txt_ArtistName);
+        TVcount = (TextView)itemView.findViewById(R.id.txt_Tracks);
+        img = (ImageView)itemView.findViewById(R.id.imgArtist);
     }
 
-    static class ViewHolder{
-        TextView txtArtistName;
-        TextView txtTracks;
+    public void BindData(List<ArtistViewModel> list, int pos) {
+        ArtistViewModel artist = list.get(pos);
+        String artistName = artist.getName().length() > 35
+                ? artist.getName().substring(0,35) + "..."
+                : artist.getName();
+
+        String count = artist.getTracks() > 1
+                ?artist.getTracks() + " tracks"
+                :artist.getTracks() + " track";
+
+        TVartist.setText(artistName);
+        TVcount.setText(count);
+
+        SongModel song = new SongModel();
+        song.setAlbumId(artist.getAlbumID());
+        song.setPath(artist.getPath());
+
+        final Bitmap bitmap = mImageCacheHelper.getBitmapCache(song.getAlbumId());
+        if(bitmap != null) {
+            img.setImageBitmap(bitmap);
+        }
+        else {
+            mImageCacheHelper.loadAlbumArt(img, song);
+        }
     }
 }

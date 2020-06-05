@@ -57,4 +57,31 @@ public class TabAdapter extends FragmentStatePagerAdapter {
 
         return view;
     }
+    public Fragment getFragmentAtIndex(int index) {
+        Fragment fragment = null;
+        switch (index) {
+            case 0:
+                fragment = getItem(0);
+                break;
+            case 1:
+
+                fragment = getItem(1);
+                break;
+            case 2:
+                fragment = getItem(2);
+                break;
+            case 3:
+
+                fragment = getItem(3);
+                break;
+            case 4:
+                fragment = getItem(4);
+
+                break;
+
+            default:
+                break;
+        }
+        return fragment;
+    }
 }

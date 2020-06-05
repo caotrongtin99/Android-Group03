@@ -1,5 +1,6 @@
 package com.example.musicapp.play;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -79,6 +80,25 @@ public class PlayModel {
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public static boolean isSongExist(SongModel song) {
+        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
+        boolean result = false;
+        String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3}",
+                (Object) new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            result = true;
+        }
+//        cursor.close();
+        return result;
+    }
+
+    public static boolean clearPlayingList() {
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
+        return db.delete(PlayModel.TABLE_NAME, null, null) > 0;
+
     }
 
     public static boolean updateStatusPlaying(int oldSongId, int newSongId) {

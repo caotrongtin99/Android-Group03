@@ -73,7 +73,7 @@
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/txtTitle"
+                            android:id="@+id/txtSongTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|left"
@@ -98,17 +98,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="@dimen/margin_size_small">
-                    <ImageButton
-                        android:id="@+id/icon_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorTranparent"
-                        />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_gravity="center"
