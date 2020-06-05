@@ -1,10 +1,15 @@
 package com.example.musicapp;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -16,8 +21,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.musicapp.db.DatabaseManager;
+import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.io.File;
 
 public class BottomSheetOptionSong extends BottomSheetDialogFragment implements View.OnClickListener{
     private MainActivity _mainActivity;
@@ -31,9 +40,11 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
     private TableRow mTbrShowSongDetail;
     private ImageView mImgSong;
     private ImageHelper mImageHelper;
+    private FragmentListSong fragmentListSong;
     private static final String TAG = "BottomSheetOptionSong";
     @SuppressLint("ValidFragment")
     public BottomSheetOptionSong(SongModel songOption) {
+        //fragmentListSong = new FragmentListSong();
         mCurrentSong = songOption;
         _mainActivity = (MainActivity) getActivity();
     }
@@ -51,7 +62,8 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrAddPlaylist = contentView.findViewById(R.id.btnAddSongToPlaylist);
         mTbrMakeRingTone = contentView.findViewById(R.id.btnMakeRingTone);
         mImgSong = contentView.findViewById(R.id.imgSong);
-        mTbrDeleteSong= contentView.findViewById(R.id.mTbrDeleteSong);
+        mTbrDeleteSong = contentView.findViewById(R.id.mTbrDeleteSong);
+
         mTbrShowSongDetail = contentView.findViewById(R.id.mTbrShowSongDetail);
 
 
@@ -60,6 +72,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrAddPlaylist.setOnClickListener(this);
         mTbrMakeRingTone.setOnClickListener(this);
         mTbrShowSongDetail.setOnClickListener(this);
+        mTbrDeleteSong.setOnClickListener(this);
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -72,9 +85,24 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
 
         dialog.setContentView(contentView);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mTbrDeleteSong:
+                String query2 = "SELECT * FROM songs WHERE title = '" + mCurrentSong.getTitle() +"'";
+
+                DatabaseManager dbManager = DatabaseManager.newInstance(getContext());
+                SQLiteDatabase db = dbManager.getReadableDatabase();
+                db.delete("songs", "title = '" + mCurrentSong.getTitle() + "'", null);
+                Cursor c2 = db.rawQuery(query2, null);
+
+                if(!c2.moveToFirst()){
+                    Log.e("ABC: ", mCurrentSong.getTitle() + " DELETED");
+                }
+                FragmentListSong.refresh();
+                //fragmentListSong.deleteSong(mCurrentSong);
+                break;
             case R.id.mTbrShowSongDetail:
                 _mainActivity = (MainActivity) getActivity();
                 BottomSheetShowSongInfo bottomSheetDialogFragment = new BottomSheetShowSongInfo(mCurrentSong);
@@ -111,8 +139,6 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                     Log.e(TAG, "onClick: "+ex.getMessage());
                     Toast.makeText(getContext(),"Đặt làm nhạc chuông thất bại!",Toast.LENGTH_LONG).show();
                 }
-
-
                 break;
         }
     }

@@ -89,17 +89,6 @@ public class ArtistFragment extends Fragment{
             }
         });
 
-//        listView.setAdapter(new ArtistAdapter(this.getContext(), artists));
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv = (TextView) view.findViewById(R.id.txt_ArtistName);
-//                String artist = tv.getText().toString();
-//                Intent intent = new Intent(MainActivity.getMainActivity(), ArtistSongsActivity.class);
-//                intent.putExtra("artist", artist);
-//                startActivity(intent);
-//            }
-//        });
         SRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
