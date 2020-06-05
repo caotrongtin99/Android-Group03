@@ -2,8 +2,12 @@ package com.example.musicapp.play;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +30,6 @@ import com.example.musicapp.listsong.SongModel;
 import java.util.ArrayList;
 
 public class FragmentPlayingList extends Fragment implements FragmentPlayInterface, MultiClickAdapterListener {
-
     private PlayActivity playActivity;
     private Context context;
     private LayoutInflater inflater;
@@ -35,9 +39,6 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     private PlayingListAdapter playingListAdapter;
     private LoadListPlaying loadListPlaying;
     private TextView sizePlayingList;
-    private LinearLayout layoutDeleteSong;
-    private Button btnDeleteAllSongPlaying;
-    private AppCompatCheckBox selectedAllPlayingSong;
     private static SongModel playingSong = null;
 
     public static final String SENDER = "FRAGMENT_PLAYING_LIST";
@@ -80,6 +81,12 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updatePlayingList();
+    }
+
+    @Override
     public void optionMenuClick(View v, int position) {
 
     }
@@ -101,7 +108,7 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
 
     @Override
     public void updatePlayingList() {
-
+        new LoadListPlaying().execute();
     }
 
     @Override
@@ -115,7 +122,7 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     }
 
     @Override
-    public void updateProgressBar(int currentDuration) {
+    public void updateSeekBar(int currentDuration) {
 
     }
 
@@ -133,24 +140,23 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
             if (songModels == null) {
                 return;
             }
-            mListSong.clear();
-            mListSong.addAll(songModels);
+            listSong.clear();
+            listSong.addAll(songModels);
 
-            mListIdSelectedSong.clear();
-            mListSelectedSong.clear();
+            listIdSelectedSong.clear();
+            listSelectedSong.clear();
             for (int i = 0 ; i < songModels.size() ; i++){
                 if(songModels.get(i).isChecked()){
-                    mListIdSelectedSong.add(songModels.get(i).getSongId());
-                    mListSelectedSong.add(i);
+                    listIdSelectedSong.add(songModels.get(i).getSongId());
+                    listSelectedSong.add(i);
                 }
             }
-            updateViewSelectAll();
 
-            Log.i(TAG, "onPostExecute: SONGS--> " + mListSong.size());
-            mListViewSong.post(new Runnable() {
+            Log.i(TAG, "onPostExecute: SONGS--> " + listSong.size());
+            listViewSong.post(new Runnable() {
                 @Override
                 public void run() {
-                    mListSongAdapter.notifyDataSetChanged();
+                    playingListAdapter.notifyDataSetChanged();
                 }
             });
             Log.i(TAG, "onPostExecute: FINISHED");
@@ -164,7 +170,7 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
         @Override
         public ArrayList<SongModel> doInBackground(Void... voids) {
 
-            return PlayService.getListPlaying();
+            return PlayService.getPlayingList();
         }
     }
 }

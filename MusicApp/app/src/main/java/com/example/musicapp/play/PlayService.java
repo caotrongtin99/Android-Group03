@@ -94,7 +94,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
                     Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
                 }
                 if (playingList == null || playingSongList == null) {
-                    updatePlayingList();
+                    updatePlayingSongs();
                 }
             }
         }).start();
@@ -207,7 +207,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         }
         long result = PlayModel.addSongToPlayingList(song);
         if (result > 0) {
-            updatePlayingList();
+            updatePlayingSongs();
         } else {
             return -1;
         }
@@ -219,19 +219,22 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         Log.d(TAG, "createPlayingList: " + songs.size());
         PlayModel.clearPlayingList();
         PlayModel.createPlaylistFromSongs(songs);
-        updatePlayingList();
+        updatePlayingSongs();
         return 1;
     }
 
-    public static int updatePlayingList() {
+    public static int updatePlayingSongs() {
         playingList = PlayModel.getListPlaying();
         playingSongList = PlayModel.getSongPlayingList();
 
         setIndexSongInPlayingList();
-        Log.d(TAG, "updatePlayingList: SIZE PLAYING LIST" + playingList.size());
+        Log.d(TAG, "updatePlayingSongs: SIZE PLAYING LIST" + playingList.size());
         return playingList.size();
     }
 
+    public static ArrayList<SongModel> getPlayingList() {
+        return playingSongList;
+    }
 
     public ArrayList<PlayModel> getPlayModelsList() {
         return playingList;
@@ -256,7 +259,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     public static void revertListSongPlaying() {
         currentSongPlaying = PlayModel.getSongIsPlaying();
-        updatePlayingList();
+        updatePlayingSongs();
     }
 
     public void updateDuration(int progress) {
@@ -297,7 +300,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
     }
 
     @Override
-    public void updatePlayingSongList() {
+    public void updatePlayingList() {
 
     }
 

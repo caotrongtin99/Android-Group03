@@ -9,6 +9,6 @@ public interface FragmentPlayInterface {
 
     //Fragment Playing
     void updateControlPlaying(SongModel songModel);
-    void updateProgressBar(int currentDuration);
+    void updateSeekBar(int currentDuration);
     void updateButtonPlay();
 }

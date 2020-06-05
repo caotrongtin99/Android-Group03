@@ -1,5 +1,7 @@
 package com.example.musicapp.play;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,8 +14,8 @@ public class FragmentPlayAdapter extends FragmentStatePagerAdapter {
     private SongModel playingSong;
     private static  Fragment fragmentPlayingList, fragmentPlaying;
 
-    public FragmentPlayAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
+    public FragmentPlayAdapter(@NonNull FragmentManager fm) {
+        super(fm);
     }
 
     @NonNull
@@ -27,11 +29,27 @@ public class FragmentPlayAdapter extends FragmentStatePagerAdapter {
                 break;
             case 1:
                 fragmentPlaying = new FragmentPlaying();
+                fragment = fragmentPlaying;
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("PLAY_SONG", playingSong);
+                fragment.setArguments(bundle);
+                break;
+            default:
+                break;
         }
+        return fragment;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return NUM_PAGES;
+    }
+
+    public FragmentPlaying getFragmentPlaying() {
+        return (FragmentPlaying) fragmentPlaying;
+    }
+
+    public FragmentPlayingList getFragmentListPlaying(){
+        return (FragmentPlayingList) fragmentPlayingList;
     }
 }
