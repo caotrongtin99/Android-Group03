@@ -125,26 +125,26 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
                 Log.d(TAG, "controlSong: PLAY " + sender + " " + songModel.getTitle());
                 viewPager.setCurrentItem(1);
                 playService.play(songModel);
-                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PLAY);
-                mainActivity.togglePlayingMinimize(sender,PlayService.ACTION_PLAY);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PLAY);
+//                mainActivity.togglePlayingMinimize(sender,PlayService.ACTION_PLAY);
                 Log.d(TAG, "controlSong: ");
                 break;
             case PlayService.ACTION_PAUSE:
                 playService.pause();
-                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PAUSE);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PAUSE);
                 break;
             case PlayService.ACTION_RESUME:
                 playService.resume();
-                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
                 break;
             case PlayService.ACTION_PREV:
                 playService.prev(PlayService.ACTION_FROM_USER);
-                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
                 refreshListPlaying();
                 break;
             case PlayService.ACTION_NEXT:
                 playService.next(PlayService.ACTION_FROM_USER);
-                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
                 refreshListPlaying();
                 break;
             default:

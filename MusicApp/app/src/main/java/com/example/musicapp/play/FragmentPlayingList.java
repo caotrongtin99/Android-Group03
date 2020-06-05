@@ -97,6 +97,11 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     }
 
     @Override
+    public void iconOnClick(View v, int position) {
+
+    }
+
+    @Override
     public void layoutItemClick(View v, int position) {
 
     }

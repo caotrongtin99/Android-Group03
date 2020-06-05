@@ -137,7 +137,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
                 if (PlayActivity.getActivity() != null) {
                     PlayActivity.getActivity().updateControlPlaying(SENDER, currentSongPlaying);
                     PlayActivity.getActivity().updateButtonPlay(SENDER);
-                    PlayActivity.getActivity().updateProgressBar(SENDER, mediaPlayer.getCurrentPosition());
+                    PlayActivity.getActivity().updateSeekBar(SENDER, mediaPlayer.getCurrentPosition());
                 }
                 pause();
                 return;
@@ -147,8 +147,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         currentSongPlaying = playingSongList.get(currentIndexSong); //SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
         play(currentSongPlaying);
         if (MainActivity.getMainActivity() != null) {
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
         }
 
         if (PlayActivity.getActivity() != null) {
@@ -187,8 +187,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         currentSongPlaying = playingSongList.get(currentIndexSong);//SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
         play(currentSongPlaying);
         if (MainActivity.getMainActivity() != null) {
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
 
         }
         if (PlayActivity.getActivity() != null) {
@@ -196,36 +196,36 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         }
     }
 
-    public static long addSongToPlayingList(SongModel song) {
-
-        if (song == null) {
-            return -1;
-        }
-        boolean isExist = PlayModel.isSongExsist(song);
-        if (isExist) {
-            return 0;
-        }
-        long result = PlayModel.addSongToPlayingList(song);
-        if (result > 0) {
-            updatePlayingSongs();
-        } else {
-            return -1;
-        }
-
-        return result;
-    }
+//    public static long addSongToPlayingList(SongModel song) {
+//
+//        if (song == null) {
+//            return -1;
+//        }
+//        boolean isExist = PlayModel.isSongExsist(song);
+//        if (isExist) {
+//            return 0;
+//        }
+//        long result = PlayModel.addSongToPlayingList(song);
+//        if (result > 0) {
+//            updatePlayingSongs();
+//        } else {
+//            return -1;
+//        }
+//
+//        return result;
+//    }
 
     public static int createPlayingList(ArrayList<SongModel> songs) {
         Log.d(TAG, "createPlayingList: " + songs.size());
         PlayModel.clearPlayingList();
-        PlayModel.createPlaylistFromSongs(songs);
+//        PlayModel.createPlaylistFromSongs(songs);
         updatePlayingSongs();
         return 1;
     }
 
     public static int updatePlayingSongs() {
-        playingList = PlayModel.getListPlaying();
-        playingSongList = PlayModel.getSongPlayingList();
+//        playingList = PlayModel.getListPlaying();
+//        playingSongList = PlayModel.getSongPlayingList();
 
         setIndexSongInPlayingList();
         Log.d(TAG, "updatePlayingSongs: SIZE PLAYING LIST" + playingList.size());
@@ -287,10 +287,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
     }
 
     @Override
-    public void updateProgressBar(String sender, int duration) {
-        if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updateProgressBar(sender, duration);
-        }
+    public void updateSeekBar(String sender, int duration) {
 
     }
 
@@ -328,7 +325,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
                     try {
                         if (mediaPlayer.isPlaying()) {
                             Log.d(TAG, "onTick: " + millisUntilFinished + " " + currentSongPlaying.getTitle());
-                            updateProgressBar(SENDER, mediaPlayer.getCurrentPosition());
+                            updateSeekBar(SENDER, mediaPlayer.getCurrentPosition());
                         }
 
                     } catch (IllegalStateException ex) {
@@ -356,8 +353,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 //            }
 //        }).start();
         if (MainActivity.getMainActivity() != null) {
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
         }
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateButtonPlay(SENDER);
