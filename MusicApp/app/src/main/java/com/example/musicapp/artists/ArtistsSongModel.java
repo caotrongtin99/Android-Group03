@@ -73,7 +73,6 @@ public class ArtistsSongModel {
                 songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
                 songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
                 songModel.setAlbumId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ALBUM_ID)));
-                //Log.d(TAG, "getSongsWithThreshold: HOLD ALBUMID" + songModel.getAlbumId());
                 songs.add(songModel);
             }
             while(cursor.moveToNext());
