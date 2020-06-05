@@ -22,8 +22,9 @@
                 app:layout_collapseMode="pin"
                 app:title=" "
                 app:titleEnabled="false" />
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="263dp"
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
@@ -34,9 +35,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_size_xsmall"
+                    app:cardBackgroundColor="@color/colorTranparent"
                     app:cardCornerRadius="@dimen/border_radius_small"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="@color/colorTranparent"
                     app:cardPreventCornerOverlap="false">
 
                     <TableLayout
@@ -57,7 +58,7 @@
 
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="219dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="@dimen/margin_size_small"
@@ -112,7 +113,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right">
