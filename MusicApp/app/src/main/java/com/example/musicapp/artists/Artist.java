@@ -57,12 +57,4 @@ public class Artist implements Serializable {
 
     public void setTracks(int tracks) {this.tracks = tracks;}
 
-//    public void setPic(String pic){
-//        this.pic = pic;
-//    }
-
-//    public void setTracks(List<String> tracks){
-//        this.tracks = tracks;
-//    }
-
 }
