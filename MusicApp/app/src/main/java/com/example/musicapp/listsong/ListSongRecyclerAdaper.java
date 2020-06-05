@@ -30,7 +30,9 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
     public ListSongRecyclerAdaper(Context context, ArrayList<SongModel> listSong, MultiClickAdapterListener listener) {
         mContext = context;
         mListSong = listSong;
-        mImageCacheHelper = new ImageCacheHelper(R.mipmap.music_128_foreground);
+
+//        mImageCacheHelper = new ImageCacheHelper(R.mipmap.music_128);
+
         mListener = listener;
     }
 

@@ -58,12 +58,14 @@ public class AlbumSongsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_songs);
+
         Intent intent = getIntent();
         albumModel = (AlbumModel) intent.getSerializableExtra("infoAlbum");
         InitControl();
         BindData();
-        setupLayoutTransparent();
+//        setupLayoutTransparent();
         initMimimizeSong();
+        getSupportActionBar().hide();
     }
 
     private void InitControl() {
