@@ -1,5 +1,6 @@
 package com.example.musicapp.playlist;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -152,9 +153,8 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     private void initToolBarParalax() {
         mCurrentPlaylist = PlaylistModel.getPlaylistById(mCurrentPlaylistId);
         setSupportActionBar(mToolbar);
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        Utility.setTranslucentStatusBar(this);
+        //Utility.setTranslucentStatusBar(this);
 //        mLayoutSongPlaylist.setPadding(0, Utility.getStatusbarHeight(this), 0, 0);
 //
 //        mAppbarLayoutPlaylist.setPadding(0,Utility.getStatusbarHeight(this),0,0);

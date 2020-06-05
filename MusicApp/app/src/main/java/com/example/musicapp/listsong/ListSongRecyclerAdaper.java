@@ -30,7 +30,7 @@ public class ListSongRecyclerAdaper extends RecyclerView.Adapter<RecyclerView.Vi
     public ListSongRecyclerAdaper(Context context, ArrayList<SongModel> listSong, MultiClickAdapterListener listener) {
         mContext = context;
         mListSong = listSong;
-        mImageCacheHelper = new ImageCacheHelper(R.mipmap.music_128);
+        //mImageCacheHelper = new ImageCacheHelper(R.mipmap.music_128);
         mListener = listener;
 //        int maxSize = (int) (Runtime.getRuntime().maxMemory() / 1024);
 //        // Divide the maximum size by eight to get a adequate size the LRU cache should reach before it starts to evict bitmaps.

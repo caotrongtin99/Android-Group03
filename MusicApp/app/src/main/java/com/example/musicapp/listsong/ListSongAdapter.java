@@ -23,7 +23,7 @@ public class ListSongAdapter extends BaseAdapter {
     private ArrayList<SongModel> _listSong;
     private LayoutInflater layoutInflater;
     private MainActivity _mainActivity;
-
+    private int albumId = -1;
     private Context _context;
 
     public ListSongAdapter(Context context, ArrayList<SongModel> listSong) {
@@ -79,16 +79,22 @@ public class ListSongAdapter extends BaseAdapter {
             iconLike=viewHolder.iconLike;
         }
         final SongModel songModel=_listSong.get(position);
-        titleSong.setText(songModel.getTitle() );//+ "__" + songModel.getSongId()+"__"+songModel.getFolder()
-//        album.setText(songModel.getAlbum());
+        titleSong.setText(songModel.getTitle() );
         artist.setText(songModel.getArtist());
         duration.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
-//        imageView.setImageBitmap(songModel.getBitmap());
         if(songModel.getBitmap() !=null){
             imageView.setImageBitmap(songModel.getBitmap());
         }else{
             imageView.setImageResource(getResourceIdFromName("musical_note_light_64"));
         }
+
+        final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
+        if (bitmap != null && albumId == songModel.getAlbumId()) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            mImageCacheHelper.loadAlbumArt(imageView, songModel);
+        }
+
         iconLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -21,6 +21,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
@@ -38,6 +40,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
     private TableRow mTbrMakeRingTone;
     private TableRow mTbrDeleteSong;
     private TableRow mTbrShowSongDetail;
+    private TableRow mTbrRenameSong;
     private ImageView mImgSong;
     private ImageHelper mImageHelper;
     private FragmentListSong fragmentListSong;
@@ -63,7 +66,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrMakeRingTone = contentView.findViewById(R.id.btnMakeRingTone);
         mImgSong = contentView.findViewById(R.id.imgSong);
         mTbrDeleteSong = contentView.findViewById(R.id.mTbrDeleteSong);
-
+        mTbrRenameSong = contentView.findViewById(R.id.mTbrRenameSong);
         mTbrShowSongDetail = contentView.findViewById(R.id.mTbrShowSongDetail);
 
 
@@ -73,6 +76,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrMakeRingTone.setOnClickListener(this);
         mTbrShowSongDetail.setOnClickListener(this);
         mTbrDeleteSong.setOnClickListener(this);
+        mTbrRenameSong.setOnClickListener(this);
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -86,9 +90,19 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         dialog.setContentView(contentView);
     }
 
+    private void showEditDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        EditNameDialogFragment editNameDialogFragment = new EditNameDialogFragment(mCurrentSong);
+        editNameDialogFragment.show(fm, "fragment_edit_name");
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mTbrRenameSong:
+                showEditDialog();
+                getDialog().dismiss();
+                break;
             case R.id.mTbrDeleteSong:
                 String query2 = "SELECT * FROM songs WHERE title = '" + mCurrentSong.getTitle() +"'";
 
@@ -101,7 +115,8 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                     Log.e("ABC: ", mCurrentSong.getTitle() + " DELETED");
                 }
                 FragmentListSong.refresh();
-                //fragmentListSong.deleteSong(mCurrentSong);
+                getDialog().dismiss();
+
                 break;
             case R.id.mTbrShowSongDetail:
                 _mainActivity = (MainActivity) getActivity();

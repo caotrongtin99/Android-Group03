@@ -119,7 +119,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
                 _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
                 _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
                 _listViewSong.setAdapter(_listSongAdapter);
-                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
+                _txtSizeOfListSong.setText("Found " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " tracks");
             }
         });
 

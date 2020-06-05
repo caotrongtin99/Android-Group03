@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/albumhtab_toolbar"
@@ -24,7 +24,7 @@
                 app:titleEnabled="false" />
 
             <LinearLayout
-                android:layout_width="263dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"
@@ -112,22 +112,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_random_solid"
-                android:layout_marginRight="20dp"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_play_circle_outline_black_24dp"
-                />
-        </LinearLayout>
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

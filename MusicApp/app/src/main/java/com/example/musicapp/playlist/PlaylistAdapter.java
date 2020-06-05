@@ -126,7 +126,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             SongModel tempSong = new SongModel();
             tempSong.setAlbumId(playlistModel.getId());
             tempSong.setPath(playlistModel.getPathImage());
-            imagePlaylist.setImageResource(R.mipmap.music_128);
+            imagePlaylist.setImageResource(R.mipmap.music_icon);
             //final Bitmap bitmap = mImageCacheHelper.getBitmapCache(tempSong.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
             /*if (bitmap != null && oldPathImage==playlistModel.getPathImage()) {
                 this.imagePlaylist.post(new Runnable() {
