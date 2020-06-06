@@ -48,8 +48,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         if (playService == null || mediaPlayer == null || databaseManager == null) {
             playService = new PlayService();
             mediaPlayer = new MediaPlayer();
-            //using weak lock
-//            mediaPlayer.setWakeMode(MainActivity.getMainActivity(), PowerManager.PARTIAL_WAKE_LOCK);
             databaseManager = DatabaseManager.newInstance(MainActivity.getMainActivity().getApplicationContext());
         }
         return playService;
@@ -66,6 +64,22 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     public static void setLoopType(int loopType) {
         PlayService.loopType = loopType;
+    }
+
+    public void initPlayingList(final ArrayList<SongModel> listPlaying) {
+        PlayModel.clearPlayingList();
+        PlayModel.createPlaylistFromSongs(listPlaying);
+        updatePlayingSongs();
+        if (PlayActivity.getActivity() != null) {
+            PlayActivity.getActivity().updatePlayingList();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+            }
+        }).start();
     }
 
     public void play(final SongModel songModel) {
@@ -86,18 +100,18 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldSongPlaying.getSongId() != currentSongPlaying.getSongId()) {
-                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
-                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
-                }
-                if (playingList == null || playingSongList == null) {
-                    updatePlayingSongs();
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldSongPlaying.getSongId() != currentSongPlaying.getSongId()) {
+//                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+//                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+//                }
+//                if (playingList == null || playingSongList == null) {
+//                    updatePlayingSongs();
+//                }
+//            }
+//        }).start();
     }
 
     public void pause() {
@@ -224,8 +238,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
     }
 
     public static int updatePlayingSongs() {
-//        playingList = PlayModel.getListPlaying();
-//        playingSongList = PlayModel.getSongPlayingList();
+        playingList = PlayModel.getPlayingList();
+        playingSongList = PlayModel.getPlayingSongs();
 
         setIndexSongInPlayingList();
         Log.d(TAG, "updatePlayingSongs: SIZE PLAYING LIST" + playingList.size());
@@ -267,7 +281,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         mediaPlayer.seekTo(progress * 1000);
 //        if (!mediaPlayer.isPlaying()) {
 //            mediaPlayer.start();
-//            mPlayActivity.updateControlPlaying(SENDER, mCurrentSongPlaying);
+//            playActivity.updateControlPlaying(SENDER, currentSongPlaying);
 //        }
     }
 
@@ -364,6 +378,5 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
     }
 }

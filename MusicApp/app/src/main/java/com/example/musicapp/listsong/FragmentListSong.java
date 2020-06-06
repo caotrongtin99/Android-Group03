@@ -47,7 +47,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     private SwipeRefreshLayout mSwpListSong;
 
 
-
+    public static final String TAG = "FragmentListSong";
     public static final String SENDER = "FRAGMENT_LIST_SONG";
     private static final int mThreshHold = 10;
     private static boolean mIsLoading;
@@ -62,6 +62,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         try {
             _context = getActivity();
             _mainActivity = (MainActivity) getActivity();
+            mPlayService = PlayService.newInstance();
         } catch (IllegalStateException e) {
 
         }
@@ -75,8 +76,6 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
 
     public static FragmentListSong newInstance() {
         FragmentListSong fragmentListSong = new FragmentListSong();
-        mPlayService = PlayService.newInstance();
-
         return fragmentListSong;
     }
 
@@ -151,25 +150,26 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         }, 1000);
 
     }
-
+*/
 
     private void playSong(SongModel songPlay) {
+        Log.d(TAG, "Song chosen: " + songPlay.getTitle());
         mPlayService.play(songPlay);
 
-        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
-            mThreadInitListPlaying.interrupt();
-        }
-
-        mThreadInitListPlaying = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mPlayService.initListPlaying(SongModel.getAllSongs(DatabaseManager.getInstance()));
-            }
-        });
-        mThreadInitListPlaying.start();
-        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
+//        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
+//            mThreadInitListPlaying.interrupt();
+//        }
+//
+//        mThreadInitListPlaying = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mPlayService.initPlayingList(SongModel.getAllSongs(DatabaseManager.getInstance()));
+//            }
+//        });
+//        mThreadInitListPlaying.start();
+        _mainActivity.playSongsFromFragmentListToMain("Sender");
     }
-    */
+
     private void showBottomSheetOptionSong(SongModel song) {
 
         BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
@@ -214,8 +214,8 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     @Override
     public void layoutItemClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        //playSong(songChose);
-
+//        Log.d(TAG, "Song choose: " + songChose.getTitle());
+        playSong(songChose);
     }
 
     @Override

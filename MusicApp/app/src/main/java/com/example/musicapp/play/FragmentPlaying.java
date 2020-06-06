@@ -1,6 +1,7 @@
 package com.example.musicapp.play;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.musicapp.ImageHelper;
 import com.example.musicapp.R;
 import com.example.musicapp.listsong.SongModel;
 
@@ -88,6 +90,8 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         imageButtonPlaySong.setOnClickListener(this);
         imageButtonPrevSong.setOnClickListener(this);
         imageButtonNextSong.setOnClickListener(this);
+
+        setResourceImagePlaying();
 
         sebDurationSongPlaying.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -204,5 +208,18 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     public void onPause() {
         super.onPause();
 
+    }
+
+    private void setResourceImagePlaying() {
+        if (playingSong != null) {
+            Bitmap bitmapPlaying = ImageHelper.getBitmapFromPath(playingSong.getPath());
+            if (bitmapPlaying == null) {
+                imagePlaying.setScaleType(ImageView.ScaleType.CENTER);
+            } else {
+                imagePlaying.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
+
+            imagePlaying.setImageBitmap(bitmapPlaying);
+        }
     }
 }

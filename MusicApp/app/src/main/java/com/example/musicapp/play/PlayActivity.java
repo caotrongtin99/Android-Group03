@@ -31,7 +31,6 @@ import java.util.ArrayList;
 public class PlayActivity extends AppCompatActivity implements IPlay {
     private ViewPager viewPager;
     private DatabaseManager databaseManager;
-    private LinearLayout linearLayout;
     private PagerAdapter pagerAdapter;
     private PlayService playService;
     private MainActivity mainActivity;
@@ -57,13 +56,9 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
         toolBar = findViewById(R.id.tool_bar_play);
         viewPager = (ViewPager) findViewById(R.id.viewPagerPlay);
 
-        setSupportActionBar(toolBar);
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        Utility.setTransparentStatusBar(PlayActivity.this);
 
-        linearLayout.setPadding(0, Utility.getStatusbarHeight(this), 0, 0);
         toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,9 +79,7 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -103,7 +96,6 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG, "onRestoreInstanceState: RESTORE " + savedInstanceState);
     }
 
     @Override
@@ -122,31 +114,27 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
     public void controlSong(String sender, SongModel songModel, int action) {
         switch (action) {
             case PlayService.ACTION_PLAY:
-                Log.d(TAG, "controlSong: PLAY " + sender + " " + songModel.getTitle());
                 viewPager.setCurrentItem(1);
                 playService.play(songModel);
-//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PLAY);
-//                mainActivity.togglePlayingMinimize(sender,PlayService.ACTION_PLAY);
-                Log.d(TAG, "controlSong: ");
                 break;
             case PlayService.ACTION_PAUSE:
                 playService.pause();
 //                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PAUSE);
                 break;
-            case PlayService.ACTION_RESUME:
-                playService.resume();
-//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
-                break;
-            case PlayService.ACTION_PREV:
-                playService.prev(PlayService.ACTION_FROM_USER);
-//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
-                refreshListPlaying();
-                break;
-            case PlayService.ACTION_NEXT:
-                playService.next(PlayService.ACTION_FROM_USER);
-//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
-                refreshListPlaying();
-                break;
+//            case PlayService.ACTION_RESUME:
+//                playService.resume();
+////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
+//                break;
+//            case PlayService.ACTION_PREV:
+//                playService.prev(PlayService.ACTION_FROM_USER);
+////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
+//                refreshListPlaying();
+//                break;
+//            case PlayService.ACTION_NEXT:
+//                playService.next(PlayService.ACTION_FROM_USER);
+////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
+//                refreshListPlaying();
+//                break;
             default:
                 break;
         }
@@ -200,12 +188,12 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
     public void updateToolbarTitle() {
         int index = viewPager.getCurrentItem();
         if (index == 0) {
-            getSupportActionBar().setTitle("Danh sách phát");
+            getSupportActionBar().setTitle("List songs");
             if (menu != null) {
 //                menu.findItem(R.id.actionSetTimerSong).setVisible(false);
             }
         } else if (index == 1) {
-            getSupportActionBar().setTitle("Đang phát");
+            getSupportActionBar().setTitle("Now playing");
             if (menu != null) {
 //                mMenuPlay.findItem(R.id.actionSetTimerSong).setVisible(true);
             }
