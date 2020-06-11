@@ -121,12 +121,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Log.d(TAG, "bindContent: PLAYLIST ITEM " + playlistModel.getNumberOfSongs() + "__" + playlistModel.getTitle());
             this.titlePlaylist.setText(playlistModel.getTitle());
             this.numberOfSong.setText(String.valueOf(playlistModel.getNumberOfSongs()) + " bài hát");
-            imagePlaylist.setImageResource(R.mipmap.music_128);
+            imagePlaylist.setImageResource(R.drawable.ic_music_note_black_24dp);
 
             SongModel tempSong = new SongModel();
             tempSong.setAlbumId(playlistModel.getId());
             tempSong.setPath(playlistModel.getPathImage());
-            imagePlaylist.setImageResource(R.mipmap.music_icon);
+            imagePlaylist.setImageResource(R.drawable.ic_music_note_black_24dp);
             //final Bitmap bitmap = mImageCacheHelper.getBitmapCache(tempSong.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
             /*if (bitmap != null && oldPathImage==playlistModel.getPathImage()) {
                 this.imagePlaylist.post(new Runnable() {

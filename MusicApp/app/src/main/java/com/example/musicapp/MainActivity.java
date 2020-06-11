@@ -37,6 +37,7 @@ import com.example.musicapp.artists.ArtistSongsAdapter;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.playlist.FragmentPlaylist;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -207,10 +208,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 4:
-                //fragmentFolder = (FragmentFolder) ((PagerMainAdapter) mPagerAdapter).getFragmentAtIndex(fragmentIndex);
-                //if (fragmentFolder != null) {
-                //    fragmentFolder.UpdateSearch(mSearchValue);
-                //}
+                FragmentPlaylist fragmentPlaylist = (FragmentPlaylist) ((TabAdapter) adapter).getFragmentAtIndex(fragmentIndex);
+                if (fragmentPlaylist != null) {
+                    fragmentPlaylist.UpdateSearch(mSearchValue);
+                }
                 break;
             default:
                 break;

@@ -206,7 +206,10 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
 //        mThreadInitListPlaying.start();
 //        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
 //    }
-
+    public void showDetailSong(SongModel songChose) {
+        BottomSheetShowSongInfo bottomSheetDialogFragment = new BottomSheetShowSongInfo(songChose);
+        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+    }
     private void showBottomSheetOptionSong(SongModel song) {
 
         BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
@@ -259,7 +262,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        showBottomSheetOptionSong(songChose);
+        showDetailSong(songChose);
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {

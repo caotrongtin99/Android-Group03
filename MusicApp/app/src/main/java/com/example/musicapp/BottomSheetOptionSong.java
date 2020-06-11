@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -124,7 +125,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                 bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
                 break;
             case R.id.btnMakeRingTone:
-                //check permission write ringtone
+
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     boolean canWrite = Settings.System.canWrite(getActivity().getApplicationContext());
                     if (!canWrite){
