@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.playlist.FragmentDialogPlaylist;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.io.File;
@@ -42,6 +43,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
     private TableRow mTbrDeleteSong;
     private TableRow mTbrShowSongDetail;
     private TableRow mTbrRenameSong;
+    //private TableRow mTbrAddSongToPlaylist;
     private ImageView mImgSong;
     private ImageHelper mImageHelper;
     private FragmentListSong fragmentListSong;
@@ -103,6 +105,11 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
             case R.id.mTbrRenameSong:
                 showEditDialog();
                 getDialog().dismiss();
+                break;
+            case R.id.btnAddSongToPlaylist:
+                FragmentDialogPlaylist fragmentDialogPlaylist = new FragmentDialogPlaylist(mCurrentSong);
+                fragmentDialogPlaylist.show(getActivity().getSupportFragmentManager(), "ADD_SONG_TO_LIST_QUEUE");
+                BottomSheetOptionSong.this.dismiss();
                 break;
             case R.id.mTbrDeleteSong:
                 String query2 = "SELECT * FROM songs WHERE title = '" + mCurrentSong.getTitle() +"'";

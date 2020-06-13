@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class FragmentPlaylist extends Fragment {
     private static final String TAG = "FRAGMENT_PLAY_LIST";
     public static final String SENDER = "FRAGMENT_PLAY_LIST";
-    private Context mContext;
+    private static Context mContext;
     private MainActivity mMainActivity;
     private static RecyclerView mRecyclerViewPlaylist;
     private static PlaylistAdapter mPlaylistAdapter;
@@ -75,10 +75,11 @@ public class FragmentPlaylist extends Fragment {
         mRecyclerViewPlaylist = viewGroup.findViewById(R.id.rcvPlaylist);
         mButtonCreatePlaylist = viewGroup.findViewById(R.id.btnCreatePlaylist);
         mSwpPlaylist = viewGroup.findViewById(R.id.swpPlaylist);
+        mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
+
                 mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mRecyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(mContext));
                 mRecyclerViewPlaylist.setAdapter(mPlaylistAdapter);
@@ -173,6 +174,8 @@ public class FragmentPlaylist extends Fragment {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
+                mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
+                mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mPlaylist.clear();
                 mPlaylistAdapter.notifyDataSetChanged();
                 ArrayList<PlaylistModel> playlistModels = PlaylistModel.getAllPlaylist(searchValue);
