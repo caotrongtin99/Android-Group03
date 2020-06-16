@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,9 +22,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.playlist.FragmentDialogPlaylist;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.io.File;
@@ -38,6 +42,8 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
     private TableRow mTbrMakeRingTone;
     private TableRow mTbrDeleteSong;
     private TableRow mTbrShowSongDetail;
+    private TableRow mTbrRenameSong;
+    //private TableRow mTbrAddSongToPlaylist;
     private ImageView mImgSong;
     private ImageHelper mImageHelper;
     private FragmentListSong fragmentListSong;
@@ -63,7 +69,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrMakeRingTone = contentView.findViewById(R.id.btnMakeRingTone);
         mImgSong = contentView.findViewById(R.id.imgSong);
         mTbrDeleteSong = contentView.findViewById(R.id.mTbrDeleteSong);
-
+        mTbrRenameSong = contentView.findViewById(R.id.mTbrRenameSong);
         mTbrShowSongDetail = contentView.findViewById(R.id.mTbrShowSongDetail);
 
 
@@ -73,6 +79,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         mTbrMakeRingTone.setOnClickListener(this);
         mTbrShowSongDetail.setOnClickListener(this);
         mTbrDeleteSong.setOnClickListener(this);
+        mTbrRenameSong.setOnClickListener(this);
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -86,9 +93,24 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
         dialog.setContentView(contentView);
     }
 
+    private void showEditDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        EditNameDialogFragment editNameDialogFragment = new EditNameDialogFragment(mCurrentSong);
+        editNameDialogFragment.show(fm, "fragment_edit_name");
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mTbrRenameSong:
+                showEditDialog();
+                getDialog().dismiss();
+                break;
+            case R.id.btnAddSongToPlaylist:
+                FragmentDialogPlaylist fragmentDialogPlaylist = new FragmentDialogPlaylist(mCurrentSong);
+                fragmentDialogPlaylist.show(getActivity().getSupportFragmentManager(), "ADD_SONG_TO_LIST_QUEUE");
+                BottomSheetOptionSong.this.dismiss();
+                break;
             case R.id.mTbrDeleteSong:
                 String query2 = "SELECT * FROM songs WHERE title = '" + mCurrentSong.getTitle() +"'";
 
@@ -101,7 +123,8 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                     Log.e("ABC: ", mCurrentSong.getTitle() + " DELETED");
                 }
                 FragmentListSong.refresh();
-                //fragmentListSong.deleteSong(mCurrentSong);
+                getDialog().dismiss();
+
                 break;
             case R.id.mTbrShowSongDetail:
                 _mainActivity = (MainActivity) getActivity();
@@ -109,7 +132,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
                 bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
                 break;
             case R.id.btnMakeRingTone:
-                //check permission write ringtone
+
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     boolean canWrite = Settings.System.canWrite(getActivity().getApplicationContext());
                     if (!canWrite){

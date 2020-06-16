@@ -40,8 +40,8 @@
 
                 <ImageView
                     android:id="@+id/imgPlaylist"
-                    android:layout_width="@dimen/image_card_item_playlist"
-                    android:layout_height="@dimen/image_card_item_playlist"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"

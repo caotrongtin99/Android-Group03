@@ -120,7 +120,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
                 _listSongAdapter = new ListSongRecyclerAdaper(_context, _listSong, FragmentListSong.this);
                 _listViewSong.setLayoutManager(new LinearLayoutManager(_context));
                 _listViewSong.setAdapter(_listSongAdapter);
-                _txtSizeOfListSong.setText("Tìm thấy " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " bài hát");
+                _txtSizeOfListSong.setText("Found " + String.valueOf(SongModel.getRowsSong(MainActivity.mDatabaseManager)) + " tracks");
             }
         });
 
@@ -214,6 +214,11 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         _mainActivity.playSongsFromFragmentListToMain("Sender");
     }
 
+    public void showDetailSong(SongModel songChose) {
+        BottomSheetShowSongInfo bottomSheetDialogFragment = new BottomSheetShowSongInfo(songChose);
+        bottomSheetDialogFragment.show(_mainActivity.getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+    }
+  
     private void showBottomSheetOptionSong(SongModel song) {
 
         BottomSheetOptionSong bottomSheetDialogFragment = new BottomSheetOptionSong(song);
@@ -266,7 +271,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = _listSong.get(position);
-        showBottomSheetOptionSong(songChose);
+        showDetailSong(songChose);
     }
 
     private class loadImageFromStorage extends AsyncTask<Void, Integer, ArrayList<SongModel>> {

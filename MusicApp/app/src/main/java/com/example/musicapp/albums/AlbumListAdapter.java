@@ -81,10 +81,11 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
             songModel.setPath(albumViewModel.getPath());
             final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
             if (bitmap != null) {
-                this.IVAlbum.setImageBitmap(bitmap);
+                IVAlbum.setImageBitmap(bitmap);
             } else {
                 mImageCacheHelper.loadAlbumArt(IVAlbum,songModel);
             }
+            //IVAlbum.setImageResource(R.drawable.ic_music_note_black_24dp);
         }
     }
 }

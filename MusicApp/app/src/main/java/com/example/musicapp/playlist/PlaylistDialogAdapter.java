@@ -35,7 +35,7 @@ public class PlaylistDialogAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public PlaylistDialogAdapter(Context context, ArrayList<PlaylistModel> playlist) {
         this.mContext = context;
         this.mPlaylist = playlist;
-        mImageCacheHelper = new ImageCacheHelper(R.mipmap.music_128);
+        mImageCacheHelper = new ImageCacheHelper(R.mipmap.microphone_128);
         Log.d(TAG, "PlaylistAdapter: Context " + mContext + "LIST " + mPlaylist.size());
     }
 

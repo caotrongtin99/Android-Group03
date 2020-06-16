@@ -28,16 +28,6 @@ public class ArtistSongsAdapter extends RecyclerView.Adapter<ArtistSongsAdapter.
         listData = songs;
     }
 
-//    @Override
-//    public int getCount() {
-//        return listData.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return listData.get(position);
-//    }
-
     @NonNull
     @Override
     public ArtistSongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,63 +51,12 @@ public class ArtistSongsAdapter extends RecyclerView.Adapter<ArtistSongsAdapter.
         return listData.size();
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        ArtistSongViewHolder viewHolder;
-//        TextView titleSong;
-////        TextView album;
-//        TextView duration;
-//        TextView artist;
-//        ImageView imageView;
-//        LayoutInflater layout=(LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-//        if (convertView == null) {
-//
-//            convertView = layout.inflate(R.layout.layout_item_song, parent, false);
-//            titleSong = convertView.findViewById(R.id.txtTitle);
-////            album=convertView.findViewById(R.id.txtAlbum);
-//            duration=convertView.findViewById(R.id.txtDuration);
-//            artist=convertView.findViewById(R.id.txtArtist);
-//            imageView=convertView.findViewById(R.id.imgSong);
-//            viewHolder = new ArtistSongViewHolder(titleSong,artist,duration,imageView);
-//            convertView.setTag(viewHolder);
-//        } else {
-//            viewHolder = (ArtistSongsAdapter.ArtistSongViewHolder) convertView.getTag();
-//            titleSong= viewHolder.titleSong ;
-////            album= viewHolder.album;
-//            artist=viewHolder.artist;
-//            duration=viewHolder.duration;
-//            imageView=viewHolder.imageView;
-//        }
-//        SongModel songModel=listData.get(position);
-//        titleSong.setText(songModel.getTitle() );//+ "__" + songModel.getSongId()+"__"+songModel.getFolder()
-////        album.setText(songModel.getAlbum());
-//        artist.setText(songModel.getArtist());
-//        duration.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
-//        final Bitmap bitmap = mImageCacheHelper.getBitmapCache(songModel.getAlbumId());//  mBitmapCache.get((long) songModel.getAlbumId());
-//        if (bitmap != null && albumId == songModel.getAlbumId()) {
-//            imageView.setImageBitmap(bitmap);
-//        } else {
-//            mImageCacheHelper.loadAlbumArt(imageView, songModel);
-//        }
-//
-//        return convertView;
-//    }
-    public int getResourceIdFromName(String resourceName) {
-
-        String pkgName = context.getPackageName();
-        int resoureId = context.getResources().getIdentifier(resourceName, "mipmap", pkgName);
-
-        return resoureId;
-    }
     public class ArtistSongViewHolder extends RecyclerView.ViewHolder {
         TextView titleSong;
-        TextView album;
         TextView artist;
         TextView duration;
         ImageView imageView;
         private ImageCacheHelper mImageCacheHelper = new ImageCacheHelper(R.mipmap.music);
-        TextView id;
-        LayoutInflater layout;
 
         public ArtistSongViewHolder(@NonNull  View v){
             super(v);

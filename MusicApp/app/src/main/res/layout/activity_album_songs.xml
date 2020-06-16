@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/albumhtab_toolbar"
@@ -24,7 +24,7 @@
                 app:titleEnabled="false" />
 
             <LinearLayout
-                android:layout_width="263dp"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:focusable="true"

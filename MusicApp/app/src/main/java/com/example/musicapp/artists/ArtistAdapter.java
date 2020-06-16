@@ -64,12 +64,6 @@ class ArtistViewHolder extends RecyclerView.ViewHolder{
     ImageView img;
     private ImageCacheHelper mImageCacheHelper;
 
-//    public void setItemClickListener(ArtistClickListener itemClickListener)
-//    {
-//        this.artistClickListener = itemClickListener;
-//    }
-
-
     public ArtistViewHolder(@NonNull View itemView) {
         super(itemView);
         mImageCacheHelper=new ImageCacheHelper(R.mipmap.album_128);
