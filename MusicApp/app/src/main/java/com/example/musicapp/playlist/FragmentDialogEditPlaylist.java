@@ -103,6 +103,7 @@ public class FragmentDialogEditPlaylist extends DialogFragment implements View.O
                     Toast.makeText(getActivity().getApplicationContext(), "Sửa tiêu đề thành công", Toast.LENGTH_LONG).show();
                     mPlaylistSongActivity.refreshTitlePlaylist(mCurrentPlaylist.getTitle());
                     FragmentPlaylist.refreshPlaylist();
+                    FragmentPlaylist.refreshPlaylist();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Thất bại", Toast.LENGTH_LONG).show();
                 }
