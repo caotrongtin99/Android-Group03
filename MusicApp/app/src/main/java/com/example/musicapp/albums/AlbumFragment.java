@@ -1,5 +1,6 @@
 package com.example.musicapp.albums;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class AlbumFragment extends Fragment {
     static String searchValue = "";
     TextView albumSizeTxtView;
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +52,9 @@ public class AlbumFragment extends Fragment {
         //get list artist from db
         arrAlbum = AlbumProvider.getAlbumModelPaging(context, searchValue, 0, 20);
         albumSizeTxtView = (TextView) view.findViewById(R.id.albumSize);
-
+        int size = arrAlbum.size();
+        albumSizeTxtView.setText(new String(String.valueOf(size)) + " Albums");
+//        System.out.println(arrAlbum.size());
         //get RecyclerView Album by id
         RCalbum = (RecyclerView) view.findViewById(R.id.rvAlbumList);
 
@@ -126,12 +130,11 @@ public class AlbumFragment extends Fragment {
     }
 
     public static AlbumFragment newInstance() {
-        AlbumFragment fragmentAlbum = new AlbumFragment();
-        return fragmentAlbum;
+        return new AlbumFragment();
     }
 
     public void UpdateSearch(String s) {
-        if (s == searchValue) return;
+        if (s.equals(searchValue)) return;
         searchValue = s;
         mIsLoading = true;
         ArrayList<AlbumViewModel> tempAudioList = AlbumProvider.getAlbumModelPaging(context, searchValue, 0, 20);

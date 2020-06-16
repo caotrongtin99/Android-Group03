@@ -167,6 +167,28 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/mTbrRenameSong"
+            android:padding="@dimen/margin_size_snormal"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginRight="@dimen/margin_size_snormal"
+                app:srcCompat="@drawable/ic_queue_music_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Thay đổi tên bài hát"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_normal" />
+        </TableRow>
+        <TableRow
             android:id="@+id/mTbrShowSongDetail"
             android:padding="@dimen/margin_size_snormal"
             android:clickable="true"

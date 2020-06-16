@@ -1,5 +1,6 @@
 package com.example.musicapp.albums;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,8 +54,8 @@ public class AlbumProvider {
         };
         String whereClause =  "? = '' OR " + SongModel.COLUMN_ALBUM +" LIKE ?";
         String[] whereArgs = new String[]{value ,"%" + value + "%"};
-        String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_ALBUM,skip,take);
-        Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
+        @SuppressLint("DefaultLocale") String groupBy = String.format("%s LIMIT %d,%d",SongModel.COLUMN_ALBUM,skip,take);
+        @SuppressLint("Recycle") Cursor cursor = db.query(SongModel.TABLE_NAME,tableColumns,whereClause,whereArgs,groupBy,null,null);
 
         if (cursor.moveToFirst()) {
             do {

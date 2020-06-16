@@ -18,5 +18,10 @@
         <item name="titleTextColor">@color/white</item>
     </style>
 
+    <style name="DialogPrimary" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+<!--        <item name="android:background">@color/colorBgPrimaryTranslucent</item>-->
+        <item name="android:textColorPrimary">#FFF</item>
+    </style>
+
 
 </resources>

@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.playlist.PlaylistModel;
+import com.example.musicapp.playlist.PlaylistSongModel;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -41,17 +43,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SongModel.SCRIPT_CREATE_TABLE);
+        db.execSQL(PlaylistModel.SCRIPT_CREATE_TABLE);
+        db.execSQL(PlaylistSongModel.SCRIPT_CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PlaylistModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PlaylistSongModel.TABLE_NAME);
         onCreate(db);
     }
 
     public void resetDB() {
         SQLiteDatabase db = getReadableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + SongModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PlaylistModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PlaylistSongModel.TABLE_NAME);
         onCreate(db);
     }
 }
