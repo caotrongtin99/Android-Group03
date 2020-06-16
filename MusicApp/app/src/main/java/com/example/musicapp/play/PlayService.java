@@ -11,18 +11,18 @@ import com.example.musicapp.listsong.SongModel;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PlayService {
-    private static ArrayList<PlayModel> mPlayingList;
-    private static ArrayList<SongModel> mSongPlayingList;
-    private static SongModel mCurrentSongPlaying;
-    private static SongModel mOldSongPlaying;
-    private static int mCurrentIndexSong;
-    private static boolean mIsPause;
+public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+    private static ArrayList<PlayModel> playingList;
+    private static ArrayList<SongModel> playingSongList;
+    private static SongModel currentSongPlaying;
+    private static SongModel oldSongPlaying;
+    private static int currentIndexSong;
+    private static boolean isPause;
 
-    private static MediaPlayer mMediaPlayer = null;
-    private static PlayService mPlayService = null;
-    private static DatabaseManager mDatabaseManager = null;
-    private CountDownTimer mCountDownTimerUpdateSeekBar = null;
+    private static MediaPlayer mediaPlayer = null;
+    private static PlayService playService = null;
+    private static DatabaseManager databaseManager = null;
+    private CountDownTimer countDownTimerUpdateSeekBar = null;
 
 
     public static final int ACTION_PLAY = 1;
@@ -40,24 +40,23 @@ public class PlayService {
 
 
     private static int loopType = ALL_LOOP;
-    public static boolean Shuffle;
+    public static boolean isShuffle;
     private static final String TAG = "PlayService";
     public static final String SENDER = "PLAY_CENTER";
 
     public static PlayService newInstance() {
-        if (mPlayService == null || mMediaPlayer == null || mDatabaseManager == null) {
-            mPlayService = new PlayService();
-            mMediaPlayer = new MediaPlayer();
-            //using weak lock
-//            mMediaPlayer.setWakeMode(MainActivity.getMainActivity(), PowerManager.PARTIAL_WAKE_LOCK);
-            mDatabaseManager = DatabaseManager.newInstance(MainActivity.getMainActivity().getApplicationContext());
+        if (playService == null || mediaPlayer == null || databaseManager == null) {
+            playService = new PlayService();
+            mediaPlayer = new MediaPlayer();
+            databaseManager = DatabaseManager.newInstance(MainActivity.getMainActivity().getApplicationContext());
         }
-        return mPlayService;
+        return playService;
     }
-    /*
+
     public static MediaPlayer getMediaPlayer() {
-        return mMediaPlayer;
+        return mediaPlayer;
     }
+
 
     public static int getLoopType() {
         return loopType;
@@ -67,70 +66,78 @@ public class PlayService {
         PlayService.loopType = loopType;
     }
 
-
-    public void play(final SongModel songModel) {
-//        Log.d(TAG, "play: "+songModel.getPath());
-//        Log.d(TAG, "play: "+ Uri.parse(songModel.getPath()));
-//        File path = Environment.getExternalStorageDirectory();
-//        Log.d(TAG, "play: "+ path+songModel.getPath());
-        mIsPause = false;
-        try {
-            if (mOldSongPlaying == null) {
-                mOldSongPlaying = songModel;
-            }
-            mCurrentSongPlaying = songModel;
-
-            setIndexSongInPlayingList();
-            mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(songModel.getPath());
-            mMediaPlayer.setOnPreparedListener(this);
-            mMediaPlayer.setOnCompletionListener(this);
-
-            mMediaPlayer.prepareAsync();
-//            mMediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void initPlayingList(final ArrayList<SongModel> listPlaying) {
+        PlayModel.clearPlayingList();
+        PlayModel.createPlaylistFromSongs(listPlaying);
+        updatePlayingSongs();
+        if (PlayActivity.getActivity() != null) {
+            PlayActivity.getActivity().updatePlayingList();
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (mOldSongPlaying.getSongId() != mCurrentSongPlaying.getSongId()) {
-                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(mOldSongPlaying.getSongId(), mCurrentSongPlaying.getSongId());
-                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
-                }
-                if (mPlayingList == null || mSongPlayingList == null) {
-                    updatePlayingList();
-                }
+                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
             }
         }).start();
+    }
 
+    public void play(final SongModel songModel) {
+        isPause = false;
+        try {
+            if (oldSongPlaying == null) {
+                oldSongPlaying = songModel;
+            }
+            currentSongPlaying = songModel;
 
+            setIndexSongInPlayingList();
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(songModel.getPath());
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.setOnCompletionListener(this);
+
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldSongPlaying.getSongId() != currentSongPlaying.getSongId()) {
+//                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+//                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+//                }
+//                if (playingList == null || playingSongList == null) {
+//                    updatePlayingSongs();
+//                }
+//            }
+//        }).start();
     }
 
     public void pause() {
-        mMediaPlayer.pause();
-        mIsPause = true;
+        mediaPlayer.pause();
+        isPause = true;
     }
 
-    public void resurme() {
-        mIsPause = false;
-        if (mCurrentSongPlaying != null && mMediaPlayer != null) {
-            mMediaPlayer.seekTo(mMediaPlayer.getCurrentPosition());
-            mMediaPlayer.start();
-            Log.d(TAG, "resurme: RESUME SONG " + mMediaPlayer.getCurrentPosition());
+    public void resume() {
+        isPause = false;
+        if (currentSongPlaying != null && mediaPlayer != null) {
+            mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
+            mediaPlayer.start();
+            Log.d(TAG, "resume: RESUME SONG " + mediaPlayer.getCurrentPosition());
         } else {
-            Log.d(TAG, "resurme: NOT RESUME SONG ");
+            Log.d(TAG, "resume: NOT RESUME SONG ");
         }
 
     }
 
     public void next(int actionFrom) {
-        mIsPause = false;
+        isPause = false;
         resetMediaPlayer();
-        if (mPlayingList == null) {
+        if (playingList == null) {
             return;
         }
-        mOldSongPlaying = mCurrentSongPlaying;
+        oldSongPlaying = currentSongPlaying;
 
         if (actionFrom == ACTION_FROM_USER) {
             setNextIndexSong();
@@ -138,145 +145,146 @@ public class PlayService {
             if (loopType == ALL_LOOP) {
                 setNextIndexSong();
             } else if (loopType == ONE_LOOP) {
-                mCurrentIndexSong = mCurrentIndexSong;
+                currentIndexSong = currentIndexSong;
             } else {
-                mMediaPlayer.seekTo(0);
+                mediaPlayer.seekTo(0);
                 if (PlayActivity.getActivity() != null) {
-                    PlayActivity.getActivity().updateControlPlaying(SENDER, mCurrentSongPlaying);
+                    PlayActivity.getActivity().updateControlPlaying(SENDER, currentSongPlaying);
                     PlayActivity.getActivity().updateButtonPlay(SENDER);
-                    PlayActivity.getActivity().updateSeekbar(SENDER, mMediaPlayer.getCurrentPosition());
+                    PlayActivity.getActivity().updateSeekBar(SENDER, mediaPlayer.getCurrentPosition());
                 }
                 pause();
                 return;
             }
         }
 
-        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong); //SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
-        play(mCurrentSongPlaying);
+        currentSongPlaying = playingSongList.get(currentIndexSong); //SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
+        play(currentSongPlaying);
         if (MainActivity.getMainActivity() != null) {
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
         }
 
         if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updateControlPlaying(SENDER, mCurrentSongPlaying);
+            PlayActivity.getActivity().updateControlPlaying(SENDER, currentSongPlaying);
         }
     }
 
     private void resetMediaPlayer() {
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.reset();
-            mMediaPlayer.stop();
-            mCountDownTimerUpdateSeekBar.cancel();
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.reset();
+            mediaPlayer.stop();
+            countDownTimerUpdateSeekBar.cancel();
         }
     }
 
     private void setNextIndexSong() {
-        if (mCurrentIndexSong == mPlayingList.size() - 1) {
-            mCurrentIndexSong = 0;
+        if (currentIndexSong == playingList.size() - 1) {
+            currentIndexSong = 0;
         } else {
-            mCurrentIndexSong++;
+            currentIndexSong++;
         }
     }
 
     public void prev(int actionFrom) {
-        mIsPause = false;
+        isPause = false;
         resetMediaPlayer();
-        if (mPlayingList == null || PlayActivity.getActivity() == null) {
+        if (playingList == null || PlayActivity.getActivity() == null) {
             return;
         }
-        mOldSongPlaying = mCurrentSongPlaying;
-        if (mCurrentIndexSong == 0) {
-            mCurrentIndexSong = mPlayingList.size() - 1;
+        oldSongPlaying = currentSongPlaying;
+        if (currentIndexSong == 0) {
+            currentIndexSong = playingList.size() - 1;
         } else {
-            mCurrentIndexSong--;
+            currentIndexSong--;
         }
-        mCurrentSongPlaying = mSongPlayingList.get(mCurrentIndexSong);//SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
-        play(mCurrentSongPlaying);
+        currentSongPlaying = playingSongList.get(currentIndexSong);//SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
+        play(currentSongPlaying);
         if (MainActivity.getMainActivity() != null) {
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
 
         }
         if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updateControlPlaying(SENDER, mCurrentSongPlaying);
+            PlayActivity.getActivity().updateControlPlaying(SENDER, currentSongPlaying);
         }
     }
 
-    public static long addSongToPlayingList(SongModel song) {
-
-        if (song == null) {
-            return -1;
-        }
-        boolean isExist = PlayModel.isSongExsist(song);
-        if (isExist) {
-            return 0;
-        }
-        long result = PlayModel.addSongToPlayingList(song);
-        if (result > 0) {
-            updatePlayingList();
-        } else {
-            return -1;
-        }
-
-        return result;
-    }
+//    public static long addSongToPlayingList(SongModel song) {
+//
+//        if (song == null) {
+//            return -1;
+//        }
+//        boolean isExist = PlayModel.isSongExsist(song);
+//        if (isExist) {
+//            return 0;
+//        }
+//        long result = PlayModel.addSongToPlayingList(song);
+//        if (result > 0) {
+//            updatePlayingSongs();
+//        } else {
+//            return -1;
+//        }
+//
+//        return result;
+//    }
 
     public static int createPlayingList(ArrayList<SongModel> songs) {
         Log.d(TAG, "createPlayingList: " + songs.size());
         PlayModel.clearPlayingList();
-        PlayModel.createPlaylistFromSongs(songs);
-        updatePlayingList();
+//        PlayModel.createPlaylistFromSongs(songs);
+        updatePlayingSongs();
         return 1;
     }
 
-    public static int updatePlayingList() {
-        mPlayingList = PlayModel.getListPlaying();
-        mSongPlayingList = PlayModel.getSongPlayingList();
+    public static int updatePlayingSongs() {
+        playingList = PlayModel.getPlayingList();
+        playingSongList = PlayModel.getPlayingSongs();
 
         setIndexSongInPlayingList();
-        Log.d(TAG, "updatePlayingList: SIZE PLAYING LIST" + mPlayingList.size());
-        return mPlayingList.size();
+        Log.d(TAG, "updatePlayingSongs: SIZE PLAYING LIST" + playingList.size());
+        return playingList.size();
     }
 
+    public static ArrayList<SongModel> getPlayingList() {
+        return playingSongList;
+    }
 
     public ArrayList<PlayModel> getPlayModelsList() {
-        return mPlayingList;
+        return playingList;
     }
 
     public static boolean isPlaying() {
-        return mMediaPlayer.isPlaying();
+        return mediaPlayer.isPlaying();
     }
 
     public static boolean isPause() {
-        return mIsPause;
+        return isPause;
     }
 
     public static int getCurrentDuration() {
-        return mMediaPlayer.getCurrentPosition();
+        return mediaPlayer.getCurrentPosition();
     }
 
     public static SongModel getCurrentSongPlaying() {
-        return mCurrentSongPlaying;
+        return currentSongPlaying;
     }
 
 
     public static void revertListSongPlaying() {
-        mCurrentSongPlaying = PlayModel.getSongIsPlaying();
-        updatePlayingList();
+        currentSongPlaying = PlayModel.getSongIsPlaying();
+        updatePlayingSongs();
     }
 
     public void updateDuration(int progress) {
 
-        mMediaPlayer.seekTo(progress * 1000);
-//        if (!mMediaPlayer.isPlaying()) {
-//            mMediaPlayer.start();
-//            mPlayActivity.updateControlPlaying(SENDER, mCurrentSongPlaying);
+        mediaPlayer.seekTo(progress * 1000);
+//        if (!mediaPlayer.isPlaying()) {
+//            mediaPlayer.start();
+//            playActivity.updateControlPlaying(SENDER, currentSongPlaying);
 //        }
     }
 
-     */
-    /*
     @Override
     public void controlSong(String sender, SongModel songModel, int action) {
 
@@ -293,10 +301,7 @@ public class PlayService {
     }
 
     @Override
-    public void updateSeekbar(String sender, int duration) {
-        if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updateSeekbar(sender, duration);
-        }
+    public void updateSeekBar(String sender, int duration) {
 
     }
 
@@ -306,7 +311,7 @@ public class PlayService {
     }
 
     @Override
-    public void updateSongPlayingList() {
+    public void updatePlayingList() {
 
     }
 
@@ -316,29 +321,25 @@ public class PlayService {
     }
 
     private static void setIndexSongInPlayingList() {
-        mCurrentIndexSong = -1;
-        if (mSongPlayingList != null) {
-            for (int i = 0; i < mSongPlayingList.size(); i++) {
-                if (mSongPlayingList.get(i).getSongId() == mCurrentSongPlaying.getSongId()) {
-                    mCurrentIndexSong = i;
+        currentIndexSong = -1;
+        if (playingSongList != null) {
+            for (int i = 0; i < playingSongList.size(); i++) {
+                if (playingSongList.get(i).getSongId() == currentSongPlaying.getSongId()) {
+                    currentIndexSong = i;
                 }
             }
         }
-
-
     }
 
-     */
-    /*
     @Override
     public void onPrepared(MediaPlayer mp) {
-        if (!mMediaPlayer.isPlaying()) {
-            mCountDownTimerUpdateSeekBar = new CountDownTimer(mCurrentSongPlaying.getDuration(), 1000) {
+        if (!mediaPlayer.isPlaying()) {
+            countDownTimerUpdateSeekBar = new CountDownTimer(currentSongPlaying.getDuration(), 1000) {
                 public void onTick(long millisUntilFinished) {
                     try {
-                        if (mMediaPlayer.isPlaying()) {
-                            Log.d(TAG, "onTick: " + millisUntilFinished + " " + mCurrentSongPlaying.getTitle());
-                            updateSeekbar(SENDER, mMediaPlayer.getCurrentPosition());
+                        if (mediaPlayer.isPlaying()) {
+                            Log.d(TAG, "onTick: " + millisUntilFinished + " " + currentSongPlaying.getTitle());
+                            updateSeekBar(SENDER, mediaPlayer.getCurrentPosition());
                         }
 
                     } catch (IllegalStateException ex) {
@@ -349,131 +350,33 @@ public class PlayService {
                 }
 
                 public void onFinish() {
-                    Log.d(TAG, "onFinish: " + mMediaPlayer.getCurrentPosition());
-//                                        mMediaPlayer.stop();
+                    Log.d(TAG, "onFinish: " + mediaPlayer.getCurrentPosition());
+//                                        mediaPlayer.stop();
 
                 }
             }.start();
 
         }
         mp.start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long retSong = RecentModel.addToRecent(String.valueOf(mCurrentSongPlaying.getSongId()), RecentModel.TYPE_SONG);
-                long retArtist = RecentModel.addToRecent(String.valueOf(mCurrentSongPlaying.getArtist()), RecentModel.TYPE_ARTIST);
-                Log.d(TAG, "run: INSERT RECENT SONG " + retSong + "_ARTIST " + retArtist);
-            }
-        }).start();
-        if (MainActivity.getMainActivity()!=null){
-            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                long retSong = RecentModel.addToRecent(String.valueOf(currentSongPlaying.getSongId()), RecentModel.TYPE_SONG);
+//                long retArtist = RecentModel.addToRecent(String.valueOf(currentSongPlaying.getArtist()), RecentModel.TYPE_ARTIST);
+//                Log.d(TAG, "run: INSERT RECENT SONG " + retSong + "_ARTIST " + retArtist);
+//            }
+//        }).start();
+        if (MainActivity.getMainActivity() != null) {
+//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
+//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
         }
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateButtonPlay(SENDER);
         }
 
     }
-    */
-    /*
+
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Log.d(TAG, "onCompletion: NEXT -> ");
-        mCountDownTimerUpdateSeekBar.cancel();
-        next(ACTION_FROM_SYSTEM);
-
     }
-
-     */
-
-    /*
-    public void initListPlaying(final ArrayList<SongModel> listPlaying) {
-        PlayModel.clearPlayingList();
-        PlayModel.createPlaylistFromSongs(listPlaying);
-        updatePlayingList();
-        if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updateSongPlayingList();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(mOldSongPlaying.getSongId(), mCurrentSongPlaying.getSongId());
-                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
-            }
-        }).start();
-    }
-    */
-
-    public static ArrayList<SongModel> getListPlaying() {
-        return mSongPlayingList;
-    }
-
-    public static SongModel getSongIsPlaying() {
-        return PlayModel.getSongIsPlaying();
-    }
-
-
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void onCreate() {
-//        super.onCreate();
-//        PlayService.newInstance();
-//
-//    }
-//
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        if (intent.getAction() == null) {
-//            return START_STICKY;
-//        }
-//        int action = Integer.parseInt(Objects.requireNonNull(intent.getAction()));
-//        Bundle bundle = intent.getExtras();
-//        switch (action) {
-//            case ACTION_PLAY:
-//                Log.d(TAG, "onStartCommand: BUNDLE " + bundle);
-//                if (bundle != null) {
-//                    SongModel songPlay = (SongModel) bundle.getSerializable(SongModel.class.toString());
-//                    play(songPlay);
-//                }
-//                break;
-//            case ACTION_RESUME:
-//                resurme();
-//                break;
-//            case ACTION_PAUSE:
-//                pause();
-//                break;
-//            case ACTION_NEXT:
-//                if (bundle != null) {
-//                    int actionFrom = bundle.getInt("actionFrom");
-//                    next(actionFrom);
-//                }
-//                break;
-//            case ACTION_PREV:
-//                if (bundle != null) {
-//                    int actionFrom = bundle.getInt("actionFrom");
-//                    prev(actionFrom);
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        return START_STICKY;
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        if (mMediaPlayer != null) {
-//            mMediaPlayer.release();
-//        }
-//        stopSelf();
-//
-//    }
 }
-
-

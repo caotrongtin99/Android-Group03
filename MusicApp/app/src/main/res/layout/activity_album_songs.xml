@@ -112,6 +112,22 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_random_solid"
+                android:layout_marginRight="20dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_play_black_24dp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

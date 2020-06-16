@@ -24,7 +24,6 @@ public class PlayModel {
     public static final String COLUMN_CURRENT_DURATION = "current_duration";
     public static final String COLUMN_CREATE_DATE = "create_date";
 
-
     public static final String SCRIPT_CREATE_TABLE = new StringBuilder("CREATE TABLE ")
             .append(TABLE_NAME).append("(")
             .append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
@@ -35,22 +34,65 @@ public class PlayModel {
             .append(" )")
             .toString();
 
-
-    private Context mContext;
-    private static DatabaseManager mDatabaseManager = DatabaseManager.getInstance();
+    private Context context;
+    private static DatabaseManager databaseManager = DatabaseManager.getInstance();
 
     private int id;
     private int songId;
     private int isPlaying;
     private int current_duration;
     private static final String TAG = "PlayModel";
-//    public PlayModel newInstance(Context context){
-//        if (mContext==null ){
-//            mContext=context;
-//        }
-//        mDatabaseManager=DatabaseManager.getInstance();
-//    }
 
+    public static ArrayList<PlayModel> getPlayingList() {
+        ArrayList<PlayModel> playingList = new ArrayList<>();
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
+        String[] projection = {
+                PlayModel.COLUMN_ID,
+                PlayModel.COLUMN_SONG_ID,
+                PlayModel.COLUMN_IS_PLAYING,
+                PlayModel.COLUMN_CURRENT_DURATION,
+                PlayModel.COLUMN_CREATE_DATE
+        };
+        String orderBy = PlayModel.COLUMN_CREATE_DATE + " DESC ";
+        Cursor cursor = db.query(PlayModel.TABLE_NAME, projection, null, null, null, null, orderBy);
+        if (cursor.moveToFirst()) {
+            do {
+                PlayModel play = new PlayModel();
+                play.setId(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_ID)));
+                play.setSongId(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_SONG_ID)));
+                play.setIsPlaying(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_IS_PLAYING)));
+                play.setCurrent_duration(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_CURRENT_DURATION)));
+
+                playingList.add(play);
+            } while (cursor.moveToNext());
+
+        }
+        return playingList;
+    }
+
+    public static ArrayList<SongModel> getPlayingSongs() {
+        ArrayList<SongModel> songModelList = new ArrayList<>();
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
+        String query = "SELECT s.* FROM " + PlayModel.TABLE_NAME + " pm INNER JOIN " + SongModel.TABLE_NAME + " s ON pm." + PlayModel.COLUMN_SONG_ID
+                + "= s." + SongModel.COLUMN_SONG_ID + " ORDER BY s." + SongModel.COLUMN_TITLE + " ";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                SongModel songModel = new SongModel();
+                songModel.setId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ID)));
+                songModel.setSongId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_SONG_ID)));
+                songModel.setTitle(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_TITLE)));
+                songModel.setAlbum(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ALBUM)));
+                songModel.setArtist(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ARTIST)));
+                songModel.setFolder(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_FOLDER)));
+                songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
+                songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
+                songModelList.add(songModel);
+            } while (cursor.moveToNext());
+        }
+//        cursor.close();
+        return songModelList;
+    }
 
     public int getId() {
         return id;
@@ -84,92 +126,6 @@ public class PlayModel {
         this.current_duration = current_duration;
     }
 
-    public static ArrayList<PlayModel> getListPlaying() {
-        ArrayList<PlayModel> playingList = new ArrayList<>();
-        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
-        String[] projection = {
-                PlayModel.COLUMN_ID,
-                PlayModel.COLUMN_SONG_ID,
-                PlayModel.COLUMN_IS_PLAYING,
-                PlayModel.COLUMN_CURRENT_DURATION,
-                PlayModel.COLUMN_CREATE_DATE
-        };
-        String orderBy = PlayModel.COLUMN_CREATE_DATE + " DESC ";
-        Cursor cursor = db.query(PlayModel.TABLE_NAME, projection, null, null, null, null, orderBy);
-        if (cursor.moveToFirst()) {
-            do {
-                PlayModel play = new PlayModel();
-                play.setId(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_ID)));
-                play.setSongId(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_SONG_ID)));
-                play.setIsPlaying(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_IS_PLAYING)));
-                play.setCurrent_duration(cursor.getInt(cursor.getColumnIndex(PlayModel.COLUMN_CURRENT_DURATION)));
-
-                playingList.add(play);
-            } while (cursor.moveToNext());
-
-        }
-//        cursor.close();
-        return playingList;
-    }
-
-    public static ArrayList<SongModel> getSongPlayingList() {
-        ArrayList<SongModel> songModelList = new ArrayList<>();
-        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
-        String query = "SELECT s.* FROM " + PlayModel.TABLE_NAME + " pm INNER JOIN " + SongModel.TABLE_NAME + " s ON pm." + PlayModel.COLUMN_SONG_ID
-                + "= s." + SongModel.COLUMN_SONG_ID + " ORDER BY s." + SongModel.COLUMN_TITLE + " ";
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                SongModel songModel = new SongModel();
-                songModel.setId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ID)));
-                songModel.setSongId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_SONG_ID)));
-                songModel.setTitle(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_TITLE)));
-                songModel.setAlbum(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ALBUM)));
-                songModel.setArtist(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_ARTIST)));
-                songModel.setFolder(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_FOLDER)));
-                songModel.setDuration(cursor.getLong(cursor.getColumnIndex(SongModel.COLUMN_DURATION)));
-                songModel.setPath(cursor.getString(cursor.getColumnIndex(SongModel.COLUMN_PATH)));
-                songModelList.add(songModel);
-            } while (cursor.moveToNext());
-        }
-//        cursor.close();
-        return songModelList;
-    }
-
-    public static long addSongToPlayingList(SongModel song) {
-        Log.d(TAG, "addSongToPlayingList: SONG_ID" + song.getSongId());
-        boolean existSong = isSongExsist(song);
-        Log.d(TAG, "addSongToPlayingList: EXIST" + existSong);
-        if (!existSong) {
-            SQLiteDatabase database = mDatabaseManager.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-//            contentValues.put(PlayModel.COLUMN_ID, song.getId());
-            contentValues.put(PlayModel.COLUMN_SONG_ID, song.getSongId());
-            contentValues.put(PlayModel.COLUMN_IS_PLAYING, 0);
-            contentValues.put(PlayModel.COLUMN_CURRENT_DURATION, 0);
-            contentValues.put(PlayModel.COLUMN_CREATE_DATE, getDateTimeNow());
-            long id = database.insert(PlayModel.TABLE_NAME, null, contentValues);
-//            database.close();
-            return id;
-        }
-        return -1;
-    }
-
-    public static long createPlaylistFromSongs(ArrayList<SongModel> songs) {
-        SQLiteDatabase database = mDatabaseManager.getWritableDatabase();
-        for (SongModel song : songs) {
-            ContentValues contentValues = new ContentValues();
-//            contentValues.put(PlayModel.COLUMN_ID, song.getId());
-            contentValues.put(PlayModel.COLUMN_SONG_ID, song.getSongId());
-            contentValues.put(PlayModel.COLUMN_IS_PLAYING, 0);
-            contentValues.put(PlayModel.COLUMN_CURRENT_DURATION, 0);
-            contentValues.put(PlayModel.COLUMN_CREATE_DATE, getDateTimeNow());
-            database.insert(PlayModel.TABLE_NAME, null, contentValues);
-        }
-//        database.close();
-        return 0;
-    }
-
     private static String getDateTimeNow() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -177,8 +133,8 @@ public class PlayModel {
         return dateFormat.format(date);
     }
 
-    public static boolean isSongExsist(SongModel song) {
-        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
+    public static boolean isSongExist(SongModel song) {
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3}",
                 (Object) new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
@@ -190,16 +146,28 @@ public class PlayModel {
         return result;
     }
 
+    public static long createPlaylistFromSongs(ArrayList<SongModel> songs) {
+        SQLiteDatabase database = databaseManager.getWritableDatabase();
+        for (SongModel song : songs) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(PlayModel.COLUMN_SONG_ID, song.getSongId());
+            contentValues.put(PlayModel.COLUMN_IS_PLAYING, 0);
+            contentValues.put(PlayModel.COLUMN_CURRENT_DURATION, 0);
+            contentValues.put(PlayModel.COLUMN_CREATE_DATE, getDateTimeNow());
+            database.insert(PlayModel.TABLE_NAME, null, contentValues);
+        }
+        return 0;
+    }
+
     public static boolean clearPlayingList() {
-        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
+        SQLiteDatabase db = databaseManager.getWritableDatabase();
         return db.delete(PlayModel.TABLE_NAME, null, null) > 0;
 
     }
 
     public static boolean updateStatusPlaying(int oldSongId, int newSongId) {
         Log.d(TAG, "updateStatusPlaying: OLD= " + oldSongId + ", New=" + newSongId);
-        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
-//        boolean result = false;
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
         ContentValues oldValue = new ContentValues();
         oldValue.put(COLUMN_IS_PLAYING, 0);
         ContentValues newValue = new ContentValues();
@@ -210,14 +178,12 @@ public class PlayModel {
     }
 
     public static SongModel getSongIsPlaying() {
-//        ArrayList<SongModel> songModelList = new ArrayList<>();
-        SQLiteDatabase db = mDatabaseManager.getReadableDatabase();
+        SQLiteDatabase db = databaseManager.getReadableDatabase();
         String query = "SELECT s.* FROM " + PlayModel.TABLE_NAME + " pm INNER JOIN " + SongModel.TABLE_NAME + " s ON pm." + PlayModel.COLUMN_SONG_ID
                 + "= s." + SongModel.COLUMN_SONG_ID + " WHERE pm." + COLUMN_IS_PLAYING + "=1" + " ORDER BY s." + SongModel.COLUMN_TITLE + " ";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
-
                 SongModel songModel = new SongModel();
                 songModel.setId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_ID)));
                 songModel.setSongId(cursor.getInt(cursor.getColumnIndex(SongModel.COLUMN_SONG_ID)));
@@ -230,22 +196,6 @@ public class PlayModel {
                 return songModel;
             } while (cursor.moveToNext());
         }
-//        cursor.close();
         return null;
-    }
-
-    public static long deleteSongInListPlaying(int songId) {
-        SQLiteDatabase db = DatabaseManager.getInstance().getWritableDatabase();
-
-        long resultDeleteSong = db.delete(TABLE_NAME, COLUMN_SONG_ID + " = ?", new String[]{
-                String.valueOf(songId)
-        });
-
-        return resultDeleteSong;
-    }
-
-    public static void deleteListSongInListPlaying(String Ids) {
-        SQLiteDatabase db = DatabaseManager.getInstance().getWritableDatabase();
-        db.execSQL(String.format("DELETE FROM %s WHERE %s IN (%s);",TABLE_NAME,COLUMN_SONG_ID, Ids));
     }
 }

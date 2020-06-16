@@ -8,7 +8,6 @@ import com.example.musicapp.listsong.SongModel;
 import com.example.musicapp.playlist.PlaylistModel;
 import com.example.musicapp.playlist.PlaylistSongModel;
 
-
 public class DatabaseManager extends SQLiteOpenHelper {
 
     private static DatabaseManager mDatabaseInstance = null;
