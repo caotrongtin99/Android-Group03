@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.playlist.FragmentPlaylist;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,6 +74,7 @@ public class EditNameDialogFragment extends DialogFragment {
                 contentValues.put(SongModel.COLUMN_TITLE, mCurrentSong.getTitle());
                 long id = db.update(SongModel.TABLE_NAME, contentValues, SongModel.COLUMN_ID + " =? ", new String[]{String.valueOf(mCurrentSong.getId())});
                 FragmentListSong.refresh();
+                //FragmentPlaylist.refreshPlaylist();
                 getDialog().dismiss();
             }
         });

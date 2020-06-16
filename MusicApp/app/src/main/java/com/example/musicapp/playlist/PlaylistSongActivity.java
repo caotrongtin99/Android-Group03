@@ -32,6 +32,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.musicapp.BottomSheetOptionSongPlaylist;
 import com.example.musicapp.ImageHelper;
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
@@ -187,12 +188,11 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
 
     @Override
     public void refreshSongPlaylist() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 ArrayList<SongModel> songsPlaylist = PlaylistSongModel.getAllSongFromPlaylistId(mCurrentPlaylistId);
                 mListSong.clear();
+                mSongPlaylistAdapter.notifyDataSetChanged();
                 mListSong.addAll(songsPlaylist);
+                mSongPlaylistAdapter.notifyDataSetChanged();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -200,11 +200,8 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
                         mSongPlaylistAdapter.notifyDataSetChanged();
                     }
                 });
-
-
-            }
-        });
     }
+
 
     @Override
     public void refreshTitlePlaylist(String titlePlaylist) {
@@ -212,10 +209,10 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         mTxtTitlePlaylist.setText(mCurrentPlaylist.getTitle());
     }
 
-//    private void showBottomSheetOptionSong(SongModel song) {
-//        BottomSheetOptionSongPlaylist bottomSheetDialogFragment = new BottomSheetOptionSongPlaylist(song, mCurrentPlaylist, this);
-//        bottomSheetDialogFragment.show(getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
-//    }
+    private void showBottomSheetOptionSong(SongModel song) {
+        BottomSheetOptionSongPlaylist bottomSheetDialogFragment = new BottomSheetOptionSongPlaylist(song, mCurrentPlaylist, this);
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
+    }
 
 //    private void playSong(SongModel songPlay) {
 //        mPlayService.play(songPlay);
@@ -239,7 +236,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = mListSong.get(position);
-//        showBottomSheetOptionSong(songChose);
+        showBottomSheetOptionSong(songChose);
     }
 //
     @Override
@@ -282,7 +279,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         switch (item.getItemId()) {
             case R.id.action_delete_playlist:
                 new AlertDialog.Builder(this, R.style.DialogPrimary)
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Xác nhận?")
                         .setMessage("Bạn có chắc muốn xóa playlist " + mCurrentPlaylist.getTitle() + " ?")
                         .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {

@@ -130,8 +130,7 @@ public class FragmentPlaylist extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-//        refreshPlaylist();
+        //refreshPlaylist();
     }
 
     private void showPlaylistSongActivity(int playlistId) {
@@ -171,11 +170,9 @@ public class FragmentPlaylist extends Fragment {
     }
 
     public static void refreshPlaylist() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
-                mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
+
+                //mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
+                //mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mPlaylist.clear();
                 mPlaylistAdapter.notifyDataSetChanged();
                 ArrayList<PlaylistModel> playlistModels = PlaylistModel.getAllPlaylist(searchValue);
@@ -188,9 +185,11 @@ public class FragmentPlaylist extends Fragment {
 //                mPlaylistAdapter.notifyDataSetChanged();
 //                mPlaylistAdapter.notifyAll();
                 mPlaylistAdapter.notifyDataSetChanged();
-            }
-        });
+
+
     }
+
+
     public void UpdateSearch(String s){
         if(s == searchValue) return;
         searchValue = s;

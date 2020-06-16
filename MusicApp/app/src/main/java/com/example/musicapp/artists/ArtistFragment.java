@@ -98,7 +98,7 @@ public class ArtistFragment extends Fragment{
         return view;
     }
 
-    private void refreshListArtist(){
+    public void refreshListArtist(){
         artists.clear();
         adapter.notifyDataSetChanged();
         artists.addAll(ArtistProvider.getArtistModelPaging(context, searchValue, 0, 20));
