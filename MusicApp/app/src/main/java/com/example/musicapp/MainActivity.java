@@ -3,6 +3,10 @@ package com.example.musicapp;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ListActivity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import android.widget.SearchView;
@@ -34,9 +39,12 @@ import com.example.musicapp.albums.AlbumFragment;
 import com.example.musicapp.artists.ArtistFragment;
 import com.example.musicapp.artists.ArtistSongsActivity;
 import com.example.musicapp.artists.ArtistSongsAdapter;
+import com.example.musicapp.callbacks.MainCallbacks;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.play.PlayActivity;
+import com.example.musicapp.play.PlayService;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -44,15 +52,23 @@ import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainCallbacks {
     public final static String artist = "com.example.musicapp.artist";
+    private static final String TAG = "MainActivity";
     public static DatabaseManager mDatabaseManager;
     private TabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private String mSearchValue = "";
     private static MainActivity mMainActivity;
+    private Intent mIntentPlayActivity = null;
     private int mCurrentFragmentActive;
+
+    public static final Integer PLAY_CHANEL_ID = 103;
+    public static final Integer PLAY_NOTIFICATION_ID = 103;
+
+    private static RemoteViews notificationLayoutPlaying;
+
     public static MainActivity getMainActivity() {
         return mMainActivity;
     }
@@ -179,6 +195,123 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+    @Override
+    public void playSongsFromFragmentListToMain(String Sender) {
+//        Log.d(TAG, "playSongsFromFragmentListToMain: " + "SONG " + songPlay.getTitle() + " LIST " + songList.size());
+//        refreshNotificationPlaying(PlayService.ACTION_PLAY);
+        handleShowPlayActivityWithSongList();
+    }
+
+    @Override
+    public void togglePlayingMinimize(String sender, int action) {
+
+    }
+
+    @Override
+    public void refreshNotificationPlaying(int action) {
+//        SongModel songPlaying = PlayService.getCurrentSongPlaying();
+//        if (songPlaying != null) {
+//            Log.d(TAG, "initNotificationPlay: " + songPlaying.getTitle());
+//        }
+//        if (songPlaying == null) {
+//            return;
+//        }
+//        createNotificationChanel();
+//        //create layout notification
+//        notificationLayoutPlaying = new RemoteViews(getPackageName(), R.layout.layout_notificatoin_play);
+//
+//        //set content notification
+//
+//        notificationLayoutPlaying.setImageViewBitmap(R.id.imgSongMinimize, ImageHelper.getBitmapFromPath(songPlaying.getPath(), R.mipmap.music_128));
+//        notificationLayoutPlaying.setTextViewText(R.id.txtTitleMinimize, songPlaying.getTitle());
+//        notificationLayoutPlaying.setTextViewText(R.id.txtArtistMinimize, songPlaying.getArtist());
+//        if (action != PlayService.ACTION_PAUSE) {
+//            notificationLayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_pause_circle_outline_black_32dp);
+//        } else {
+//            notificationLayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_play_circle_outline_black_32dp);
+//        }
+//        //\set content notification
+//
+//        //playback activity
+//        Intent mainIntent = new Intent(this, MainActivity.class);//mới change
+//        mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+//        stackBuilder.addParentStack(PlayActivity.class);
+//        stackBuilder.addNextIntent(mainIntent);
+//
+//
+//        //intent back to activity
+//        PendingIntent pendingIntentPlay = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.notificationLayout, pendingIntentPlay);
+//        //\intent back to activity
+//
+//        //intent play song
+//        Intent playButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
+//        playButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PLAY_NOTIFY);
+//        playButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent playButtonPending = PendingIntent.getBroadcast(this, 0, playButtonIntent, 0);
+//
+//        Intent nextButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
+//        nextButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_NEXT_NOTIFY);
+//        nextButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent nextButtonPending = PendingIntent.getBroadcast(this, 0, nextButtonIntent, 0);
+//
+//        Intent prevButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
+//        prevButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PREV_NOTIFY);
+//        prevButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent prevButtonPending = PendingIntent.getBroadcast(this, 0, prevButtonIntent, 0);
+//
+//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnPlaySong, playButtonPending);
+//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnNextSong, nextButtonPending);
+//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnPrevSong, prevButtonPending);
+//
+//        //\intent play song
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PLAY_CHANEL_ID.toString())
+//                .setSmallIcon(R.drawable.ic_album_black_24dp)
+//                .setDefaults(0)
+//                .setContentIntent(pendingIntentPlay)//mới change
+//                .setContentIntent(playButtonPending)
+//                .setContentIntent(nextButtonPending)
+//                .setContentIntent(prevButtonPending)
+//                .setCustomContentView(notificationLayoutPlaying);//mới change
+//
+//
+//        if (action != PlayService.ACTION_PAUSE) {
+//            builder.setOngoing(true);
+//        } else {
+//            builder.setOngoing(false);
+//        }
+//
+//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+//        notificationManagerCompat.notify(PLAY_NOTIFICATION_ID, builder.build());
+//        refreshMinimizePlaying(action);
+    }
+
+    private void createNotificationChanel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence chanelName = PLAY_CHANEL_ID.toString();
+            String description = "TEST NOTIFICATION";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel chanel = new NotificationChannel(PLAY_CHANEL_ID.toString(), chanelName, importance);
+            chanel.setDescription(description);
+            chanel.setSound(null, null);
+            chanel.setVibrationPattern(new long[]{0});
+            chanel.enableVibration(true);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(chanel);
+
+//            notificationManager.notify(PLAY_NOTIFICATION_ID);
+        }
+    }
+
+    private void handleShowPlayActivityWithSongList() {
+        if (mIntentPlayActivity == null) {
+            mIntentPlayActivity = new Intent(MainActivity.this, PlayActivity.class);
+            mIntentPlayActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+        startActivity(mIntentPlayActivity);
+    }
 
     public void SearchByFragment(int fragmentIndex) {
         switch (fragmentIndex) {
