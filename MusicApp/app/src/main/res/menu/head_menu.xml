@@ -8,4 +8,12 @@
         app:actionViewClass="android.widget.SearchView"
         android:iconTint="@color/mainColor"
         app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/action_micro_main"
+        android:title="micro"
+        android:icon="@drawable/ic_baseline_mic_24"
+        android:iconTint="@color/mainColor"
+        app:showAsAction="always|collapseActionView"
+        >
+    </item>
 </menu>

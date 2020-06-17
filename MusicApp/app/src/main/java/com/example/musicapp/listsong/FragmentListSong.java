@@ -150,6 +150,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         mSwpListSong.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                searchValue = "";
                 ArrayList<SongModel> tempSongs = SongModel.getSongsWithThreshold(MainActivity.mDatabaseManager,searchValue, 0, mThreshHold);
                 _listSong.clear();
                 _listSongAdapter.notifyDataSetChanged();
