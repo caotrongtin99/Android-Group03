@@ -11,21 +11,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
@@ -52,6 +57,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements MainCallbacks {
     public final static String artist = "com.example.musicapp.artist";
@@ -133,18 +139,39 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
 //            }
 //        });
     }
-
+    String txtVoice;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.head_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_search_main:
+                searchItem(item);
 
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search_main).getActionView();
+                return true;
+            case R.id.action_micro_main:
+                microItem();
+                searchItem();
+                System.out.println(txtVoice);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    String getTxtVoice;
+    private void searchItem(MenuItem menuItem){
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+
                 mSearchValue = s;
                 SearchByFragment(mCurrentFragmentActive);
                 return false;
@@ -157,14 +184,43 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
                 return false;
             }
 
-            String a = mSearchValue;
-            Integer b = 1;
         });
 
-        return true;
     }
 
 
+    private void microItem(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hi speak something");
+
+        try {
+            startActivityForResult(intent, 1000);
+        }
+        catch (Exception e){
+            Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case 1000:
+                if(resultCode == RESULT_OK && null!=data){
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    getTxtVoice = result.get(0);
+//                    System.out.println(result.get(0));
+//                    mSearchValue = result.get(0);
+//                    SearchByFragment(mCurrentFragmentActive);
+                }
+                break;
+        }
+    }
 
     private void highLightCurrentTab(int position) {
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
