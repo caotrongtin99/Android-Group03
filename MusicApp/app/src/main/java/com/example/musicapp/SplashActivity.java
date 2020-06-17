@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Utility.setTransparentStatusBar(this);
-
+        getSupportActionBar().hide();
         if (checkAndRequestPermission()) {
             initApp();
         }
