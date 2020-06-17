@@ -23,5 +23,7 @@
         <item name="android:textColorPrimary">#FFF</item>
     </style>
 
-
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
 </resources>
