@@ -12,5 +12,6 @@
         android:layout_margin="10dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@mipmap/splash_img" />
+        android:src="@mipmap/splash_img"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

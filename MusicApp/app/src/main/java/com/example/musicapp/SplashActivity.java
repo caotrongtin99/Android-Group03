@@ -43,13 +43,18 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        Utility.setTransparentStatusBar(this);
-        getSupportActionBar().hide();
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+//        finish();
+//        setContentView(R.layout.activity_splash);
+//        Utility.setTransparentStatusBar(this);
+
         if (checkAndRequestPermission()) {
             initApp();
         }
     }
+
+
 
     public void initApp() {
         mDatabaseManager = DatabaseManager.newInstance(getApplicationContext());
