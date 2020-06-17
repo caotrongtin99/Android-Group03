@@ -156,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
                 return true;
             case R.id.action_micro_main:
                 microItem();
-                searchItem();
-                System.out.println(txtVoice);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -213,13 +211,18 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
             case 1000:
                 if(resultCode == RESULT_OK && null!=data){
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    getTxtVoice = result.get(0);
-//                    System.out.println(result.get(0));
-//                    mSearchValue = result.get(0);
-//                    SearchByFragment(mCurrentFragmentActive);
+                    txtVoice = result.get(0);
+                    mSearchValue = result.get(0);
+                    SearchByFragment(mCurrentFragmentActive);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        mSearchValue = "";
+        SearchByFragment(mCurrentFragmentActive);
     }
 
     private void highLightCurrentTab(int position) {
