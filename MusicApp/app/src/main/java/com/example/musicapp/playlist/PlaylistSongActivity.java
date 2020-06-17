@@ -110,14 +110,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
                 }
             }
         });
-//        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // do something here, such as start an Intent to the parent activity.
-////                finish();
-//                onBackPressed();
-//            }
-//        });
+
         mPlayService = PlayService.newInstance();
 
         mTxtTitlePlaylist.setOnClickListener(new View.OnClickListener() {
@@ -155,12 +148,6 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         mCurrentPlaylist = PlaylistModel.getPlaylistById(mCurrentPlaylistId);
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        //Utility.setTranslucentStatusBar(this);
-//        mLayoutSongPlaylist.setPadding(0, Utility.getStatusbarHeight(this), 0, 0);
-//
-//        mAppbarLayoutPlaylist.setPadding(0,Utility.getStatusbarHeight(this),0,0);
-//        mToolbar.setPadding(0, Utility.getStatusbarHeight(this), 0, Utility.getStatusbarHeight(this));
-//        mLayoutSongPlaylist.setPadding(0, Utility.getStatusbarHeight(this), 0, 0);
         mTxtTitlePlaylist.setText(mCurrentPlaylist.getTitle());
         mTxtNumberOfSongPlaylist.setText(String.valueOf(mCurrentPlaylist.getNumberOfSongs()) + " bài hát");
 
@@ -214,18 +201,18 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         bottomSheetDialogFragment.show(getSupportFragmentManager(), "Bottom Sheet Dialog Fragment");
     }
 
-//    private void playSong(SongModel songPlay) {
-//        mPlayService.play(songPlay);
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mPlayService.initListPlaying(mListSong);
-//            }
-//        }).start();
-//
-//        MainActivity.getMainActivity().playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
-//    }
+    private void playSong(SongModel songPlay) {
+        mPlayService.play(songPlay);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //mPlayService.initPlayingList(mListSong);
+            }
+        }).start();
+
+        MainActivity.getMainActivity().playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
+    }
 //
 //    @Override
 //    public void onBackPressed() {
@@ -253,7 +240,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     @Override
     public void layoutItemClick(View v, int position) {
         final SongModel songChose = mListSong.get(position);
-//        playSong(songChose);
+        playSong(songChose);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -265,7 +252,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     @Override
     public void layoutItemLongClick(View v, int position) {
         final SongModel songChose = mListSong.get(position);
-//        showBottomSheetOptionSong(songChose);
+        showBottomSheetOptionSong(songChose);
     }
 
     @Override
