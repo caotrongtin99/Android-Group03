@@ -4,7 +4,11 @@
     There's a new attribute called colorPrimary which you can define in your Theme. This will give you ActionBar or Toolbar a solid color.
 
     Following a little example:
-
+    <style name="AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textColorPrimary">#595959</item>
+        <item name="android:colorBackground">#1b5e20</item>
+    </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/bgColor</item>

@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.musicapp.db.DatabaseManager;
-import com.example.musicapp.listsong.SongModel;
 
 import java.util.ArrayList;
 

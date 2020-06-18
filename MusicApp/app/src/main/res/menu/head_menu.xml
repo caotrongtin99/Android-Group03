@@ -11,7 +11,7 @@
     <item
         android:id="@+id/action_micro_main"
         android:title="micro"
-        android:icon="@drawable/ic_baseline_mic_24"
+        android:icon="@drawable/ic_baseline_mic_main_24"
         android:iconTint="@color/mainColor"
         app:showAsAction="always|collapseActionView"
         >

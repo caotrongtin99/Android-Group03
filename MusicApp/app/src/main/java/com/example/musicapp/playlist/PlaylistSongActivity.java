@@ -1,29 +1,20 @@
 package com.example.musicapp.playlist;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 
 import android.os.Bundle;
-
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,18 +24,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicapp.BottomSheetOptionSongPlaylist;
-import com.example.musicapp.ImageHelper;
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
-import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.MultiClickAdapterListener;
 import com.example.musicapp.listsong.SongModel;
-//import com.example.musicapp.minimizeSong.MinimizeSongFragment;
-import com.example.musicapp.play.PlayActivity;
 import com.example.musicapp.play.PlayService;
-//import com.example.musicapp.recent.RecentModel;
-import com.example.musicapp.ImageHelper;
-import com.example.musicapp.Utility;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
@@ -60,10 +44,8 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     private int mCurrentPlaylistId;
     private PlaylistModel mCurrentPlaylist;
     private TextView mTxtTitlePlaylist;
-    private TextView mTxtNumberOfSongPlaylist;
     private AppBarLayout mAppbarLayoutPlaylist;
     private ImageView mImageCoverPlaylist;
-//    private MinimizeSongFragment mMinimizeSongFragment;
     private static PlayService mPlayService;
     private static final String TAG = "PlaylistSongActivity";
 
@@ -80,36 +62,14 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         initFindViewId();
         initRecyclerViewListSong();
         initToolBarParalax();
-//        initMimimizeSong();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initFindViewId() {
         mRecylerViewListSong = findViewById(R.id.rcvListSongPlaylist);
-        //mToolbar = (Toolbar) findViewById(R.id.htab_toolbar);
         mLayoutSongPlaylist = findViewById(R.id.layoutSongPlaylist);
         mTxtTitlePlaylist = findViewById(R.id.txtTitlePlaylist);
-        mTxtNumberOfSongPlaylist = findViewById(R.id.txtNumberOfSongPlaylist);
         mAppbarLayoutPlaylist = findViewById(R.id.htab_appbar);
-        mImageCoverPlaylist = findViewById(R.id.imageCoverPlaylist);
-
-        mAppbarLayoutPlaylist.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-                if (Math.abs(i) - appBarLayout.getTotalScrollRange() == 0) {
-                    Log.d(TAG, "onOffsetChanged: COLLPASED");
-                    //Collapsed
-
-                    getSupportActionBar().setTitle(mCurrentPlaylist.getTitle());
-
-                } else {
-                    //Expanded
-//                    Log.d(TAG, "onOffsetChanged: EXPANDED");
-                    getSupportActionBar().setTitle(" ");
-
-                }
-            }
-        });
 
         mPlayService = PlayService.newInstance();
 
@@ -130,18 +90,11 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         super.onResume();
         try {
             getSupportActionBar().setTitle(mCurrentPlaylist.getTitle());
-//            mMinimizeSongFragment.refreshControls(-1);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
-//    private void initMimimizeSong() {
-//        mMinimizeSongFragment = MinimizeSongFragment.newInstance();
-//        getSupportFragmentManager().beginTransaction().add(R.id.frgMinimizeSong, mMinimizeSongFragment).commit();
-//
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void initToolBarParalax() {
@@ -149,14 +102,6 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         mTxtTitlePlaylist.setText(mCurrentPlaylist.getTitle());
-        mTxtNumberOfSongPlaylist.setText(String.valueOf(mCurrentPlaylist.getNumberOfSongs()) + " bài hát");
-
-        mImageCoverPlaylist.post(new Runnable() {
-            @Override
-            public void run() {
-                mImageCoverPlaylist.setImageBitmap(ImageHelper.getBitmapFromPath(mCurrentPlaylist.getPathImage(), R.mipmap.music_128));
-            }
-        });
     }
 
     private void setSupportActionBar(Toolbar mToolbar) {
@@ -165,7 +110,6 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     private void initRecyclerViewListSong() {
 
         mListSong = PlaylistSongModel.getAllSongFromPlaylistId(mCurrentPlaylistId);
-        Log.d(TAG, "initRecyclerViewListSong: SIZE PLAYLIST SONG " + mListSong.size());
         mSongPlaylistAdapter = new SongPlaylistAdapter(this, mListSong, this);
         mRecylerViewListSong.setLayoutManager(new LinearLayoutManager(this));
         mRecylerViewListSong.setHasFixedSize(true);
@@ -183,8 +127,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mTxtNumberOfSongPlaylist.setText(String.valueOf(mCurrentPlaylist.getNumberOfSongs()) + " bài hát");
-                        mSongPlaylistAdapter.notifyDataSetChanged();
+                          mSongPlaylistAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -207,19 +150,14 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //mPlayService.initPlayingList(mListSong);
+
             }
         }).start();
 
         MainActivity.getMainActivity().playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//    }
-//
+
+
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = mListSong.get(position);
@@ -266,8 +204,6 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         switch (item.getItemId()) {
             case R.id.action_delete_playlist:
                 new AlertDialog.Builder(this, R.style.DialogPrimary)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Xác nhận?")
                         .setMessage("Bạn có chắc muốn xóa playlist " + mCurrentPlaylist.getTitle() + " ?")
                         .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                             @Override
@@ -296,35 +232,4 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
-//
-//    @Override
-//    public void onFragmentRefreshNotification(int action) {
-//        if (MainActivity.getMainActivity() != null) {
-//            MainActivity.getMainActivity().refreshNotificationPlaying(action);
-//        }
-//    }
-//
-//    @Override
-//    public void onFragmentShowPlayActivity() {
-//
-//        Intent mIntentPlayActivity = new Intent(PlaylistSongActivity.this, PlayActivity.class);
-//        mIntentPlayActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//
-//        startActivity(mIntentPlayActivity);
-//    }
-//
-//    @Override
-//    public void onFragmentLoaded(final int heightLayout) {
-//        Log.d(TAG, "onFragmentLoaded: " + heightLayout);
-//        mLayoutSongPlaylist.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLayoutSongPlaylist.setPadding(0, 0, 0, heightLayout);
-//            }
-//        });
-//    }
 }

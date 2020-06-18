@@ -84,12 +84,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="14sp" />
 
         </TableRow>
 
         <TableRow
-            android:padding="@dimen/margin_size_snormal"
+            android:padding="8dp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             >

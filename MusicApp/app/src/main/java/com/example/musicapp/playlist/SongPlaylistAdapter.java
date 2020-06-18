@@ -1,19 +1,16 @@
 package com.example.musicapp.playlist;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 
+
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,10 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicapp.R;
 import com.example.musicapp.listsong.MultiClickAdapterListener;
 import com.example.musicapp.listsong.SongModel;
-import com.example.musicapp.play.PlayService;
-import com.example.musicapp.ImageHelper;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class SongPlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -50,7 +44,6 @@ public class SongPlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         if (i == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_song_playlist, viewGroup, false);
-//            ViewHolderRecycler viewHolder = new ViewHolderRecycler(view);
             return new ViewHolderRecycler(view, mListener);
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.progressbar_circle, viewGroup, false);
@@ -76,11 +69,7 @@ public class SongPlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void showLoading(LoadingViewHolder viewHolder, int position) {
 
     }
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolderRecycler viewHolderRecycler, int i) {
-//        SongModel songModel = mListSong.get(i);
-//        viewHolderRecycler.bindContent(songModel);
-//    }
+
 
 
     @Override
@@ -111,9 +100,7 @@ public class SongPlaylistAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ViewHolderRecycler(@NonNull View itemView, MultiClickAdapterListener listenerCustom) {
             super(itemView);
             titleSong = (TextView) itemView.findViewById(R.id.txtTitle);
-//            this.album=album;
             artist = (TextView) itemView.findViewById(R.id.txtArtist);
-//            this.imageView = (ImageView) itemView.findViewById(R.id.imgSong);
             duration = (TextView) itemView.findViewById(R.id.txtDuration);
             txtRowCount = itemView.findViewById(R.id.txtRowCount);
             btnOptionSong = itemView.findViewById(R.id.btnOptionSong);

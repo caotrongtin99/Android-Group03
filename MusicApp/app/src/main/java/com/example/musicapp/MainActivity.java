@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
 
         mMainActivity = MainActivity.this;
 
-
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
         adapter = new TabAdapter(getSupportFragmentManager(), this);
@@ -119,25 +118,6 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
             }
         });
 
-//        ListView listView = (ListView) findViewById(R.id.artistList);
-//        ArrayList<Artist> artists = Artist.getArtists(mDatabaseManager);
-//        ArrayAdapter<String> cheeseAdapter =
-//                new ArrayAdapter<String>(this,
-//                        R.layout.fragment_artists,
-//                        R.id.artistList,
-//                        artists.
-//                );
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv = (TextView) view.findViewById(R.id.txt_ArtistName);
-//                String artist = tv.getText().toString();
-//                Log.e("ABC", artist);
-//                Intent intent = new Intent(MainActivity.getMainActivity(), ArtistSongsActivity.class);
-//                intent.putExtra("artist", artist);
-//                startActivity(intent);
-//            }
-//        });
     }
     String txtVoice;
     @Override
@@ -169,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 mSearchValue = s;
                 SearchByFragment(mCurrentFragmentActive);
                 return false;
@@ -239,27 +218,8 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
     }
 
 
-//    public void switchArtist(View view) {
-//        Intent intent = new Intent(this, ArtistSongsActivity.class);
-//        ListView list = (ListView) findViewById(R.id.artistList);
-//
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv = (TextView) view.findViewById(R.id.txt_ArtistName);
-//                String artist = tv.getText().toString();
-//                Log.e("ABC", artist);
-//                Intent intent = new Intent(MainActivity.getMainActivity(), ArtistSongsActivity.class);
-//                intent.putExtra("artist", artist);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-
     @Override
     public void playSongsFromFragmentListToMain(String Sender) {
-//        Log.d(TAG, "playSongsFromFragmentListToMain: " + "SONG " + songPlay.getTitle() + " LIST " + songList.size());
-//        refreshNotificationPlaying(PlayService.ACTION_PLAY);
         handleShowPlayActivityWithSongList();
     }
 
@@ -270,82 +230,7 @@ public class MainActivity extends AppCompatActivity implements MainCallbacks {
 
     @Override
     public void refreshNotificationPlaying(int action) {
-//        SongModel songPlaying = PlayService.getCurrentSongPlaying();
-//        if (songPlaying != null) {
-//            Log.d(TAG, "initNotificationPlay: " + songPlaying.getTitle());
-//        }
-//        if (songPlaying == null) {
-//            return;
-//        }
-//        createNotificationChanel();
-//        //create layout notification
-//        notificationLayoutPlaying = new RemoteViews(getPackageName(), R.layout.layout_notificatoin_play);
-//
-//        //set content notification
-//
-//        notificationLayoutPlaying.setImageViewBitmap(R.id.imgSongMinimize, ImageHelper.getBitmapFromPath(songPlaying.getPath(), R.mipmap.music_128));
-//        notificationLayoutPlaying.setTextViewText(R.id.txtTitleMinimize, songPlaying.getTitle());
-//        notificationLayoutPlaying.setTextViewText(R.id.txtArtistMinimize, songPlaying.getArtist());
-//        if (action != PlayService.ACTION_PAUSE) {
-//            notificationLayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_pause_circle_outline_black_32dp);
-//        } else {
-//            notificationLayoutPlaying.setImageViewResource(R.id.btnPlaySong, R.drawable.ic_play_circle_outline_black_32dp);
-//        }
-//        //\set content notification
-//
-//        //playback activity
-//        Intent mainIntent = new Intent(this, MainActivity.class);//mới change
-//        mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addParentStack(PlayActivity.class);
-//        stackBuilder.addNextIntent(mainIntent);
-//
-//
-//        //intent back to activity
-//        PendingIntent pendingIntentPlay = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.notificationLayout, pendingIntentPlay);
-//        //\intent back to activity
-//
-//        //intent play song
-//        Intent playButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
-//        playButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PLAY_NOTIFY);
-//        playButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent playButtonPending = PendingIntent.getBroadcast(this, 0, playButtonIntent, 0);
-//
-//        Intent nextButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
-//        nextButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_NEXT_NOTIFY);
-//        nextButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent nextButtonPending = PendingIntent.getBroadcast(this, 0, nextButtonIntent, 0);
-//
-//        Intent prevButtonIntent = new Intent(this, NotifyBroadcastReceiver.class);
-//        prevButtonIntent.setAction(NotifyBroadcastReceiver.ACTION_PREV_NOTIFY);
-//        prevButtonIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent prevButtonPending = PendingIntent.getBroadcast(this, 0, prevButtonIntent, 0);
-//
-//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnPlaySong, playButtonPending);
-//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnNextSong, nextButtonPending);
-//        notificationLayoutPlaying.setOnClickPendingIntent(R.id.btnPrevSong, prevButtonPending);
-//
-//        //\intent play song
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PLAY_CHANEL_ID.toString())
-//                .setSmallIcon(R.drawable.ic_album_black_24dp)
-//                .setDefaults(0)
-//                .setContentIntent(pendingIntentPlay)//mới change
-//                .setContentIntent(playButtonPending)
-//                .setContentIntent(nextButtonPending)
-//                .setContentIntent(prevButtonPending)
-//                .setCustomContentView(notificationLayoutPlaying);//mới change
-//
-//
-//        if (action != PlayService.ACTION_PAUSE) {
-//            builder.setOngoing(true);
-//        } else {
-//            builder.setOngoing(false);
-//        }
-//
-//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-//        notificationManagerCompat.notify(PLAY_NOTIFICATION_ID, builder.build());
-//        refreshMinimizePlaying(action);
+
     }
 
     private void createNotificationChanel() {
