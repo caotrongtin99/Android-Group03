@@ -165,7 +165,7 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
     }
 //
     @Override
-    public void checkboxClick(View v, int position) {
+    public void removeItemClick(View v, int position) {
 
     }
 

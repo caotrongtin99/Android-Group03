@@ -126,7 +126,7 @@
                         android:textSize="@dimen/text_size_small" />
 
                     <ImageButton
-                        android:id="@+id/btnOptionItemPlayingList"
+                        android:id="@+id/btnRemoveItemPlayingList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -136,7 +136,7 @@
                         android:foreground="?attr/selectableItemBackground"
                         android:paddingHorizontal="@dimen/text_size_normal"
                         android:paddingVertical="@dimen/margin_size_snormal"
-                        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+                        app:srcCompat="@drawable/ic_baseline_clear_24" />
 
                 </LinearLayout>
 

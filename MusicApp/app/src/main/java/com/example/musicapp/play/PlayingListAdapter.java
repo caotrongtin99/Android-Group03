@@ -1,9 +1,11 @@
 package com.example.musicapp.play;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -54,6 +56,8 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+
+
     private void showSongItem(ViewHolderRecycle viewHolder, int position) {
         SongModel songModel = listSong.get(position);
         viewHolder.bindContent(songModel);
@@ -71,10 +75,12 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public long getItemId(int position) { return position; }
 
-    private class ViewHolderRecycle extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private class ViewHolderRecycle extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView titleSong;
         TextView artist;
         TextView duration;
+        ImageView thumbnail;
+        ImageButton remove;
         ImageView imgStatusPlaying;
         CardView layoutItemSong;
 
@@ -84,6 +90,9 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.artist = (TextView) itemView.findViewById(R.id.txtArtistItemPlayingList);
             this.duration = (TextView) itemView.findViewById(R.id.txtDurationItemPlayingList);
             this.imgStatusPlaying = (ImageView) itemView.findViewById(R.id.imgStatusItemPlayingList);
+            this.thumbnail = (ImageView) itemView.findViewById(R.id.imgItemPlayingList);
+            this.remove = (ImageButton) itemView.findViewById(R.id.btnRemoveItemPlayingList);
+            this.remove.setOnClickListener(this);
             layoutItemSong = itemView.findViewById(R.id.layoutItemPlayingList);
             layoutItemSong.setOnClickListener(this);
         }
@@ -92,6 +101,7 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.titleSong.setText(songModel.getTitle());
             this.artist.setText(songModel.getArtist());
             this.duration.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
+            if (songModel.getBitmap() != null) this.thumbnail.setImageBitmap(songModel.getBitmap());
             if (songModel != null && PlayService.getCurrentSongPlaying() != null) {
                 if (songModel.getSongId() == PlayService.getCurrentSongPlaying().getSongId()) {
                     this.imgStatusPlaying.setVisibility(View.VISIBLE);
@@ -107,12 +117,11 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View v) {
-            multiClickAdapterListener.layoutItemClick(v, getAdapterPosition());
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
+            if (v.getId() == R.id.btnRemoveItemPlayingList) {
+                multiClickAdapterListener.removeItemClick(v, getAdapterPosition());
+            } else {
+                multiClickAdapterListener.layoutItemClick(v, getAdapterPosition());
+            }
         }
     }
 

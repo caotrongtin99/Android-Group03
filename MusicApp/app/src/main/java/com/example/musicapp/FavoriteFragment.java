@@ -180,7 +180,7 @@ public class FavoriteFragment extends Fragment implements FragmentCallback, Mult
     }
 
     @Override
-    public void checkboxClick(View v, int position) {
+    public void removeItemClick(View v, int position) {
 
     }
 
