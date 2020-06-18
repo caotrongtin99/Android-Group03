@@ -43,10 +43,6 @@ public class PlaylistDialogAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_playlist, viewGroup, false);
-//        ViewHolderRecycler viewHolder = new ViewHolderRecycler(view);
-//        Log.d(TAG, "onCreateViewHolder: PLAYLIST ADAPTER " + viewGroup.getId());
-//        return viewHolder;
         final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item_playlist, viewGroup, false);
         return new ViewHolderRecycler(view);
 
@@ -74,12 +70,6 @@ public class PlaylistDialogAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private void showLoading(LoadingViewHolder viewHolder, int position) {
 
     }
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolderRecycler viewHolderRecycler, int i) {
-//        SongModel songModel = mPlaylist.get(i);
-//        viewHolderRecycler.bindContent(songModel);
-//    }
-
 
     @Override
     public int getItemCount() {

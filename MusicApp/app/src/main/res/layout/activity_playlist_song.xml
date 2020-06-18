@@ -17,25 +17,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="MissingConstraints">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/htab_collapse_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorTranparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
-
-            <ImageView
-                android:id="@+id/imageCoverPlaylist"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorTranparent"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/music_128"
-                app:layout_collapseMode="pin" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,35 +40,15 @@
                     android:textStyle="bold"
                     app:layout_collapseMode="none" />
 
-                <TextView
-                    android:id="@+id/txtNumberOfSongPlaylist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/margin_size_snormal"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_large"
-                    app:layout_collapseMode="none" />
             </LinearLayout>
 
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/htab_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="top"
-                app:layout_collapseMode="pin"
-                app:title=" "
-                app:titleEnabled="false" />
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvListSongPlaylist"
         android:layout_width="match_parent"
+        android:paddingTop="15dp"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:ignore="MissingConstraints" />
