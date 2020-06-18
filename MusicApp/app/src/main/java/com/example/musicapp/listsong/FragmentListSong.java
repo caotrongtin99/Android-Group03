@@ -195,23 +195,17 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
         Log.d(TAG, "Song chosen: " + songPlay.getTitle());
         mPlayService.play(songPlay);
 
-//        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
-//            mThreadInitListPlaying.interrupt();
-//        }
-//
-//        mThreadInitListPlaying = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mPlayService.initListPlaying(SongModel.getAllSongs(DatabaseManager.getInstance()));
-//            }
-//        });
-//        mThreadInitListPlaying.start();
-//        _mainActivity.playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
-//    }
-//                mPlayService.initPlayingList(SongModel.getAllSongs(DatabaseManager.getInstance()));
-//            }
-//        });
-//        mThreadInitListPlaying.start();
+        if (mThreadInitListPlaying != null && mThreadInitListPlaying.isAlive()) {
+            mThreadInitListPlaying.interrupt();
+        }
+
+        mThreadInitListPlaying = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mPlayService.initPlayingList(SongModel.getAllSongs(DatabaseManager.getInstance()));
+            }
+        });
+        mThreadInitListPlaying.start();
         _mainActivity.playSongsFromFragmentListToMain("Sender");
     }
 
@@ -234,7 +228,7 @@ public class FragmentListSong extends Fragment implements FragmentCallback, Mult
     }
 
     @Override
-    public void checkboxClick(View v, int position) {
+    public void removeItemClick(View v, int position) {
 
     }
 

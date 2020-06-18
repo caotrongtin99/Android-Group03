@@ -140,8 +140,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
             if (loopType == LOOP_ALL) {
                 setNextIndexSong();
             } else if (loopType == LOOP_ONE) {
-                currentIndexSong = currentIndexSong;
-            } else {
                 mediaPlayer.seekTo(0);
                 if (PlayActivity.getActivity() != null) {
                     PlayActivity.getActivity().updateControlPlaying(SENDER, currentSongPlaying);
@@ -208,15 +206,9 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         if (song == null) {
             return -1;
         }
-        //boolean isExist = PlayModel.isSongExist(song);
-        //if (isExist) {
-        //    return 0;
-        //}
         long result = PlayModel.addSongToPlayingList(song);
         if (result > 0) {
             updatePlayingSongs();
-        } else {
-            return -1;
         }
 
         return result;
@@ -298,8 +290,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         currentIndexSong = -1;
         if (playingSongList != null) {
             for (int i = 0; i < playingSongList.size(); i++) {
-                int a= playingSongList.get(i).getSongId();
-                int b = currentSongPlaying.getSongId();
                 if (playingSongList.get(i).getSongId() == currentSongPlaying.getSongId()) {
                     currentIndexSong = i;
                 }
@@ -332,18 +322,7 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
         }
         mp.start();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                long retSong = RecentModel.addToRecent(String.valueOf(currentSongPlaying.getSongId()), RecentModel.TYPE_SONG);
-//                long retArtist = RecentModel.addToRecent(String.valueOf(currentSongPlaying.getArtist()), RecentModel.TYPE_ARTIST);
-//                Log.d(TAG, "run: INSERT RECENT SONG " + retSong + "_ARTIST " + retArtist);
-//            }
-//        }).start();
-        if (MainActivity.getMainActivity() != null) {
-//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
-        }
+
         if (PlayActivity.getActivity() != null) {
             PlayActivity.getActivity().updateButtonPlay(SENDER);
         }
@@ -352,22 +331,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-    }
-
-    public void initListPlaying(final ArrayList<SongModel> playingList) {
-        PlayModel.clearPlayingList();
-        PlayModel.createPlaylistFromSongs(playingList);
-        updatePlayingList();
-        if (PlayActivity.getActivity() != null) {
-            PlayActivity.getActivity().updatePlayingList();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
-                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
-            }
-        }).start();
+        countDownTimerUpdateSeekBar.cancel();
+        next(ACTION_FROM_SYSTEM);
     }
 
     public static SongModel getSongIsPlaying() {

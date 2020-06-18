@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
 import com.example.musicapp.listsong.MultiClickAdapterListener;
 import com.example.musicapp.listsong.SongModel;
@@ -24,9 +25,7 @@ import java.util.ArrayList;
 public class FragmentPlayingList extends Fragment implements FragmentPlayInterface, MultiClickAdapterListener {
     private PlayActivity playActivity;
     private Context context;
-    private LayoutInflater inflater;
     private static ArrayList<SongModel> listSong;
-    private LinearLayout linearLayout;
     private RecyclerView listViewSong;
     private PlayingListAdapter playingListAdapter;
     private LoadListPlaying loadListPlaying;
@@ -35,8 +34,6 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     public static final String SENDER = "FRAGMENT_PLAYING_LIST";
     private static final String TAG = "FragmentPlayingList";
     private MultiClickAdapterListener multiClickAdapterListener;
-    private ArrayList<Integer> listSelectedSong;
-    private ArrayList<Integer> listIdSelectedSong;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +42,6 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
             context = getActivity();
             playActivity = (PlayActivity) getActivity();
             loadListPlaying = new LoadListPlaying();
-            listSelectedSong = new ArrayList<>();
-            listIdSelectedSong = new ArrayList<>();
         } catch (IllegalStateException e) {}
     }
 
@@ -100,8 +95,34 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     }
 
     @Override
-    public void checkboxClick(View v, int position) {
+    public void removeItemClick(View v, int position) {
+        String id = String.valueOf(listSong.get(position).getSongId());
+        PlayModel.deleteSongsPlayingList(id);
+        listSong.clear();
+        listSong.addAll(PlayModel.getPlayingSongs());
+        listViewSong.post(new Runnable() {
+            @Override
+            public void run() {
+                playingListAdapter.notifyDataSetChanged();
+            }
+        });
+        updateSongAfterDelete(id);
+    }
 
+    private void updateSongAfterDelete(String Ids){
+        PlayService.updatePlayingSongs();
+        if(listSong.size() == 0)
+        {
+            PlayService.newInstance().pause();
+            playActivity.finish();
+//            MainActivity.getMainActivity().isHideMinimize = true;
+            return;
+        }
+        if(playingSong != null && Ids.contains(String.valueOf(playingSong.getSongId())))
+        {
+            playingSong = listSong.get(0);
+            PlayService.newInstance().play(playingSong);
+        }
     }
 
     @Override
@@ -158,15 +179,6 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
             }
             listSong.clear();
             listSong.addAll(songModels);
-
-            listIdSelectedSong.clear();
-            listSelectedSong.clear();
-            for (int i = 0 ; i < songModels.size() ; i++){
-                if(songModels.get(i).isChecked()){
-                    listIdSelectedSong.add(songModels.get(i).getSongId());
-                    listSelectedSong.add(i);
-                }
-            }
 
             Log.i(TAG, "onPostExecute: SONGS--> " + listSong.size());
             listViewSong.post(new Runnable() {
