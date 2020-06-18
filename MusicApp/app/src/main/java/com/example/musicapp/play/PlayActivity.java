@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 public class PlayActivity extends AppCompatActivity implements IPlay {
     private ViewPager viewPager;
     private DatabaseManager databaseManager;
+    private CoordinatorLayout layoutPlay;
     private PagerAdapter pagerAdapter;
     private PlayService playService;
     private MainActivity mainActivity;
@@ -54,9 +56,12 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         toolBar = findViewById(R.id.tool_bar_play);
+        layoutPlay = findViewById(R.id.layoutPlayActivity);
         viewPager = (ViewPager) findViewById(R.id.viewPagerPlay);
 
         getSupportActionBar().setTitle("Now Playing");
+        getSupportActionBar().setElevation(0);
+        layoutPlay.setPadding(0, 0, 0, 0);
 
         databaseManager = DatabaseManager.newInstance(getApplicationContext());
         playActivity = this;
@@ -179,12 +184,12 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
     public void updateToolbarTitle() {
         int index = viewPager.getCurrentItem();
         if (index == 0) {
-            getSupportActionBar().setTitle("Playing List");
+            getSupportActionBar().setTitle("Playing Queue");
             if (menu != null) {
 //                menu.findItem(R.id.actionSetTimerSong).setVisible(false);
             }
         } else if (index == 1) {
-            getSupportActionBar().setTitle("Now playing");
+            getSupportActionBar().setTitle("Now Playing");
             if (menu != null) {
 //                mMenuPlay.findItem(R.id.actionSetTimerSong).setVisible(true);
             }

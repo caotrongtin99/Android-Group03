@@ -80,11 +80,11 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ViewHolderRecycle(@NonNull View itemView) {
             super(itemView);
-            this.titleSong = (TextView) itemView.findViewById(R.id.txtTitle);
-            this.artist = (TextView) itemView.findViewById(R.id.txtArtist);
-            this.duration = (TextView) itemView.findViewById(R.id.txtDuration);
-            this.imgStatusPlaying = (ImageView) itemView.findViewById(R.id.imgStatusPlaying);
-            layoutItemSong = itemView.findViewById(R.id.layoutItemSongPlaying);
+            this.titleSong = (TextView) itemView.findViewById(R.id.txtTitleItemPlayingList);
+            this.artist = (TextView) itemView.findViewById(R.id.txtArtistItemPlayingList);
+            this.duration = (TextView) itemView.findViewById(R.id.txtDurationItemPlayingList);
+            this.imgStatusPlaying = (ImageView) itemView.findViewById(R.id.imgStatusItemPlayingList);
+            layoutItemSong = itemView.findViewById(R.id.layoutItemPlayingList);
             layoutItemSong.setOnClickListener(this);
         }
 
@@ -92,14 +92,13 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.titleSong.setText(songModel.getTitle());
             this.artist.setText(songModel.getArtist());
             this.duration.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
-//            Log.d(TAG, "bindContent: " + imgStatusPlaying);
             if (songModel != null && PlayService.getCurrentSongPlaying() != null) {
                 if (songModel.getSongId() == PlayService.getCurrentSongPlaying().getSongId()) {
                     this.imgStatusPlaying.setVisibility(View.VISIBLE);
                     this.duration.setVisibility(View.GONE);
-                    this.titleSong.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    this.titleSong.setTextColor(context.getResources().getColor(R.color.colorMain));
                 } else {
-                    this.titleSong.setTextColor(context.getResources().getColor(R.color.colorTitleWhitePrimary));
+                    this.titleSong.setTextColor(context.getResources().getColor(R.color.black));
                     this.imgStatusPlaying.setVisibility(View.GONE);
                     this.duration.setVisibility(View.VISIBLE);
                 }
@@ -108,7 +107,7 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View v) {
-
+            multiClickAdapterListener.layoutItemClick(v, getAdapterPosition());
         }
 
         @Override
