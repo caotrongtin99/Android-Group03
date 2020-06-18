@@ -76,13 +76,13 @@ public class FragmentPlaylist extends Fragment {
         mButtonCreatePlaylist = viewGroup.findViewById(R.id.btnCreatePlaylist);
         mSwpPlaylist = viewGroup.findViewById(R.id.swpPlaylist);
         mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
-        mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
+        mContext = getActivity();
+        //mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                //mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
+                mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mRecyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(mContext));
                 mRecyclerViewPlaylist.setAdapter(mPlaylistAdapter);
             }
@@ -90,16 +90,11 @@ public class FragmentPlaylist extends Fragment {
         mRecyclerViewPlaylist.addOnItemTouchListener(new RecyclerItemClickListener(mContext, mRecyclerViewPlaylist, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // do whatever
-//                Toast.makeText(mContext, "Playlist", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onItemClick: PLAYLIST " + position);
                 showPlaylistSongActivity(mPlaylist.get(position).getId());
             }
 
             @Override
             public void onLongItemClick(View view, int position) {
-                // do whatever
-//                Toast.makeText(mContext, "LONG CLICK ITEM SONG" + position, Toast.LENGTH_SHORT).show();
             }
         }));
         mButtonCreatePlaylist.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +127,6 @@ public class FragmentPlaylist extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //refreshPlaylist();
     }
 
     private void showPlaylistSongActivity(int playlistId) {
@@ -145,25 +139,6 @@ public class FragmentPlaylist extends Fragment {
 
     }
 
-    private void loadMore() {
-//        _skeletonScreen = Skeleton.bind(_listViewSong).adapter(_listSongAdapter).load(R.layout.layout_item_song).show();
-        mPlaylist.add(null);
-        mPlaylistAdapter.notifyItemInserted(mPlaylist.size() - 1);
-//        Handler handler = new Handler();
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                mPlaylist.remove(mPlaylist.size() - 1);
-                int scollPosition = mPlaylist.size();
-                mPlaylistAdapter.notifyItemRemoved(scollPosition);
-                ArrayList<PlaylistModel> playlistModels = PlaylistModel.getAllPlaylist(mPlaylist.size(), mThreshold);
-                mPlaylist.addAll(playlistModels);
-//                mPlaylistAdapter.notifyDataSetChanged();
-                mIsLoading = false;
-            }
-        });
-//
-    }
 
     @Override
     public void onResume() {

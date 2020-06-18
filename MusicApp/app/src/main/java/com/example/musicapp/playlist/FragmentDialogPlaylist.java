@@ -3,25 +3,26 @@ package com.example.musicapp.playlist;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.content.Context;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicapp.MainActivity;
 import com.example.musicapp.R;
 import com.example.musicapp.listsong.RecyclerItemClickListener;
 import com.example.musicapp.listsong.SongModel;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
@@ -82,8 +83,6 @@ public class FragmentDialogPlaylist extends DialogFragment {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        // do whatever
-                        Toast.makeText(mContext, "LONG CLICK ITEM SONG" + position, Toast.LENGTH_LONG).show();
                     }
                 }));
             }
