@@ -31,15 +31,15 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
     public static final int ACTION_NEXT = 4;
     public static final int ACTION_PREV = 5;
 
-    public static final int NONE_LOOP = 1;
-    public static final int ALL_LOOP = 2;
-    public static final int ONE_LOOP = 3;
+    public static final int LOOP_NONE = 1;
+    public static final int LOOP_ALL = 2;
+    public static final int LOOP_ONE = 3;
 
     public static final int ACTION_FROM_USER = 1;
     public static final int ACTION_FROM_SYSTEM = 2;
 
 
-    private static int loopType = ALL_LOOP;
+    private static int loopType = LOOP_ALL;
     public static boolean isShuffle;
     private static final String TAG = "PlayService";
     public static final String SENDER = "PLAY_CENTER";
@@ -52,11 +52,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         }
         return playService;
     }
-
-    public static MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
-
 
     public static int getLoopType() {
         return loopType;
@@ -100,18 +95,18 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (oldSongPlaying.getSongId() != currentSongPlaying.getSongId()) {
-//                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
-//                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
-//                }
-//                if (playingList == null || playingSongList == null) {
-//                    updatePlayingSongs();
-//                }
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldSongPlaying.getSongId() != currentSongPlaying.getSongId()) {
+                    boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+                    Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+                }
+                if (playingList == null || playingSongList == null) {
+                    updatePlayingSongs();
+                }
+            }
+        }).start();
     }
 
     public void pause() {
@@ -142,9 +137,9 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         if (actionFrom == ACTION_FROM_USER) {
             setNextIndexSong();
         } else {
-            if (loopType == ALL_LOOP) {
+            if (loopType == LOOP_ALL) {
                 setNextIndexSong();
-            } else if (loopType == ONE_LOOP) {
+            } else if (loopType == LOOP_ONE) {
                 currentIndexSong = currentIndexSong;
             } else {
                 mediaPlayer.seekTo(0);
@@ -158,11 +153,9 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
             }
         }
 
-        currentSongPlaying = playingSongList.get(currentIndexSong); //SongModel.getSongFromSongId(mDatabaseManager, mPlayingList.get(mCurrentIndexSong).getSongId());
+        currentSongPlaying = playingSongList.get(currentIndexSong);
         play(currentSongPlaying);
         if (MainActivity.getMainActivity() != null) {
-//            MainActivity.getMainActivity().togglePlayingMinimize(SENDER, ACTION_PLAY);
-//            MainActivity.getMainActivity().refreshNotificationPlaying(ACTION_PLAY);
         }
 
         if (PlayActivity.getActivity() != null) {
@@ -210,31 +203,23 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         }
     }
 
-//    public static long addSongToPlayingList(SongModel song) {
-//
-//        if (song == null) {
-//            return -1;
-//        }
-//        boolean isExist = PlayModel.isSongExsist(song);
-//        if (isExist) {
-//            return 0;
-//        }
-//        long result = PlayModel.addSongToPlayingList(song);
-//        if (result > 0) {
-//            updatePlayingSongs();
-//        } else {
-//            return -1;
-//        }
-//
-//        return result;
-//    }
+    public static long addSongToPlayingList(SongModel song) {
 
-    public static int createPlayingList(ArrayList<SongModel> songs) {
-        Log.d(TAG, "createPlayingList: " + songs.size());
-        PlayModel.clearPlayingList();
-//        PlayModel.createPlaylistFromSongs(songs);
-        updatePlayingSongs();
-        return 1;
+        if (song == null) {
+            return -1;
+        }
+        boolean isExist = PlayModel.isSongExist(song);
+        if (isExist) {
+            return 0;
+        }
+        long result = PlayModel.addSongToPlayingList(song);
+        if (result > 0) {
+            updatePlayingSongs();
+        } else {
+            return -1;
+        }
+
+        return result;
     }
 
     public static int updatePlayingSongs() {
@@ -248,10 +233,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     public static ArrayList<SongModel> getPlayingList() {
         return playingSongList;
-    }
-
-    public ArrayList<PlayModel> getPlayModelsList() {
-        return playingList;
     }
 
     public static boolean isPlaying() {
@@ -276,15 +257,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         updatePlayingSongs();
     }
 
-    public void updateDuration(int progress) {
-
-        mediaPlayer.seekTo(progress * 1000);
-//        if (!mediaPlayer.isPlaying()) {
-//            mediaPlayer.start();
-//            playActivity.updateControlPlaying(SENDER, currentSongPlaying);
-//        }
-    }
-
     @Override
     public void controlSong(String sender, SongModel songModel, int action) {
 
@@ -297,12 +269,14 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     @Override
     public void updateDuration(String sender, int progress) {
-
+        mediaPlayer.seekTo(progress * 1000);
     }
 
     @Override
     public void updateSeekBar(String sender, int duration) {
-
+        if (PlayActivity.getActivity() != null) {
+            PlayActivity.getActivity().updateSeekBar(sender, duration);
+        }
     }
 
     @Override
@@ -351,8 +325,6 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
                 public void onFinish() {
                     Log.d(TAG, "onFinish: " + mediaPlayer.getCurrentPosition());
-//                                        mediaPlayer.stop();
-
                 }
             }.start();
 
@@ -378,5 +350,25 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+    }
+
+    public void initListPlaying(final ArrayList<SongModel> playingList) {
+        PlayModel.clearPlayingList();
+        PlayModel.createPlaylistFromSongs(playingList);
+        updatePlayingList();
+        if (PlayActivity.getActivity() != null) {
+            PlayActivity.getActivity().updatePlayingList();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean resultUpdateStatus = PlayModel.updateStatusPlaying(oldSongPlaying.getSongId(), currentSongPlaying.getSongId());
+                Log.d(TAG, "initListPlaying: UPDATE STATUS" + resultUpdateStatus);
+            }
+        }).start();
+    }
+
+    public static SongModel getSongIsPlaying() {
+        return PlayModel.getSongIsPlaying();
     }
 }

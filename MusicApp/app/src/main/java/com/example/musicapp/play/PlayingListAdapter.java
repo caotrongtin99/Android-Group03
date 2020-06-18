@@ -51,18 +51,12 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderRecycle) {
             showSongItem((ViewHolderRecycle) holder, position);
-        } else if (holder instanceof  LoadingViewHolder) {
-            showLoading((LoadingViewHolder) holder, position);
         }
     }
 
     private void showSongItem(ViewHolderRecycle viewHolder, int position) {
         SongModel songModel = listSong.get(position);
         viewHolder.bindContent(songModel);
-    }
-
-    private void showLoading(LoadingViewHolder viewHolder, int position) {
-
     }
 
     @Override
@@ -79,25 +73,18 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class ViewHolderRecycle extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView titleSong;
-        TextView album;
         TextView artist;
         TextView duration;
-        //        ImageView imageView;
         ImageView imgStatusPlaying;
-        AppCompatCheckBox chkSong;
         CardView layoutItemSong;
 
         public ViewHolderRecycle(@NonNull View itemView) {
             super(itemView);
             this.titleSong = (TextView) itemView.findViewById(R.id.txtTitle);
-//            this.album=album;
             this.artist = (TextView) itemView.findViewById(R.id.txtArtist);
-//            this.imageView = (ImageView) itemView.findViewById(R.id.imgSong);
             this.duration = (TextView) itemView.findViewById(R.id.txtDuration);
             this.imgStatusPlaying = (ImageView) itemView.findViewById(R.id.imgStatusPlaying);
-            chkSong = itemView.findViewById(R.id.checkBoxSong);
             layoutItemSong = itemView.findViewById(R.id.layoutItemSongPlaying);
-            chkSong.setOnClickListener(this);
             layoutItemSong.setOnClickListener(this);
         }
 
@@ -117,23 +104,11 @@ public class PlayingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     this.duration.setVisibility(View.VISIBLE);
                 }
             }
-            if (songModel.isChecked()) {
-                this.chkSong.setChecked(true);
-            } else {
-                this.chkSong.setChecked(false);
-            }
-
-//
         }
-
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.checkBoxSong) {
-                multiClickAdapterListener.checkboxClick(v, getAdapterPosition());
-            } else {
-                multiClickAdapterListener.layoutItemClick(v, getAdapterPosition());
-            }
+
         }
 
         @Override

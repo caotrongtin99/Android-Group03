@@ -34,7 +34,6 @@ public class PlayModel {
             .append(" )")
             .toString();
 
-    private Context context;
     private static DatabaseManager databaseManager = DatabaseManager.getInstance();
 
     private int id;
@@ -133,6 +132,23 @@ public class PlayModel {
         return dateFormat.format(date);
     }
 
+    public static long addSongToPlayingList(SongModel song) {
+        Log.d(TAG, "addSongToPlayingList: SONG_ID" + song.getSongId());
+        boolean existSong = isSongExist(song);
+        Log.d(TAG, "addSongToPlayingList: EXIST" + existSong);
+        if (!existSong) {
+            SQLiteDatabase database = databaseManager.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(PlayModel.COLUMN_SONG_ID, song.getSongId());
+            contentValues.put(PlayModel.COLUMN_IS_PLAYING, 0);
+            contentValues.put(PlayModel.COLUMN_CURRENT_DURATION, 0);
+            contentValues.put(PlayModel.COLUMN_CREATE_DATE, getDateTimeNow());
+            long id = database.insert(PlayModel.TABLE_NAME, null, contentValues);
+            return id;
+        }
+        return -1;
+    }
+
     public static boolean isSongExist(SongModel song) {
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
@@ -197,5 +213,10 @@ public class PlayModel {
             } while (cursor.moveToNext());
         }
         return null;
+    }
+
+    public static void deleteSongsPlayingList(String Ids) {
+        SQLiteDatabase db = DatabaseManager.getInstance().getWritableDatabase();
+        db.execSQL(String.format("DELETE FROM %s WHERE %s IN (%s);",TABLE_NAME,COLUMN_SONG_ID, Ids));
     }
 }

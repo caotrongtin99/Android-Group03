@@ -57,14 +57,6 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
         viewPager = (ViewPager) findViewById(R.id.viewPagerPlay);
 
         getSupportActionBar().setTitle("Now Playing");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         databaseManager = DatabaseManager.newInstance(getApplicationContext());
         playActivity = this;
@@ -104,7 +96,6 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
         outState.putInt("tabIndex", 1);
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -121,20 +112,20 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
                 playService.pause();
 //                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PAUSE);
                 break;
-//            case PlayService.ACTION_RESUME:
-//                playService.resume();
-////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
-//                break;
-//            case PlayService.ACTION_PREV:
-//                playService.prev(PlayService.ACTION_FROM_USER);
-////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
+            case PlayService.ACTION_RESUME:
+                playService.resume();
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_RESUME);
+                break;
+            case PlayService.ACTION_PREV:
+                playService.prev(PlayService.ACTION_FROM_USER);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_PREV);
 //                refreshListPlaying();
-//                break;
-//            case PlayService.ACTION_NEXT:
-//                playService.next(PlayService.ACTION_FROM_USER);
-////                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
+                break;
+            case PlayService.ACTION_NEXT:
+                playService.next(PlayService.ACTION_FROM_USER);
+//                mainActivity.refreshNotificationPlaying(PlayService.ACTION_NEXT);
 //                refreshListPlaying();
-//                break;
+                break;
             default:
                 break;
         }
@@ -157,7 +148,7 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
 
     @Override
     public void updateDuration(String sender, int progress) {
-        playService.updateDuration(progress);
+        playService.updateDuration(sender, progress);
     }
 
     @Override
@@ -188,7 +179,7 @@ public class PlayActivity extends AppCompatActivity implements IPlay {
     public void updateToolbarTitle() {
         int index = viewPager.getCurrentItem();
         if (index == 0) {
-            getSupportActionBar().setTitle("List songs");
+            getSupportActionBar().setTitle("Playing List");
             if (menu != null) {
 //                menu.findItem(R.id.actionSetTimerSong).setVisible(false);
             }

@@ -2,25 +2,17 @@ package com.example.musicapp.play;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicapp.R;
@@ -38,7 +30,6 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     private RecyclerView listViewSong;
     private PlayingListAdapter playingListAdapter;
     private LoadListPlaying loadListPlaying;
-    private TextView sizePlayingList;
     private static SongModel playingSong = null;
 
     public static final String SENDER = "FRAGMENT_PLAYING_LIST";
@@ -83,7 +74,24 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listViewSong = (RecyclerView) view.findViewById(R.id.lsvPlaying);
+        listSong = new ArrayList<>();
+        playingListAdapter = new PlayingListAdapter(context, listSong, FragmentPlayingList.this);
+        listViewSong.setLayoutManager(new LinearLayoutManager(context));
+        listViewSong.setAdapter(playingListAdapter);
         updatePlayingList();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("playingList", listSong);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        loadListPlaying.cancel(true);
     }
 
     @Override
@@ -174,8 +182,10 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
 
         @Override
         public ArrayList<SongModel> doInBackground(Void... voids) {
-
             return PlayService.getPlayingList();
         }
     }
+
+    public static ArrayList<SongModel> getPlayingList() { return listSong; }
+
 }
