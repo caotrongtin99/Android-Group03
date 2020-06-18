@@ -111,7 +111,10 @@ public class FragmentPlayingList extends Fragment implements FragmentPlayInterfa
 
     @Override
     public void layoutItemClick(View v, int position) {
-
+        playingSong = listSong.get(position);
+        playActivity.controlSong(FragmentPlayingList.SENDER, playingSong, PlayService.ACTION_PLAY);
+        playActivity.updateControlPlaying(SENDER, playingSong);
+        playingListAdapter.notifyDataSetChanged();
     }
 
     @Override
