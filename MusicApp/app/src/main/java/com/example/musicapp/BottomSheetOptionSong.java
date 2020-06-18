@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.musicapp.db.DatabaseManager;
 import com.example.musicapp.listsong.FragmentListSong;
 import com.example.musicapp.listsong.SongModel;
+import com.example.musicapp.play.PlayService;
 import com.example.musicapp.playlist.FragmentDialogPlaylist;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -64,7 +65,7 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
 
         mTxtTitleSong = contentView.findViewById(R.id.txtTitleSong);
         mTxtArtist = contentView.findViewById(R.id.txtArtist);
-        mTbrAddQueue = contentView.findViewById(R.id.btnAddSongToQueue);
+        mTbrAddQueue = contentView.findViewById(R.id.mTbrAddQueue);
         mTbrAddPlaylist = contentView.findViewById(R.id.btnAddSongToPlaylist);
         mTbrMakeRingTone = contentView.findViewById(R.id.btnMakeRingTone);
         mImgSong = contentView.findViewById(R.id.imgSong);
@@ -102,6 +103,17 @@ public class BottomSheetOptionSong extends BottomSheetDialogFragment implements 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mTbrAddQueue:
+                long resultAddSong = PlayService.addSongToPlayingList(mCurrentSong);
+                if (resultAddSong > 0) {
+                    Toast.makeText(getActivity(), "Đã thêm vào danh sách phát", Toast.LENGTH_LONG).show();
+                } else if (resultAddSong == 0) {
+                    Toast.makeText(getActivity(), "Bài hát đã tồn tại", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Thất bại", Toast.LENGTH_LONG).show();
+                }
+                BottomSheetOptionSong.this.dismiss();
+                break;
             case R.id.mTbrRenameSong:
                 showEditDialog();
                 getDialog().dismiss();

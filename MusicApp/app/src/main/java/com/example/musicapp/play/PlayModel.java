@@ -134,9 +134,9 @@ public class PlayModel {
 
     public static long addSongToPlayingList(SongModel song) {
         Log.d(TAG, "addSongToPlayingList: SONG_ID" + song.getSongId());
-        boolean existSong = isSongExist(song);
-        Log.d(TAG, "addSongToPlayingList: EXIST" + existSong);
-        if (!existSong) {
+        //boolean existSong = isSongExist(song);
+        //Log.d(TAG, "addSongToPlayingList: EXIST" + existSong);
+        //if (!existSong) {
             SQLiteDatabase database = databaseManager.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(PlayModel.COLUMN_SONG_ID, song.getSongId());
@@ -145,15 +145,20 @@ public class PlayModel {
             contentValues.put(PlayModel.COLUMN_CREATE_DATE, getDateTimeNow());
             long id = database.insert(PlayModel.TABLE_NAME, null, contentValues);
             return id;
-        }
-        return -1;
+        //}
+        //return -1;
     }
 
     public static boolean isSongExist(SongModel song) {
         SQLiteDatabase db = databaseManager.getReadableDatabase();
         boolean result = false;
+        String a = PlayModel.COLUMN_ID;
+        String b = PlayModel.COLUMN_SONG_ID;
+        String c = PlayModel.TABLE_NAME;
+
         String query = MessageFormat.format("SELECT {0} FROM {1} WHERE {2}={3}",
-                (Object) new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, String.valueOf(song.getSongId())});
+                (Object) new String[]{PlayModel.COLUMN_ID, PlayModel.TABLE_NAME, PlayModel.COLUMN_SONG_ID, "'"+String.valueOf(song.getSongId())+"'"});
+        //String query = "SELECT id FROM plays WHERE songid = '" + String.valueOf(song.getSongId())+"'";
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             result = true;

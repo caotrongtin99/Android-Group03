@@ -72,7 +72,7 @@
         >
 
         <TableRow
-            android:id="@+id/btnAddSongToQueue"
+            android:id="@+id/mTbrAddQueue"
             android:padding="@dimen/margin_size_snormal"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"

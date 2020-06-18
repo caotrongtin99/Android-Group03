@@ -180,10 +180,6 @@ public class FragmentPlaylist extends Fragment {
                     Log.d(TAG, "run: REFRESH PLAYLIST SIZE " + playlistModels.get(playlistModels.size() - 1).getNumberOfSongs());
                 }
                 mPlaylist.addAll(playlistModels);
-//                Log.d(TAG, "run: SIZE PLAYLIST 1 - " + mPlaylist.get(mPlaylist.size() - 1).getNumberOfSongs());
-//                mPlaylistAdapter.notifyDataSetChanged();
-//                mPlaylistAdapter.notifyDataSetChanged();
-//                mPlaylistAdapter.notifyAll();
                 mPlaylistAdapter.notifyDataSetChanged();
 
 

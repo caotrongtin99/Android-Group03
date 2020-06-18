@@ -208,10 +208,10 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         if (song == null) {
             return -1;
         }
-        boolean isExist = PlayModel.isSongExist(song);
-        if (isExist) {
-            return 0;
-        }
+        //boolean isExist = PlayModel.isSongExist(song);
+        //if (isExist) {
+        //    return 0;
+        //}
         long result = PlayModel.addSongToPlayingList(song);
         if (result > 0) {
             updatePlayingSongs();
@@ -298,6 +298,8 @@ public class PlayService implements IPlay, MediaPlayer.OnPreparedListener, Media
         currentIndexSong = -1;
         if (playingSongList != null) {
             for (int i = 0; i < playingSongList.size(); i++) {
+                int a= playingSongList.get(i).getSongId();
+                int b = currentSongPlaying.getSongId();
                 if (playingSongList.get(i).getSongId() == currentSongPlaying.getSongId()) {
                     currentIndexSong = i;
                 }
