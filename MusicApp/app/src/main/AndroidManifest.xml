@@ -38,6 +38,15 @@
         </activity>
         <activity android:name=".albums.AlbumSongsActivity">
         </activity>
+        <receiver
+            android:name=".play.StoppedReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="KILL_APP" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -45,13 +45,9 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
     public static final String SENDER = "FRAGMENT_PLAYING";
     private static final String TAG = "FragmentPlaying";
     private static final ArrayList<Integer> arrLoopTypeValue = new ArrayList<>(Arrays.asList(
-            PlayService.NONE_LOOP,
-            PlayService.ALL_LOOP,
-            PlayService.ONE_LOOP));
-
-    public FragmentPlaying() {
-
-    }
+            PlayService.LOOP_NONE,
+            PlayService.LOOP_ALL,
+            PlayService.LOOP_ONE));
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +76,6 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         imageButtonPrevSong = viewGroupMain.findViewById(R.id.btnPrevSong);
         imageButtonNextSong = viewGroupMain.findViewById(R.id.btnNextSong);
         imagePlaying = viewGroupMain.findViewById(R.id.imgThumbnail);
-//        imageBgPlaying = viewGroupMain.findViewById(R.id.imgBgThumbnail);
         txtTitleSongPlaying = viewGroupMain.findViewById(R.id.txtTitlePlaying);
         txtArtistSongPlaying = viewGroupMain.findViewById(R.id.txtSongArtistPlaying);
         txtDurationSongPlaying = viewGroupMain.findViewById(R.id.txtDurationTimeSong);
@@ -147,6 +142,7 @@ public class FragmentPlaying extends Fragment implements FragmentPlayInterface, 
         txtArtistSongPlaying.setText(playingSong.getArtist());
         txtDurationSongPlaying.setText(SongModel.formateMilliSeccond(songModel.getDuration()));
         sebDurationSongPlaying.setMax(playingSong.getDuration().intValue() / 1000);
+        setResourceImagePlaying();
     }
 
     @Override
