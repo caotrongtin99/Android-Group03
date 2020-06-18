@@ -207,19 +207,14 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //mPlayService.initPlayingList(mListSong);
+
             }
         }).start();
 
         MainActivity.getMainActivity().playSongsFromFragmentListToMain(FragmentPlaylist.SENDER);
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//    }
-//
+
+
     @Override
     public void optionMenuClick(View v, int position) {
         final SongModel songChose = mListSong.get(position);
@@ -266,8 +261,6 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         switch (item.getItemId()) {
             case R.id.action_delete_playlist:
                 new AlertDialog.Builder(this, R.style.DialogPrimary)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Xác nhận?")
                         .setMessage("Bạn có chắc muốn xóa playlist " + mCurrentPlaylist.getTitle() + " ?")
                         .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                             @Override
@@ -296,35 +289,4 @@ public class PlaylistSongActivity extends AppCompatActivity implements MultiClic
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
-//
-//    @Override
-//    public void onFragmentRefreshNotification(int action) {
-//        if (MainActivity.getMainActivity() != null) {
-//            MainActivity.getMainActivity().refreshNotificationPlaying(action);
-//        }
-//    }
-//
-//    @Override
-//    public void onFragmentShowPlayActivity() {
-//
-//        Intent mIntentPlayActivity = new Intent(PlaylistSongActivity.this, PlayActivity.class);
-//        mIntentPlayActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//
-//        startActivity(mIntentPlayActivity);
-//    }
-//
-//    @Override
-//    public void onFragmentLoaded(final int heightLayout) {
-//        Log.d(TAG, "onFragmentLoaded: " + heightLayout);
-//        mLayoutSongPlaylist.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mLayoutSongPlaylist.setPadding(0, 0, 0, heightLayout);
-//            }
-//        });
-//    }
 }

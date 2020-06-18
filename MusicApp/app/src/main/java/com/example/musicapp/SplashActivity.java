@@ -61,9 +61,7 @@ public class SplashActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "doInBackground: SIZE AUDIOS " + SongModel.getRowsSong(mDatabaseManager));
                 ArrayList<SongModel> tempAudioList = SongModel.getAllAudioFromDevice(getApplicationContext());
-                Log.d(TAG, "doInBackground: AUDIO " + tempAudioList.size());
                 Integer a = tempAudioList.size();
                 Long b = SongModel.getRowsSong(mDatabaseManager);
                 if (SongModel.getRowsSong(mDatabaseManager) != tempAudioList.size()) {
@@ -163,14 +161,17 @@ public class SplashActivity extends AppCompatActivity {
 
     public AlertDialog showDialog(String title, String message, String positiveLabel, DialogInterface.OnClickListener positiveOnclick,
                                   String negativeLabel, DialogInterface.OnClickListener negativeOnclick, boolean isCancel) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialog);
         builder.setTitle(title);
+        //set color
+
         builder.setMessage(message);
         builder.setCancelable(isCancel);
         builder.setNegativeButton(negativeLabel, negativeOnclick);
         builder.setPositiveButton(positiveLabel, positiveOnclick);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
         return alertDialog;
     }
 

@@ -44,7 +44,7 @@
                             android:layout_gravity="bottom"
                             android:text="Tiêu đề bài hát"
                             android:textColor="@color/colorTitleWhitePrimary"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <TextView

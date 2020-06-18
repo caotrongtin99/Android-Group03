@@ -76,11 +76,13 @@ public class FragmentPlaylist extends Fragment {
         mButtonCreatePlaylist = viewGroup.findViewById(R.id.btnCreatePlaylist);
         mSwpPlaylist = viewGroup.findViewById(R.id.swpPlaylist);
         mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
+        mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
+                //mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mRecyclerViewPlaylist.setLayoutManager(new LinearLayoutManager(mContext));
                 mRecyclerViewPlaylist.setAdapter(mPlaylistAdapter);
             }
@@ -170,8 +172,8 @@ public class FragmentPlaylist extends Fragment {
     }
 
     public static void refreshPlaylist() {
-
-                //mPlaylist = PlaylistModel.getAllPlaylist(searchValue);
+                //ArrayList<PlaylistModel> a = new ArrayList<>();
+                //mPlaylist = a;
                 //mPlaylistAdapter = new PlaylistAdapter(mContext, mPlaylist);
                 mPlaylist.clear();
                 mPlaylistAdapter.notifyDataSetChanged();
